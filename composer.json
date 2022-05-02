@@ -4,6 +4,7 @@
         "psr-4": {
             "Servers\\": "",
             "Servers\\Models\\": "Models/",
+            "Servers\\Utils\\": "Utils/",
             "Servers\\Controllers\\": "Controllers/",
             "Avocado\\ORM\\": "vendor/hubert/avocado/src/AvocadoORM",
             "Avocado\\Router\\": "vendor/hubert/avocado/src/AvocadoRouter"

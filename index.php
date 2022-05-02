@@ -1,5 +1,7 @@
 <?php
 
+namespace Servers;
+
 session_start();
 
 // DEV
@@ -13,23 +15,29 @@ use Avocado\Router\AvocadoRouter;
 use Avocado\Router\AvocadoRequest;
 use Avocado\Router\AvocadoResponse;
 use Avocado\ORM\AvocadoORMSettings;
+use Servers\Controllers\AuthController;
 
-use Servers\Repositories;
-
-putenv('hash_algo=sh256');
+$mainDir = explode('/', $_SERVER['SCRIPT_NAME'])[1];
+putenv("MAIN_DIR=$mainDir");
 
 Repositories::init();
 
-try {
-    AvocadoORMSettings::useDatabase('mysql:host=localhost;dbname=servers;', 'root', '');
-} catch (\Avocado\ORM\AvocadoRepositoryException $e) {
-    // in development mode
-    exit(1);
-}
-AvocadoORMSettings::useFetchOption(PDO::FETCH_CLASS);
+AvocadoORMSettings::useDatabase('mysql:host=localhost;dbname=servers;', 'root', '');
+AvocadoORMSettings::useFetchOption(\PDO::FETCH_CLASS);
 
 AvocadoRouter::GET("/", [], function() {
+    AuthController::authenticationMiddleware(["error" => "Unauthorized"]);
     require "./views/main.php";
+});
+
+AvocadoRouter::GET('/admin', [], function () {
+    AuthController::authenticationMiddleware(["error" => "Unauthorized"]);
+    require "./views/admin.php";
+});
+
+AvocadoRouter::GET('/login', [], function (AvocadoRequest $req, AvocadoResponse $res) {
+    $errors = $req->query;
+    require "views/login.php";
 });
 
 AvocadoRouter::POST('/api/login', [], function (AvocadoRequest $req, AvocadoResponse $res) {
