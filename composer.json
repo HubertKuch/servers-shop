@@ -1,0 +1,23 @@
+{
+    "name": "hubert/servers",
+    "autoload": {
+        "psr-4": {
+            "Servers\\": "",
+            "Servers\\Models\\": "Models/",
+            "Servers\\Controllers\\": "Controllers/",
+            "Avocado\\ORM\\": "vendor/hubert/avocado/src/AvocadoORM",
+            "Avocado\\Router\\": "vendor/hubert/avocado/src/AvocadoRouter"
+        }
+    },
+    "authors": [
+        {
+            "name": "hubert",
+            "email": "kuchhubert@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "hubert/avocado": "dev-main",
+      "ext-pdo": "*"
+    }
+}
