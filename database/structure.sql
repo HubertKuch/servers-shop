@@ -19,7 +19,7 @@ create table if not exists payments (
 
     user_id         bigint not null,
     foreign key (user_id) references users(id)
-    );
+);
 
 create table if not exists products(
     id              bigint not null auto_increment primary key,
@@ -31,4 +31,21 @@ create table if not exists products(
     payment_id      bigint,
 
     foreign key (payment_id) references payments(id)
-    );
+);
+
+create table if not exists logs (
+    id          bigint not null auto_increment primary key,
+    type        enum('auth', 'payment', 'product') not null,
+    user_id     bigint,
+    product_id  bigint,
+    payment_id  bigint,
+    date        timestamp not null,
+    message     text not null,
+
+    foreign key (user_id) references users(id),
+    foreign key (product_id) references products(id),
+    foreign key (payment_id) references payments(id)
+);
+
+alter table logs add column date timestamp not null;
+alter table logs add column message text not null;

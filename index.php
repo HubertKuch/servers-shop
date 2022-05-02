@@ -16,6 +16,7 @@ use Avocado\Router\AvocadoRequest;
 use Avocado\Router\AvocadoResponse;
 use Avocado\ORM\AvocadoORMSettings;
 use Servers\Controllers\AuthController;
+use Servers\Models\ProductStatus;
 
 $mainDir = explode('/', $_SERVER['SCRIPT_NAME'])[1];
 putenv("MAIN_DIR=$mainDir");
@@ -32,6 +33,12 @@ AvocadoRouter::GET("/", [], function() {
 
 AvocadoRouter::GET('/admin', [], function () {
     AuthController::authenticationMiddleware(["error" => "Unauthorized"]);
+
+    $payments = Repositories::$paymentsRepository->findMany();
+    $soldServers = Repositories::$productsRepository->findMany([
+        "status" => ProductStatus::SOLD
+    ]);
+
     require "./views/admin.php";
 });
 
