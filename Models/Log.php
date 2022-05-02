@@ -11,7 +11,7 @@ class Log {
     #[Id]
     private int $id;
     #[Field]
-    private int $type;
+    private LogType $type;
     #[Field]
     private int $userId;
     #[Field]
@@ -24,14 +24,14 @@ class Log {
     private string $message;
 
     /**
-     * @param int $type
+     * @param LogType $type
      * @param int $userId
      * @param int $productId
      * @param int $paymentId
      * @param int $timestamp
      * @param string $message
      */
-    public function __construct(int $type, int $userId, int $productId, int $paymentId, int $timestamp, string $message) {
+    public function __construct(LogType $type, int $userId, int $productId, int $paymentId, int $timestamp, string $message) {
         $this->type = $type;
         $this->userId = $userId;
         $this->productId = $productId;
@@ -90,9 +90,9 @@ class Log {
     }
 
     /**
-     * @param int $type
+     * @param LogType $type
      */
-    public function setType(int $type): void {
+    public function setType(LogType $type): void {
         $this->type = $type;
     }
 
