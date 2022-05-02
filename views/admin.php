@@ -1,4 +1,4 @@
-<html lang="pl">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -7,6 +7,6 @@
     <title>Document</title>
 </head>
 <body>
-    main
+    admin
 </body>
 </html>
