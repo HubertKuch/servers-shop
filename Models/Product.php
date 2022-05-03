@@ -5,6 +5,7 @@ namespace Servers\Models;
 use Avocado\ORM\Field;
 use Avocado\ORM\Id;
 use Avocado\ORM\Table;
+use Avocado\ORM\IgnoreFieldType;
 
 #[Table('products')]
 class Product {
@@ -13,7 +14,8 @@ class Product {
     #[Field]
     private string $title;
     #[Field]
-    private ProductStatus $status;
+    #[IgnoreFieldType]
+    private string $status;
     #[Field]
     private int $createDate;
     #[Field]
@@ -25,13 +27,13 @@ class Product {
 
     /**
      * @param string $title
-     * @param ProductStatus $status
+     * @param string $status
      * @param int $createDate
      * @param int $expireDate
      * @param string $package
      * @param int $payment_id
      */
-    public function __construct(string $title, ProductStatus $status, int $createDate, int $expireDate, string $package, int $payment_id) {
+    public function __construct(string $title, string $status, int $createDate, int $expireDate, string $package, int $payment_id) {
         $this->title = $title;
         $this->status = $status;
         $this->createDate = $createDate;
@@ -55,9 +57,9 @@ class Product {
     }
 
     /**
-     * @return ProductStatus
+     * @return string
      */
-    public function getStatus(): ProductStatus {
+    public function getStatus(): string {
         return $this->status;
     }
 
@@ -97,9 +99,9 @@ class Product {
     }
 
     /**
-     * @param ProductStatus $status
+     * @param string $status
      */
-    public function setStatus(ProductStatus $status): void {
+    public function setStatus(string $status): void {
         $this->status = $status;
     }
 

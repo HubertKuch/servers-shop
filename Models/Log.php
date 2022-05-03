@@ -4,6 +4,7 @@ namespace Servers\Models;
 
 use Avocado\ORM\Field;
 use Avocado\ORM\Id;
+use Avocado\ORM\IgnoreFieldType;
 use Avocado\ORM\Table;
 
 #[Table('logs')]
@@ -11,7 +12,8 @@ class Log {
     #[Id]
     private int $id;
     #[Field]
-    private LogType $type;
+    #[IgnoreFieldType]
+    private string $type;
     #[Field]
     private int $userId;
     #[Field]
@@ -24,14 +26,14 @@ class Log {
     private string $message;
 
     /**
-     * @param LogType $type
+     * @param string $type
      * @param int $userId
      * @param int $productId
      * @param int $paymentId
      * @param int $timestamp
      * @param string $message
      */
-    public function __construct(LogType $type, int $userId, int $productId, int $paymentId, int $timestamp, string $message) {
+    public function __construct(string $type, int $userId, int $productId, int $paymentId, int $timestamp, string $message) {
         $this->type = $type;
         $this->userId = $userId;
         $this->productId = $productId;
@@ -90,9 +92,9 @@ class Log {
     }
 
     /**
-     * @param LogType $type
+     * @param string $type
      */
-    public function setType(LogType $type): void {
+    public function setType(string $type): void {
         $this->type = $type;
     }
 

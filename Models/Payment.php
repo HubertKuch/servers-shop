@@ -18,7 +18,7 @@ class Payment {
     #[Field]
     private string $ipAddress;
     #[Field]
-    private PaymentStatus $status;
+    private string $status;
     #[Field]
     private float $sum;
     #[Field]
@@ -30,12 +30,12 @@ class Payment {
      * @param int $paymentDate
      * @param int $createDate
      * @param string $ipAddress
-     * @param \Servers\Models\PaymentStatus $status
+     * @param string $status
      * @param float $sum
      * @param string $method
      * @param int $user_id
      */
-    public function __construct(int $paymentDate, int $createDate, string $ipAddress, \Servers\Models\PaymentStatus $status, float $sum, string $method, int $user_id) {
+    public function __construct(int $paymentDate, int $createDate, string $ipAddress, string $status, float $sum, string $method, int $user_id) {
         $this->paymentDate = $paymentDate;
         $this->createDate = $createDate;
         $this->ipAddress = $ipAddress;
@@ -95,16 +95,16 @@ class Payment {
     }
 
     /**
-     * @return \Servers\Models\PaymentStatus
+     * @return string
      */
-    public function getStatus(): \Servers\Models\PaymentStatus {
+    public function getStatus(): string {
         return $this->status;
     }
 
     /**
-     * @param \Servers\Models\PaymentStatus $status
+     * @param string
      */
-    public function setStatus(\Servers\Models\PaymentStatus $status): void {
+    public function setStatus(string $status): void {
         $this->status = $status;
     }
 
