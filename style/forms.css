@@ -46,3 +46,13 @@
     position: absolute;
     bottom: 0;
 }
+
+.form__error-container {
+    width: 100%;
+    color: red;
+    font-size: .8rem;
+}
+
+.error-container__error {
+
+}
