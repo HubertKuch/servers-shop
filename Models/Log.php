@@ -15,11 +15,11 @@ class Log {
     #[IgnoreFieldType]
     private string $type;
     #[Field]
-    private int $userId;
+    private ?int $userId;
     #[Field]
-    private int $productId;
+    private ?int $productId;
     #[Field]
-    private int $paymentId;
+    private ?int $paymentId;
     #[Field]
     private int $timestamp;
     #[Field]
