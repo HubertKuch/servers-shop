@@ -21,4 +21,8 @@ class AuthController {
             redirectToLoginViewWithMessage($messages);
         }
     }
+
+    public static function redirectToLoginWithMessage(array $error) {
+        redirectToLoginViewWithMessage($error);
+    }
 }
