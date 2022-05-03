@@ -13,51 +13,55 @@ class User {
     #[Field]
     private string $username;
     #[Field]
+    private string $email;
+    #[Field]
     private string $password;
+    #[Field]
+    private float $wallet = 0;
 
-    /**
-     * @param string $username
-     * @param string $password
-     */
-    public function __construct(string $username, string $password) {
+    public function __construct(string $username, string $email, string $password) {
         $this->username = $username;
+        $this->email = $email;
         $this->password = $password;
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int {
         return $this->id;
     }
 
+    public function setId(int $id): void {
+        $this->id = $id;
+    }
 
-    /**
-     * @return string
-     */
     public function getUsername(): string {
         return $this->username;
     }
 
-    /**
-     * @param string $username
-     */
     public function setUsername(string $username): void {
         $this->username = $username;
     }
 
-    /**
-     * @return string
-     */
+    public function getEmail(): string {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): void {
+        $this->email = $email;
+    }
+
     public function getPassword(): string {
         return $this->password;
     }
 
-    /**
-     * @param string $password
-     */
     public function setPassword(string $password): void {
         $this->password = $password;
     }
 
+    public function getWallet(): float {
+        return $this->wallet;
+    }
+
+    public function setWallet(float $wallet): void {
+        $this->wallet = $wallet;
+    }
 }

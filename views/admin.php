@@ -7,6 +7,6 @@
     <title>Document</title>
 </head>
 <body>
-    admin
+    <?php var_dump($logs); ?>
 </body>
 </html>

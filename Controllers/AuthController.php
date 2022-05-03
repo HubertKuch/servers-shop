@@ -2,11 +2,11 @@
 
 namespace Servers\Controllers;
 
-function redirectToLoginViewWithMessage(array $messages): void {
+function redirect(string $point, array $messages): void {
     $mainDir = getenv('MAIN_DIR');
     $messages  = http_build_query($messages);
 
-    header("Location: /$mainDir/login?$messages");
+    header("Location: /$mainDir/$point?$messages");
 }
 
 class AuthController {
@@ -18,11 +18,15 @@ class AuthController {
         $isLoggedIn = self::isLoggedIn();
 
         if(!$isLoggedIn) {
-            redirectToLoginViewWithMessage($messages);
+            redirect('login', $messages);
         }
     }
 
     public static function redirectToLoginWithMessage(array $error) {
-        redirectToLoginViewWithMessage($error);
+        redirect('login', $error);
+    }
+
+    public static function redirect(string $to, array $messages) {
+        redirect($to, $messages);
     }
 }

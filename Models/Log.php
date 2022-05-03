@@ -12,7 +12,6 @@ class Log {
     #[Id]
     private int $id;
     #[Field]
-    #[IgnoreFieldType]
     private string $type;
     #[Field]
     private ?int $userId;
@@ -21,25 +20,24 @@ class Log {
     #[Field]
     private ?int $paymentId;
     #[Field]
-    private int $timestamp;
+    private string $timestamp;
     #[Field]
     private string $message;
 
     /**
      * @param string $type
-     * @param int $userId
-     * @param int $productId
-     * @param int $paymentId
-     * @param int $timestamp
+     * @param ?int $userId
+     * @param ?int $productId
+     * @param ?int $paymentId
      * @param string $message
      */
-    public function __construct(string $type, int $userId, int $productId, int $paymentId, int $timestamp, string $message) {
+    public function __construct(string $type, ?int $userId, ?int $productId, ?int $paymentId, string $message) {
         $this->type = $type;
         $this->userId = $userId;
         $this->productId = $productId;
         $this->paymentId = $paymentId;
-        $this->timestamp = $timestamp;
         $this->message = $message;
+        $this->timestamp = date( 'Y-m-d H:i:s', time());
     }
 
     /**
@@ -78,9 +76,9 @@ class Log {
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getTimestamp(): int {
+    public function getTimestamp(): string {
         return $this->timestamp;
     }
 
@@ -123,7 +121,7 @@ class Log {
      * @param int $timestamp
      */
     public function setTimestamp(int $timestamp): void {
-        $this->timestamp = $timestamp;
+        $this->timestamp = date( 'Y-m-d H:i:s', time());
     }
 
     /**
