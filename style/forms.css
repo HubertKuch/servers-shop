@@ -1,0 +1,48 @@
+.login__form {
+    background: white;
+    height: 60%;
+    width: 300px;
+    min-width: 250px;
+    max-width: 350px;
+    padding: 10px;
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -50%);
+    border-radius: 5px;
+}
+
+.login__form .form__input, .login__form .form__button {
+    display: block;
+    margin: 20px auto;
+}
+
+.form__input {
+    position: relative;
+    width: 90%;
+    border-radius: 2px;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid black;
+    font-size: .8rem;
+}
+
+.form__button {
+    border: 1px solid black;
+    border-radius: 10px;
+    background: rgb(0,212,255);
+    padding: 5px;
+    width: 30%;
+}
+
+.form__input--password {
+    font-size: .5rem;
+}
+
+.login__form .form__bottom-section {
+    font-size: .6rem;
+    width: 100%;
+    height: 10%;
+    position: absolute;
+    bottom: 0;
+}
