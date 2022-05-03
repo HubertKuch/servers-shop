@@ -27,7 +27,7 @@ class ViewsController {
         require "./views/admin.php";
     }
 
-    public static final function login(AvocadoRequest $req, AvocadoResponse $res) {
+    public static final function login(AvocadoRequest $req, AvocadoResponse $res): void {
         $errors = $req->query;
         require "views/login.php";
     }
