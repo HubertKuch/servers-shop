@@ -30,6 +30,8 @@ class UserController {
 
         if (!$username || !$email || !$password) AuthController::redirect('register', ["message" => "Wszystkie dane muszą być wypełnione"]);
 
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) AuthController::redirect('register', ["message" => "Nieprawidłowy email"]);
+
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
         $isEmailIsBusy  = Repositories::$userRepository->findOne(["email" => $email]);
 
@@ -79,6 +81,7 @@ class UserController {
         $email = $req->body['new-email'] ?? null;
 
         if (!$email) AuthController::redirect('panel', ["message" => "Email musi byc podany."]);
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) AuthController::redirect('panel', ["message" => "Nieprawidłowy email"]);
 
         Repositories::$userRepository->updateOneById(["email" => $email], $_SESSION['id']);
         AuthController::redirect('panel', []);

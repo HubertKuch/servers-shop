@@ -18,11 +18,14 @@ class User {
     private string $passwordHash;
     #[Field]
     private float $wallet = 0;
+    #[Field]
+    private string $role;
 
     public function __construct(string $username, string $email, string $password) {
         $this->username = $username;
         $this->email = $email;
         $this->passwordHash = $password;
+        $this->role = UserRole::USER->value;
     }
 
     public function getId(): int { return $this->id; }
