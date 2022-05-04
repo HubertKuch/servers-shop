@@ -113,17 +113,22 @@
         </section>
 
         <section class="settings admin__panel--section section--invisible">
+
+
             <p style="font-size: 1.5rem">Ustawienia konta</p>
-            <hr color="white">
+
+            <p class="settings__errors" style="color: red;">
+                <?php
+                foreach ($_GET as $error => $message) {
+                    echo $message;
+                }
+                ?>
+            </p>
+
+            <hr style="color: white">
             <p>Hasło</p>
             <form action="index.php/api/change-password" method="POST">
-                <p class="settings__errors" style="color: red;">
-                    <?php
-                        foreach ($_GET as $error => $message) {
-                            echo $message;
-                        }
-                    ?>
-                </p>
+
                 <label>
                     <span>Stare haslo</span>
                     <input type="password" name="old-password">
@@ -132,6 +137,18 @@
                 <label>
                     <span>Nowe haslo</span>
                     <input type="password" name="new-password">
+                </label>
+
+                <button type="submit">Zapisz</button>
+            </form>
+
+            <hr style="color: white">
+
+            <p>Nazwa uzytkownika</p>
+            <form action="index.php/api/change-username" method="POST">
+                <label>
+                    <span>Nowa nazwa</span>
+                    <input type="text" name="new-username">
                 </label>
 
                 <button type="submit">Zapisz</button>

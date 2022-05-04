@@ -33,5 +33,6 @@ AvocadoRouter::GET('/api/logout', [], __CONTROLLER_NAMESPACE."\UserController::l
 AvocadoRouter::POST('/api/login', [], __CONTROLLER_NAMESPACE."\UserController::login");
 AvocadoRouter::POST('/api/register', [], __CONTROLLER_NAMESPACE."\UserController::register");
 AvocadoRouter::POST('/api/change-password', [], __CONTROLLER_NAMESPACE."\UserController::changePassword");
+AvocadoRouter::POST('/api/change-username', [], __CONTROLLER_NAMESPACE."\UserController::changeUsername");
 
 AvocadoRouter::listen();

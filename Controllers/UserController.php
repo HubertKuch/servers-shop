@@ -61,6 +61,8 @@ class UserController {
     }
 
     public static final function changePassword(AvocadoRequest $req): void {
+        AuthController::authenticationMiddleware([]);
+
         $oldPassword = $req->body['old-password'] ?? null;
         $newPassword = $req->body['new-password'] ?? null;
 
@@ -76,6 +78,16 @@ class UserController {
         if ($isOldPasswordEqualsNew) AuthController::redirect('panel', ["message" => "Stare hasło jest identyczne jak stare."]);
 
         Repositories::$userRepository->updateOneById(["passwordHash" => password_hash($newPassword, PASSWORD_DEFAULT)], $userId);
+        AuthController::redirect('panel', []);
+    }
+
+    public static final function changeUsername(AvocadoRequest $req): void {
+        AuthController::authenticationMiddleware([]);
+        $username = $req->body['new-username'] ?? null;
+
+        if (!$username) AuthController::redirect('panel', ["message" => "Nazwa uzytkownika musi byc podana"]);
+
+        Repositories::$userRepository->updateOneById(["username" => $username], $_SESSION['id']);
         AuthController::redirect('panel', []);
     }
 
