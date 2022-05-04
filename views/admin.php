@@ -11,6 +11,7 @@
 <body>
     <nav class="admin__navigation">
         <ul class="navigation__list">
+            <li data-section-class="users" class="admin__panel--section-option">Uzytkownicy</li>
             <li data-section-class="payments" class="admin__panel--section-option">Platności</li>
             <li data-section-class="sold-servers" class="admin__panel--section-option">Serwery</li>
             <li data-section-class="" class="admin__panel--section-option">Zasilacz</li>
@@ -18,23 +19,78 @@
         </ul>
     </nav>
     <main class="admin__main">
+        <section class="admin__panel--section users section--visible">
+                <table class="table">
+                    <tr class="table__row">
+                        <th>ID</th>
+                        <th>NAZWA</th>
+                        <th>EMAIL</th>
+                        <th>WALLET</th>
+                    </tr>
+                    <?php foreach($users as $user): ?>
+                        <tr class="table__row">
+                            <td class="table__col"><?= $user->id ?></td>
+                            <td class="table__col"><?= $user->username ?></td>
+                            <td class="table__col"><?= $user->email ?></td>
+                            <td class="table__col"><?= $user->wallet ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
+        </section>
+
         <section class="admin__panel--section payments section--invisible">
-            <?php
-                foreach($payments as $payment) {
-                    var_dump($payment);
-                }
-            ?>
+            <table class="table">
+                <tr class="table__row">
+                    <th>ID</th>
+                    <th>DATA PŁATNOŚCI</th>
+                    <th>DATA UTWORZENIA</th>
+                    <th>IP</th>
+                    <th>STATUS</th>
+                    <th>KWOTA</th>
+                    <th>METODA</th>
+                    <th>ID UŻYTKOWNIKA</th>
+                </tr>
+                <?php foreach($payments as $payment): ?>
+                    <tr class="table__row">
+                        <td class="table__col"><?= $payment->id ?></td>
+                        <td class="table__col"><?= $payment->paymentDate ?></td>
+                        <td class="table__col"><?= $payment->createDate ?></td>
+                        <td class="table__col"><?= $payment->ipAdress ?></td>
+                        <td class="table__col"><?= $payment->sum ?></td>
+                        <td class="table__col"><?= $payment->method ?></td>
+                        <td class="table__col"><?= $payment->user_id ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
         </section>
 
         <section class="admin__panel--section sold-servers section--invisible">
-            <?php
-                foreach($soldServers as $server) {
-                    var_dump($server);
-                }
-            ?>
+            <table class="table">
+                <tr class="table__row">
+                    <th>ID</th>
+                    <th>TYTUŁ</th>
+                    <th>STATUS</th>
+                    <th>DATA UTWORZENIA</th>
+                    <th>DATA WYGAŚNIĘCIA</th>
+                    <th>PACZKA</th>
+                    <th>ID PŁATNOŚCI</th>
+                </tr>
+                <?php foreach($soldServers as $server): ?>
+                    <tr class="table__row">
+                        <td class="table__col"><?= $server->id ?></td>
+                        <td class="table__col"><?= $server->title ?></td>
+                        <td class="table__col"><?= $server->status ?></td>
+                        <td class="table__col"><?= $server->createDate ?></td>
+                        <td class="table__col"><?= $server->expireDate ?></td>
+                        <td class="table__col"><?= $server->package ?></td>
+                        <td class="table__col"><?= $server->payment_id ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
         </section>
 
         <section class="admin__panel--section logs section--invisible">
+
             <table class="table">
                 <tr class="table__row">
                     <th>ID</th>
