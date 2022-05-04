@@ -44,7 +44,7 @@ class ViewsController {
     }
 
     public static final function admin(): void{
-        AuthController::authenticationMiddleware(["error" => "Unauthorized"]);
+        AuthController::authenticationMiddleware();
 
         $payments = Repositories::$paymentsRepository->findMany();
         $soldServers = Repositories::$productsRepository->findMany();

@@ -2,8 +2,6 @@
 
 namespace Servers\Utils;
 
-use phpDocumentor\Reflection\Utils;
-
 class LogsTemplates {
     public static function userLogin(int $id, string $username): string {
         return "User with $id and $username was logged in.";

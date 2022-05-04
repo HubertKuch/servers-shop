@@ -25,43 +25,23 @@ class User {
         $this->passwordHash = $password;
     }
 
-    public function getId(): int {
-        return $this->id;
-    }
+    public function getId(): int { return $this->id; }
 
-    public function setId(int $id): void {
-        $this->id = $id;
-    }
+    public function setId(int $id): void { $this->id = $id; }
 
-    public function getUsername(): string {
-        return $this->username;
-    }
+    public function getUsername(): string { return $this->username; }
 
-    public function setUsername(string $username): void {
-        $this->username = $username;
-    }
+    public function setUsername(string $username): void { $this->username = $username; }
 
-    public function getEmail(): string {
-        return $this->email;
-    }
+    public function getEmail(): string { return $this->email; }
 
-    public function setEmail(string $email): void {
-        $this->email = $email;
-    }
+    public function setEmail(string $email): void { $this->email = $email; }
 
-    public function getPasswordHash(): string {
-        return $this->passwordHash;
-    }
+    public function getPasswordHash(): string { return $this->passwordHash; }
 
-    public function setPasswordHash(string $passwordHash): void {
-        $this->passwordHash = $passwordHash;
-    }
+    public function setPasswordHash(string $passwordHash): void { $this->passwordHash = $passwordHash; }
 
-    public function getWallet(): float {
-        return $this->wallet;
-    }
+    public function getWallet(): float { return $this->wallet; }
 
-    public function setWallet(float $wallet): void {
-        $this->wallet = $wallet;
-    }
+    public function setWallet(float $wallet): void { $this->wallet = $wallet; }
 }

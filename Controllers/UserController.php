@@ -8,30 +8,19 @@ use Servers\Repositories;
 
 class UserController {
     public static final function login(AvocadoRequest $req): void {
-        if (!isset($req->body['username']) || !isset($req->body['password'])) {
-            AuthController::redirectToLoginWithMessage(["message" => "Nazwa użytkownika lub email i hasło muszą być prowadzone."]);
-            return;
-        }
+        if (!isset($req->body['username']) || !isset($req->body['password'])) AuthController::redirect('login', ["message" => "Nazwa użytkownika lub email i hasło muszą być prowadzone."]);
 
-        $user = Repositories::$userRepository->findOne(array(
-            "username" => $req->body['username']
-        ));
+        $user = Repositories::$userRepository->findOne(["username" => $req->body['username']]);
 
-        if (!$user){
-            AuthController::redirectToLoginWithMessage(['test' => 2]);
-            return;
-        }
+        if (!$user) AuthController::redirect('login', ["message" => "Nieprawidlowe dane"]);
 
         $isCorrectPassword = password_verify($req->body['password'], $user->passwordHash);
 
-        if(!$isCorrectPassword) {
-            AuthController::redirectToLoginWithMessage(['message' => "Nieprawidlowe dane"]);
-            return;
-        }
+        if(!$isCorrectPassword) AuthController::redirect('login', ["message" => "Nieprawidlowe dane"]);
 
         $_SESSION['id'] = $user->id;
         LogsController::saveUserLoginLog($user->id, $user->username);
-        AuthController::redirect('', []);
+        AuthController::redirect('');
     }
 
     public static final function register(AvocadoRequest $req): void {
@@ -39,25 +28,19 @@ class UserController {
         $email = $req->body['email'] ?? null;
         $password = $req->body['password'] ?? null;
 
-        if (!$username || !$email || !$password) {
-            AuthController::redirect('register', ["message" => "Wszystkie dane muszą być wypełnione"]);
-            return;
-        }
+        if (!$username || !$email || !$password) AuthController::redirect('register', ["message" => "Wszystkie dane muszą być wypełnione"]);
 
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
         $isEmailIsBusy  = Repositories::$userRepository->findOne(["email" => $email]);
 
-        if ($isEmailIsBusy) {
-            AuthController::redirect('register', ["message" => "Email jest zajety"]);
-            return;
-        }
+        if ($isEmailIsBusy) AuthController::redirect('register', ["message" => "Email jest zajety"]);
 
         $user = new User($username, $email, $passwordHash);
 
         Repositories::$userRepository->save($user);
         $userId = Repositories::$userRepository->findOne(["email" => $email])->id;
         LogsController::saveUserRegisterLog($userId);
-        AuthController::redirect('login', []);
+        AuthController::redirect('login');
     }
 
     public static final function changePassword(AvocadoRequest $req): void {
@@ -78,21 +61,21 @@ class UserController {
         if ($isOldPasswordEqualsNew) AuthController::redirect('panel', ["message" => "Stare hasło jest identyczne jak stare."]);
 
         Repositories::$userRepository->updateOneById(["passwordHash" => password_hash($newPassword, PASSWORD_DEFAULT)], $userId);
-        AuthController::redirect('panel', []);
+        AuthController::redirect('panel');
     }
 
     public static final function changeUsername(AvocadoRequest $req): void {
-        AuthController::authenticationMiddleware([]);
+        AuthController::authenticationMiddleware();
         $username = $req->body['new-username'] ?? null;
 
         if (!$username) AuthController::redirect('panel', ["message" => "Nazwa uzytkownika musi byc podana"]);
 
         Repositories::$userRepository->updateOneById(["username" => $username], $_SESSION['id']);
-        AuthController::redirect('panel', []);
+        AuthController::redirect('panel');
     }
 
     public static final function changeEmail(AvocadoRequest $req): void {
-        AuthController::authenticationMiddleware([]);
+        AuthController::authenticationMiddleware();
         $email = $req->body['new-email'] ?? null;
 
         if (!$email) AuthController::redirect('panel', ["message" => "Email musi byc podany."]);
@@ -103,6 +86,6 @@ class UserController {
 
     public static final function logout() {
         unset($_SESSION['id']);
-        AuthController::redirectToLoginWithMessage([]);
+        AuthController::redirect('login');
     }
 }
