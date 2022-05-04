@@ -153,6 +153,18 @@
 
                 <button type="submit">Zapisz</button>
             </form>
+
+            <hr style="color: white">
+
+            <p>Email</p>
+            <form action="index.php/api/change-email" method="POST">
+                <label>
+                    <span>Nowy email</span>
+                    <input type="text" name="new-email">
+                </label>
+
+                <button type="submit">Zapisz</button>
+            </form>
         </section>
     </main>
 

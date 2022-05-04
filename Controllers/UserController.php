@@ -91,6 +91,16 @@ class UserController {
         AuthController::redirect('panel', []);
     }
 
+    public static final function changeEmail(AvocadoRequest $req): void {
+        AuthController::authenticationMiddleware([]);
+        $email = $req->body['new-email'] ?? null;
+
+        if (!$email) AuthController::redirect('panel', ["message" => "Email musi byc podany."]);
+
+        Repositories::$userRepository->updateOneById(["email" => $email], $_SESSION['id']);
+        AuthController::redirect('panel', []);
+    }
+
     public static final function logout() {
         unset($_SESSION['id']);
         AuthController::redirectToLoginWithMessage([]);
