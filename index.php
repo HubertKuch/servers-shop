@@ -29,8 +29,9 @@ AvocadoRouter::GET('/login', [], __CONTROLLER_NAMESPACE."\ViewsController::login
 AvocadoRouter::GET('/register', [], __CONTROLLER_NAMESPACE."\ViewsController::register");
 AvocadoRouter::GET('/panel', [], __CONTROLLER_NAMESPACE."\ViewsController::userPanel");
 
+AvocadoRouter::GET('/api/logout', [], __CONTROLLER_NAMESPACE."\UserController::logout");
 AvocadoRouter::POST('/api/login', [], __CONTROLLER_NAMESPACE."\UserController::login");
 AvocadoRouter::POST('/api/register', [], __CONTROLLER_NAMESPACE."\UserController::register");
-AvocadoRouter::GET('/api/logout', [], __CONTROLLER_NAMESPACE."\UserController::logout");
+AvocadoRouter::POST('/api/change-password', [], __CONTROLLER_NAMESPACE."\UserController::changePassword");
 
 AvocadoRouter::listen();

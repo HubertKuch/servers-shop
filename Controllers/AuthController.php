@@ -28,5 +28,6 @@ class AuthController {
 
     public static function redirect(string $to, array $messages) {
         redirect($to, $messages);
+        die();
     }
 }

@@ -60,6 +60,25 @@ class UserController {
         AuthController::redirect('login', []);
     }
 
+    public static final function changePassword(AvocadoRequest $req): void {
+        $oldPassword = $req->body['old-password'] ?? null;
+        $newPassword = $req->body['new-password'] ?? null;
+
+        if (!$oldPassword || !$newPassword) AuthController::redirect('panel', ["message" => "Stare i nowe hasło muszą byc podane."]);
+
+        $userId = $_SESSION['id'];
+        $user = Repositories::$userRepository->findOneById($userId);
+        $isOldPasswordIsCorrect = password_verify($oldPassword, $user->passwordHash);
+        $isOldPasswordEqualsNew = password_verify(password_hash($newPassword, PASSWORD_DEFAULT), $user->passwordHash);
+
+        if (!$isOldPasswordIsCorrect) AuthController::redirect('panel', ["message" => "Stare hasło jest nieprawidłowe."]);
+
+        if ($isOldPasswordEqualsNew) AuthController::redirect('panel', ["message" => "Stare hasło jest identyczne jak stare."]);
+
+        Repositories::$userRepository->updateOneById(["passwordHash" => password_hash($newPassword, PASSWORD_DEFAULT)], $userId);
+        AuthController::redirect('panel', []);
+    }
+
     public static final function logout() {
         unset($_SESSION['id']);
         AuthController::redirectToLoginWithMessage([]);

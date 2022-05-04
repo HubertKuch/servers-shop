@@ -21,6 +21,7 @@
             <li data-section-class="user-servers" class="admin__panel--section-option">Wystawione serwery</li>
             <li data-section-class="bought-servers" class="admin__panel--section-option">Kupione serwery</li>
             <li data-section-class="" class="admin__panel--section-option">Zasilacz</li>
+            <li data-section-class="settings" class="admin__panel--section-option">Ustawienia konta</li>
         </ul>
 
         <div>
@@ -111,6 +112,31 @@
             ?>
         </section>
 
+        <section class="settings admin__panel--section section--invisible">
+            <p style="font-size: 1.5rem">Ustawienia konta</p>
+            <hr color="white">
+            <p>Hasło</p>
+            <form action="index.php/api/change-password" method="POST">
+                <p class="settings__errors" style="color: red;">
+                    <?php
+                        foreach ($_GET as $error => $message) {
+                            echo $message;
+                        }
+                    ?>
+                </p>
+                <label>
+                    <span>Stare haslo</span>
+                    <input type="password" name="old-password">
+                </label>
+
+                <label>
+                    <span>Nowe haslo</span>
+                    <input type="password" name="new-password">
+                </label>
+
+                <button type="submit">Zapisz</button>
+            </form>
+        </section>
     </main>
 
     <script>
@@ -118,6 +144,17 @@
 
         const options = document.querySelectorAll('.admin__panel--section-option');
         const sections = document.querySelectorAll('.admin__panel--section');
+        const beforeActiveSectionClass = localStorage.getItem("user-panel-actual-visible") ?? null;
+
+        sections.forEach(section => {
+            if (!section.classList.contains(beforeActiveSectionClass)) {
+                section.classList.remove('section--visible');
+                section.classList.add('section--invisible');
+            } else {
+                section.classList.add('section--visible');
+                section.classList.remove('section--invisible');
+            }
+        })
 
         options.forEach(option => option.addEventListener('click', ({ target }) => {
             const sectionClass = target.getAttribute('data-section-class');
@@ -129,6 +166,7 @@
                 } else {
                     section.classList.add('section--visible');
                     section.classList.remove('section--invisible');
+                    localStorage.setItem("user-panel-actual-visible", sectionClass);
                 }
             })
         }));

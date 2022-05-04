@@ -15,14 +15,14 @@ class User {
     #[Field]
     private string $email;
     #[Field]
-    private string $password;
+    private string $passwordHash;
     #[Field]
     private float $wallet = 0;
 
     public function __construct(string $username, string $email, string $password) {
         $this->username = $username;
         $this->email = $email;
-        $this->password = $password;
+        $this->passwordHash = $password;
     }
 
     public function getId(): int {
@@ -49,12 +49,12 @@ class User {
         $this->email = $email;
     }
 
-    public function getPassword(): string {
-        return $this->password;
+    public function getPasswordHash(): string {
+        return $this->passwordHash;
     }
 
-    public function setPassword(string $password): void {
-        $this->password = $password;
+    public function setPasswordHash(string $passwordHash): void {
+        $this->passwordHash = $passwordHash;
     }
 
     public function getWallet(): float {
