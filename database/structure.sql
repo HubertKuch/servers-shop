@@ -46,6 +46,3 @@ create table if not exists logs (
     foreign key (product_id) references products(id),
     foreign key (payment_id) references payments(id)
 );
-
-alter table logs add column date timestamp not null;
-alter table logs add column message text not null;

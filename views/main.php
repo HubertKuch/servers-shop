@@ -37,11 +37,6 @@
         <div class="last-added-servers">
 
         </div>
-
-        <div class="available-games">
-            <p>Dostępne gry</p>
-
-        </div>
     </main>
 </body>
 </html>

@@ -110,20 +110,6 @@ body, head {
     margin: 0 50px 0 0;
 }
 
-.available-games {
-    width: 70%;
-}
-
-.available-game {
-    background: #AF88E1;
-    width: fit-content;
-    padding: 10px 30px;
-    border-radius: 20px;
-    float: left;
-    margin: 10px;
-    color: #242031;
-}
-
 a {
     text-decoration: none;
     color: inherit;

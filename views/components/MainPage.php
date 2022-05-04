@@ -11,8 +11,4 @@ class MainPage {
             </div>
         ', $imageURL, $id);
     }
-
-    public static final function availableGame(int $id, string $tile) {
-        printf('<div class="available-game"><a href="%s">%s</a></div>', $id, $tile);
-    }
 }
