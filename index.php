@@ -27,8 +27,10 @@ AvocadoRouter::GET("/", [], __CONTROLLER_NAMESPACE."\ViewsController::main");
 AvocadoRouter::GET('/admin', [], __CONTROLLER_NAMESPACE."\ViewsController::admin");
 AvocadoRouter::GET('/login', [], __CONTROLLER_NAMESPACE."\ViewsController::login");
 AvocadoRouter::GET('/register', [], __CONTROLLER_NAMESPACE."\ViewsController::register");
+AvocadoRouter::GET('/panel', [], __CONTROLLER_NAMESPACE."\ViewsController::userPanel");
 
 AvocadoRouter::POST('/api/login', [], __CONTROLLER_NAMESPACE."\UserController::login");
 AvocadoRouter::POST('/api/register', [], __CONTROLLER_NAMESPACE."\UserController::register");
+AvocadoRouter::GET('/api/logout', [], __CONTROLLER_NAMESPACE."\UserController::logout");
 
 AvocadoRouter::listen();

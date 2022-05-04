@@ -59,4 +59,9 @@ class UserController {
         LogsController::saveUserRegisterLog($userId);
         AuthController::redirect('login', []);
     }
+
+    public static final function logout() {
+        unset($_SESSION['id']);
+        AuthController::redirectToLoginWithMessage([]);
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace Servers\Controllers;
 
+use Avocado\ORM\FindForeign;
 use Avocado\Router\AvocadoRequest;
 use Avocado\Router\AvocadoResponse;
 use Servers\Models\ProductStatus;
@@ -13,16 +14,38 @@ class ViewsController {
         require "./views/main.php";
     }
 
+    public static final function userPanel(AvocadoRequest $req): void {
+        AuthController::authenticationMiddleware(["error" => "Unauthorized"]);
+        $userId = $_SESSION['id'];
+        $findForeignPayments = new FindForeign();
+        $findForeignBoughtServers = new FindForeign();
+
+        $findForeignPayments
+            -> key("user_id")
+            -> reference("users")
+            -> by("id")
+            -> equals($userId);
+
+        $findForeignBoughtServers
+            -> key("user_id")
+            -> reference("users")
+            -> by("id")
+            -> equals($userId);
+
+        $user = Repositories::$userRepository->findOneById($userId);
+        $payments = Repositories::$paymentsRepository->findOneToManyRelation($findForeignPayments);
+        $servers = Repositories::$productsRepository->findOneToManyRelation($findForeignBoughtServers);
+
+        require "views/userPanel.php";
+    }
+
     public static final function admin(): void{
         AuthController::authenticationMiddleware(["error" => "Unauthorized"]);
 
         $payments = Repositories::$paymentsRepository->findMany();
-
-        $soldServers = Repositories::$productsRepository->findMany([
-            "status" => ProductStatus::SOLD->value
-        ]);
-
+        $soldServers = Repositories::$productsRepository->findMany();
         $logs = Repositories::$logsRepository->findMany();
+        $users = Repositories::$userRepository->findMany();
 
         require "./views/admin.php";
     }
