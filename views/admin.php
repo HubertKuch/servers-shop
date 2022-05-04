@@ -16,6 +16,7 @@
             <li data-section-class="sold-servers" class="admin__panel--section-option">Serwery</li>
             <li data-section-class="" class="admin__panel--section-option">Zasilacz</li>
             <li data-section-class="logs" class="admin__panel--section-option">Logi</li>
+            <li><a href="index.php/">Główna</a></li>
         </ul>
     </nav>
     <main class="admin__main">

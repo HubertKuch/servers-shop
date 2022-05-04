@@ -14,4 +14,33 @@ body, head {
     background: linear-gradient(90deg, rgba(74,68,172,1) 0%, rgba(47,47,173,1) 25%, rgba(0,212,255,1) 66%);
 }
 
+.admin__panel--section.servers {
+    height: 100%;
+}
 
+.server__card {
+    display: grid;
+    width: fit-content;
+    border-radius: 5px;
+    height: max-content;
+    grid-template-rows: 80% 20%;
+    grid-template-areas:
+    "image image"
+    "footer footer";
+    text-align: center;
+}
+
+.card__image {
+    grid-area: image;
+}
+
+.card__image img {
+    width: 100%;
+}
+
+.card__footer {
+    grid-area: footer;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+}

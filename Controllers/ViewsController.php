@@ -6,6 +6,7 @@ use Avocado\ORM\FindForeign;
 use Avocado\Router\AvocadoRequest;
 use Avocado\Router\AvocadoResponse;
 use Servers\Models\ProductStatus;
+use Servers\Models\UserRole;
 use Servers\Repositories;
 
 class ViewsController {
@@ -34,7 +35,10 @@ class ViewsController {
 
         $user = Repositories::$userRepository->findOneById($userId);
         $payments = Repositories::$paymentsRepository->findOneToManyRelation($findForeignPayments);
-        $servers = Repositories::$productsRepository->findOneToManyRelation($findForeignBoughtServers);
+        $boughtServers = Repositories::$productsRepository->findOneToManyRelation($findForeignBoughtServers, ["status" => ProductStatus::SOLD->value]);
+        $userServers = Repositories::$productsRepository->findOneToManyRelation($findForeignBoughtServers, ["status" => ProductStatus::IN_MAGAZINE->value]);
+
+        $isAdmin = $user->role === UserRole::ADMIN->value;
 
         require "views/userPanel.php";
     }
