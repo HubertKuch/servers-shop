@@ -27,6 +27,7 @@
             <?php if($isAdmin): ?>
                 <a href="index.php/admin">Admin</a><br>
             <?php endif; ?>
+            <a href="index.php/">Głowna</a><br>
             <a href="index.php/api/logout">Logout</a>
         </div>
     </nav>
@@ -65,7 +66,7 @@
             </table>
         </section>
 
-        <section class="user-servers admin__panel--section section--visible">
+        <section class="user-servers admin__panel--section section--invisible">
 
             <?php
                 if (empty($userServers)) {

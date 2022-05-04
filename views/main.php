@@ -9,6 +9,13 @@
     <link rel="stylesheet" href="style/main.css">
 </head>
 <body>
-    main
+    <nav class="main__nav">
+        <ul class="main__nav__list">
+            <li>Test</li>
+        </ul>
+        <div class="nav__right-side">
+            <span><a href="index.php/panel">Panel</a></span>
+        </div>
+    </nav>
 </body>
 </html>
