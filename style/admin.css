@@ -84,5 +84,5 @@
 }
 
 .table__row:nth-child(odd) {
-
+    background: #e0dbed;
 }
