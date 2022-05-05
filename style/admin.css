@@ -1,31 +1,52 @@
 .admin__navigation {
-    width: 10%;
-    height: 100%;
-    background: white;
-    float: left;
+    padding: 20px;
+    width: fit-content;
+    height: max-content;
+
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    color: white;
+    background: #221B38;
+    border-radius: 0 0 10px 10px;
+
 }
 
 .navigation__list {
     margin: 0;
     padding: 0;
     list-style: none;
-    text-align: center;
+    width: max-content;
 }
 
 .navigation__list li {
     cursor: pointer;
+    float: left;
+    margin: 10px 20px 10px;
 }
 
-.navigation__list li:not(:first-child) {
+.navigation__list li:hover, a:hover {
+    color: #FEC556;
+}
+
+.navigation__bottom-settings {
+    width: 100%;
     display: block;
-    margin: 10px auto;
+    text-align: center;
+}
+
+.navigation__bottom-settings > * {
+    margin: 0 20px 0;
 }
 
 .admin__main {
+    margin: 150px 20px 0;
     width: 80%;
-    height: 90%;
-    float: left;
-    margin: 20px;
+    position: absolute;
+    top: 3vh;
+    left: 50%;
+    transform: translateX(-50%);
     color: white;
 }
 

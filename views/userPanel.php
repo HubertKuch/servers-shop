@@ -24,11 +24,11 @@
             <li data-section-class="settings" class="admin__panel--section-option">Ustawienia konta</li>
         </ul>
 
-        <div>
+        <div class="navigation__bottom-settings">
             <?php if($isAdmin): ?>
-                <a href="index.php/admin">Admin</a><br>
+                <a href="index.php/admin">Admin</a>
             <?php endif; ?>
-            <a href="index.php/">Głowna</a><br>
+            <a href="index.php/">Głowna</a>
             <a href="index.php/api/logout">Logout</a>
         </div>
     </nav>
