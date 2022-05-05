@@ -2,6 +2,9 @@
 
 namespace Servers\Controllers;
 
+use Servers\Models\UserRole;
+use Servers\Repositories;
+
 class AuthController {
     private static function isLoggedIn(): bool {
         return isset($_SESSION['id']);
@@ -12,6 +15,14 @@ class AuthController {
 
         if(!$isLoggedIn) {
             self::redirect('login', $messages);
+        }
+    }
+
+    public static function restrictTo(string ...$roles) {
+        $user = Repositories::$userRepository->findOneById($_SESSION['id'] ?? 0);
+
+        if(!in_array($user->role, $roles)) {
+            AuthController::redirect('');
         }
     }
 

@@ -45,6 +45,7 @@ class ViewsController {
 
     public static final function admin(): void{
         AuthController::authenticationMiddleware();
+        AuthController::restrictTo(UserRole::ADMIN->value);
 
         $payments = Repositories::$paymentsRepository->findMany();
         $soldServers = Repositories::$productsRepository->findMany();
