@@ -56,3 +56,30 @@
 .error-container__error {
 
 }
+
+.panel__input {
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    background: #D8C2F4;
+    color: #221B38;
+    margin: 10px 0 0;
+}
+
+.panel__button {
+    border-radius: 10px;
+    padding: 5px 20px 5px;
+    font-weight: 400;
+    border: none;
+    outline: none;
+    background: #FEC556;
+    transition: all 200ms ease;
+}
+
+.panel__button:hover {
+    opacity: .8;
+}
+
+.settings-form-label {
+    font-size: 1.4rem;
+}
