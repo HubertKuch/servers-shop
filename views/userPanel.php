@@ -115,7 +115,7 @@
         <section class="settings admin__panel--section section--invisible">
 
 
-            <p style="font-size: 1.5rem">Ustawienia konta</p>
+            <p class="settings-form-label">Ustawienia konta</p>
 
             <p class="settings__errors" style="color: red;">
                 <?php
@@ -126,44 +126,46 @@
             </p>
 
             <hr style="color: white">
-            <p>Hasło</p>
+            <p class="settings-form-label">Hasło</p>
             <form action="index.php/api/change-password" method="POST">
-
+                <input type="hidden" name="_method" value="PATCH">
                 <label>
                     <span>Stare haslo</span>
-                    <input type="password" name="old-password">
-                </label>
+                    <input class="panel__input" type="password" name="old-password">
+                </label><br>
 
                 <label>
                     <span>Nowe haslo</span>
-                    <input type="password" name="new-password">
-                </label>
+                    <input class="panel__input" type="password" name="new-password">
+                </label><br>
 
-                <button type="submit">Zapisz</button>
+                <button type="submit" class="panel__button">Zapisz</button>
             </form>
 
             <hr style="color: white">
 
-            <p>Nazwa uzytkownika</p>
+            <p class="settings-form-label">Nazwa uzytkownika</p>
             <form action="index.php/api/change-username" method="POST">
+                <input type="hidden" name="_method" value="PATCH">
                 <label>
                     <span>Nowa nazwa</span>
-                    <input type="text" name="new-username">
-                </label>
+                    <input class="panel__input" type="text" name="new-username">
+                </label><br>
 
-                <button type="submit">Zapisz</button>
+                <button type="submit" class="panel__button">Zapisz</button>
             </form>
 
             <hr style="color: white">
 
-            <p>Email</p>
+            <p class="settings-form-label">Email</p>
             <form action="index.php/api/change-email" method="POST">
+                <input type="hidden" name="_method" value="PATCH">
                 <label>
                     <span>Nowy email</span>
-                    <input type="text" name="new-email">
-                </label>
+                    <input class="panel__input" type="text" name="new-email">
+                </label><br>
 
-                <button type="submit">Zapisz</button>
+                <button type="submit" class="panel__button">Zapisz</button>
             </form>
         </section>
     </main>

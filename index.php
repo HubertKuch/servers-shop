@@ -33,8 +33,8 @@ AvocadoRouter::GET('/panel', [], __VIEWS__CONTROLLER__NAMESPACE__."userPanel");
 AvocadoRouter::GET('/api/logout', [], __USER__CONTROLLER__NAMESPACE__."logout");
 AvocadoRouter::POST('/api/login', [], __USER__CONTROLLER__NAMESPACE__."login");
 AvocadoRouter::POST('/api/register', [], __USER__CONTROLLER__NAMESPACE__."register");
-AvocadoRouter::POST('/api/change-password', [], __USER__CONTROLLER__NAMESPACE__."changePassword");
-AvocadoRouter::POST('/api/change-username', [], __USER__CONTROLLER__NAMESPACE__."changeUsername");
-AvocadoRouter::POST('/api/change-email', [], __USER__CONTROLLER__NAMESPACE__."changeEmail");
+AvocadoRouter::PATCH('/api/change-password', [], __USER__CONTROLLER__NAMESPACE__."changePassword");
+AvocadoRouter::PATCH('/api/change-username', [], __USER__CONTROLLER__NAMESPACE__."changeUsername");
+AvocadoRouter::PATCH('/api/change-email', [], __USER__CONTROLLER__NAMESPACE__."changeEmail");
 
 AvocadoRouter::listen();
