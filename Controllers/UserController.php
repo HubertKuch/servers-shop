@@ -7,6 +7,7 @@ use Servers\Models\User;
 use Servers\Repositories;
 use Servers\Services\ActivationService;
 use Servers\Services\MailService;
+use const http\Client\Curl\AUTH_ANY;
 
 class UserController {
     public static final function login(AvocadoRequest $req): void {
@@ -46,6 +47,7 @@ class UserController {
 
         Repositories::$userRepository->save($user);
         $userId = Repositories::$userRepository->findOne(["email" => $email])->id;
+        $_SESSION['email'] = $user->getEmail();
         LogsController::saveUserRegisterLog($userId);
         AuthController::redirect('account-activation');
     }
@@ -105,6 +107,19 @@ class UserController {
 
         ActivationService::activeAccountByCode($code);
         AuthController::redirect('account-activated');
+    }
+
+    public static final function generateActivationCode(AvocadoRequest $req): void {
+        $email = $req->params['email'] ?? null;
+
+        if(!$email) AuthController::redirect('account-activation', ["message" => "Kod nie może zostać wysłany ponownie. Skontaktuj się z administratorem domeny."]);
+
+        $verificationCode = ActivationService::generateVerificationCode();
+        Repositories::$userRepository->updateOne(["activationCode" => $verificationCode, "activationCodeExpiresIn" => time() + 60 * 15], ["email" => $email]);
+
+        $mailService = new MailService();
+        $mailService->sendVerificationMail($email, $verificationCode);
+        AuthController::redirect('account-activation');
     }
 
     public static final function logout(): void {

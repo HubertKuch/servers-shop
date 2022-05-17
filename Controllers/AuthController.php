@@ -22,7 +22,7 @@ class AuthController {
 
         $isActivated = $user->isActivated;
         if (!$isActivated) {
-            self::redirect('activation');
+            self::redirect('account-activation');
         }
     }
 

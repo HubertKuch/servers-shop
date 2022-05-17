@@ -40,6 +40,7 @@ AvocadoRouter::GET('/account-activated', [], __VIEWS__CONTROLLER__NAMESPACE__."a
 
 // USER PANEL ACTIONS
 AvocadoRouter::GET('/api/logout', [], __USER__CONTROLLER__NAMESPACE__."logout");
+AvocadoRouter::GET('/api/generate-activation-code/:email', [], __USER__CONTROLLER__NAMESPACE__."generateActivationCode");
 AvocadoRouter::POST('/api/login', [], __USER__CONTROLLER__NAMESPACE__."login");
 AvocadoRouter::POST('/api/register', [], __USER__CONTROLLER__NAMESPACE__."register");
 AvocadoRouter::PATCH('/api/change-password', [], __USER__CONTROLLER__NAMESPACE__."changePassword");

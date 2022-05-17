@@ -11,7 +11,9 @@
 <body>
     <main class="account-activation-section">
         <div class="account-activation-section__container">
-            <div class="container__message">Dziękujemy za założenie konta w naszym poratlu, żebyś w pełni mógł z niego korzystać musisz aktywować swoje konto kodem wysłanym na Twojego maila.</div>
+            <div class="container__message">
+                Dziękujemy za założenie konta w naszym poratlu, żebyś w pełni mógł z niego korzystać musisz aktywować swoje konto kodem wysłanym na Twojego maila <?= $_SESSION['email'] ?? '' ?>.
+            </div>
             <div>
                 <?php foreach ($errors as $error): ?>
                     <span class="error"><?= $error ?></span>
@@ -23,7 +25,8 @@
                     Kod aktywacyjny: <br>
                     <input type="text" name="activation-code" class="input--pin-code" maxlength="6"><br><br>
                 </label>
-                <button type="submit" class="panel__button">Aktywuj konto</button>
+                <button type="submit" class="panel__button">Aktywuj konto</button><br><br>
+                <a href="index.php/api/generate-activation-code/<?= $_SESSION['email'] ?? '' ?>" style="font-size: 18px">Wyślij nowy kod aktywacyjny</a>
             </form>
         </div>
     </main>
