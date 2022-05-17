@@ -64,4 +64,13 @@ class ViewsController {
         $errors = $req->query;
         require "views/register.php";
     }
+
+    public static final function accountActivation(AvocadoRequest $req): void {
+        $errors = $_GET;
+        require "views/accountActivation.php";
+    }
+
+    public static final function accountActivated(): void {
+        require "views/accountActivated.php";
+    }
 }
