@@ -114,3 +114,24 @@ a {
     text-decoration: none;
     color: inherit;
 }
+
+.account-activation-section {
+    width: 100%;
+    height: 100%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.account-activation-section__container {
+    position: relative;
+    top: -10%;
+    min-width: 30%;
+    width: 400px;
+    max-width: 100%;
+}
+
+.account-activation-section__container > * {
+    margin: 20px 0 0;
+}

@@ -53,8 +53,8 @@
     font-size: .8rem;
 }
 
-.error-container__error {
-
+.error {
+    color: red;
 }
 
 .panel__input {
@@ -82,4 +82,23 @@
 
 .settings-form-label {
     font-size: 1.4rem;
+}
+
+.container__activation-form {
+    position: sticky;
+}
+
+.input--pin-code {
+    padding-left: 15px;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 24px;
+
+    background: transparent linear-gradient(to left, rgb(243, 237, 237) 70%, rgba(255, 255, 255, 0) 0%) bottom repeat-x;
+    background-size: 50px 2px;
+    background-position-x: 40px;
+    letter-spacing: 35px;
+    width: 200px;
+    min-width: 300px;
 }
