@@ -20,12 +20,20 @@ class User {
     private float $wallet = 0;
     #[Field]
     private string $role;
+    #[Field]
+    private int $isActivated = 0;
+    #[Field]
+    private int $activationCode;
+    #[Field]
+    private int $activationCodeExpiresIn;
 
-    public function __construct(string $username, string $email, string $password) {
+    public function __construct(string $username, string $email, string $password, int $activationCode) {
         $this->username = $username;
         $this->email = $email;
         $this->passwordHash = $password;
         $this->role = UserRole::USER->value;
+        $this->activationCode = $activationCode;
+        $this->activationCodeExpiresIn = time() + 60 * 15;
     }
 
     public function getId(): int { return $this->id; }
