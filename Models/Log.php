@@ -12,13 +12,13 @@ class Log {
     private int $id;
     #[Field]
     private string $type;
-    #[Field]
+    #[Field("user_id")]
     private ?int $userId;
-    #[Field]
+    #[Field("product_id")]
     private ?int $productId;
-    #[Field]
+    #[Field("payment_id")]
     private ?int $paymentId;
-    #[Field]
+    #[Field("date")]
     private string $timestamp;
     #[Field]
     private string $message;
