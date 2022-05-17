@@ -5,6 +5,8 @@ namespace Servers\Controllers;
 use Avocado\Router\AvocadoRequest;
 use Servers\Models\User;
 use Servers\Repositories;
+use Servers\Services\ActivationService;
+use Servers\Services\MailService;
 
 class UserController {
     public static final function login(AvocadoRequest $req): void {
@@ -16,7 +18,7 @@ class UserController {
 
         $isCorrectPassword = password_verify($req->body['password'], $user->passwordHash);
 
-        if(!$isCorrectPassword) AuthController::redirect('login', ["message" => "Nieprawidlowe dane"]);
+        if (!$isCorrectPassword) AuthController::redirect('login', ["message" => "Nieprawidlowe dane"]);
 
         $_SESSION['id'] = $user->id;
         LogsController::saveUserLoginLog($user->id, $user->username);
@@ -37,12 +39,15 @@ class UserController {
 
         if ($isEmailIsBusy) AuthController::redirect('register', ["message" => "Email jest zajety"]);
 
-        $user = new User($username, $email, $passwordHash);
+        $verificationCode = ActivationService::generateVerificationCode();
+        $user = new User($username, $email, $passwordHash, $verificationCode);
+        $mailService = new MailService();
+        $mailService->sendVerificationMail($user->getEmail(), $verificationCode);
 
         Repositories::$userRepository->save($user);
         $userId = Repositories::$userRepository->findOne(["email" => $email])->id;
         LogsController::saveUserRegisterLog($userId);
-        AuthController::redirect('login');
+        AuthController::redirect('account-activation');
     }
 
     public static final function changePassword(AvocadoRequest $req): void {
@@ -86,7 +91,23 @@ class UserController {
         AuthController::redirect('panel', []);
     }
 
-    public static final function logout() {
+    public static final function activateAccount(AvocadoRequest $req): void {
+        $code = $req->body['activation-code'] ?? null;
+
+        if (!$code || strlen($code) == 0) AuthController::redirect('account-activation', ["message" => "Kod aktywacyjny nie jest wprowadzony."]);
+
+        $code = (int)$code;
+        $isCorrect = ActivationService::isCorrectCode($code);
+        $isExpired = ActivationService::isExpired($code);
+
+        if ($isExpired) AuthController::redirect('account-activation', ["message" => "Kod aktywacyjny wygasł. Zaloguj się ponownie by wygenerować nowy."]);
+        if (!$isCorrect) AuthController::redirect('account-activation', ["message" => "Kod aktywacyjny jest niepoprawny"]);
+
+        ActivationService::activeAccountByCode($code);
+        AuthController::redirect('account-activated');
+    }
+
+    public static final function logout(): void {
         unset($_SESSION['id']);
         AuthController::redirect('login');
     }
