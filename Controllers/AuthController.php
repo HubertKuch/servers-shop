@@ -15,6 +15,14 @@ class AuthController {
 
         if(!$isLoggedIn) {
             self::redirect('login', $messages);
+            return;
+        }
+
+        $user = Repositories::$userRepository->findOneById($_SESSION['id']);
+
+        $isActivated = $user->isActivated;
+        if (!$isActivated) {
+            self::redirect('activation');
         }
     }
 
