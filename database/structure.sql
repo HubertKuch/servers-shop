@@ -50,3 +50,13 @@ create table if not exists logs (
     foreign key (product_id)    references products(id),
     foreign key (payment_id)    references payments(id)
 );
+
+create table if not exists package (
+    id              int not null auto_increment primary key,
+    name            text not null,
+    ram_size        int not null,
+    disk_size       int not null,
+    processor_power int not null,
+    cost            float not null,
+    image_src       text not null
+);
