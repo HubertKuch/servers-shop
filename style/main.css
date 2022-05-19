@@ -135,3 +135,42 @@ a {
 .account-activation-section__container > * {
     margin: 20px 0 0;
 }
+
+.create-server-main {
+    width: 100%;
+    height: 100%;
+    padding: 50px 200px 0;
+    margin: 0;
+    color: white;
+}
+
+.create-server-main p {
+    margin: 0;
+}
+
+.eggs {
+    width: 100%;
+    height: fit-content;
+    padding: 50px 20px 0;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: repeat(5, 1fr);
+    justify-content: center;
+    gap: 20px
+}
+
+.egg, .package {
+    height: 200px;
+    width: 200px;
+    background: lightgray;
+    display: grid;
+    justify-items: center;
+    padding: 15px;
+    position: relative;
+    transition: 200ms all linear;
+}
+
+.egg__img {
+    width: 70%;
+}
+
