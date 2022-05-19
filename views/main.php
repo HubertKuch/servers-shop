@@ -13,27 +13,22 @@
     <link rel="stylesheet" href="style/main.css">
 </head>
 <body>
-    <nav class="main__nav">
-        <a href="index.php/panel" class="nav__icon-link">
-            <img class="nav__icon" src="views/icons/home.svg" alt="home">
-        </a>
-
-        <a href="index.php/panel" class="nav__icon-link">
-            <img class="nav__icon" src="views/icons/game.svg" alt="game-panel">
-        </a>
-
-        <a href="index.php/panel" class="nav__icon-link">
-            <img  class="nav__icon" src="views/icons/account.svg" alt="account-panel">
-        </a>
-    </nav>
-
+    <?php MainPage::nav(); ?>
     <header class="header">
-        <p class="header__title">Serwery do <span style="color: #AF88E1;">Twoich</span> ulubionych <span style="color: #AF88E1;">gier</span> pod ręką.</p>
+        <p class="header__title">Serwery <span style="color: #AF88E1;">Minecraft</span> pod <span style="color: #AF88E1;">pod ręką</span>.</p>
         <img src="views/icons/console.svg" alt="gaming console" class="header__gaming-console">
     </header>
 
     <main class="main-page-main">
-        <p>Ostatnio dodane <span class="main-page-main__counter">4</span></p>
+        <p>Twoje servery
+            <?php
+                if (empty($servers)) {
+                    echo "<div>Kup</div>";
+                } else {
+                    echo "<span class=\"main-page-main__counter\">0</span>";
+                }
+            ?>
+        </p>
         <div class="last-added-servers">
 
         </div>

@@ -5,6 +5,7 @@ namespace Servers\Controllers;
 use Avocado\ORM\FindForeign;
 use Avocado\Router\AvocadoRequest;
 use Avocado\Router\AvocadoResponse;
+use HCGCloud\Pterodactyl\Pterodactyl;
 use Servers\Models\ProductStatus;
 use Servers\Models\UserRole;
 use Servers\Repositories;
@@ -12,6 +13,7 @@ use Servers\Repositories;
 class ViewsController {
     public static final function main(): void {
         AuthController::authenticationMiddleware(["error" => "Unauthorized"]);
+        $servers = [];
         require "./views/main.php";
     }
 
@@ -72,5 +74,11 @@ class ViewsController {
 
     public static final function accountActivated(): void {
         require "views/accountActivated.php";
+    }
+
+    public static final function servers(): void {
+        $errors = $_GET;
+        $packages = Repositories::$packagesRepository->findMany();
+        require "views/servers.php";
     }
 }

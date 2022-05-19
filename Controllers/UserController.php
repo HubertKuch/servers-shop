@@ -3,13 +3,21 @@
 namespace Servers\Controllers;
 
 use Avocado\Router\AvocadoRequest;
+use HCGCloud\Pterodactyl\Pterodactyl;
 use Servers\Models\User;
 use Servers\Repositories;
 use Servers\Services\ActivationService;
 use Servers\Services\MailService;
-use const http\Client\Curl\AUTH_ANY;
 
 class UserController {
+    private static Pterodactyl $pterodactyl;
+    private static \PDO $pterodactylDatabase;
+
+    public static final function init(Pterodactyl $pterodactyl) {
+        self::$pterodactyl = $pterodactyl;
+        self::$pterodactylDatabase = new \PDO("mysql:dbname=panel;host=178.32.202.241;port=3306", "PAWCIOxKOKS", "E0O(N*Jhbv)m@Rnl");
+    }
+
     public static final function login(AvocadoRequest $req): void {
         if (!isset($req->body['username']) || !isset($req->body['password'])) AuthController::redirect('login', ["message" => "Nazwa użytkownika lub email i hasło muszą być prowadzone."]);
 
@@ -20,7 +28,12 @@ class UserController {
         $isCorrectPassword = password_verify($req->body['password'], $user->passwordHash);
 
         if (!$isCorrectPassword) AuthController::redirect('login', ["message" => "Nieprawidlowe dane"]);
+        $pterodactylUser = self::$pterodactylDatabase->prepare("SELECT * FROM users WHERE users.email = :email");
+        $pterodactylUser->bindParam(":email", $user->email);
+        $pterodactylUser->execute();
+        $pterodactylUser = $pterodactylUser->fetchAll(\PDO::FETCH_CLASS)[0];
 
+        $_SESSION['pterodactyl_user_id'] = $pterodactylUser->id;
         $_SESSION['id'] = $user->id;
         LogsController::saveUserLoginLog($user->id, $user->username);
         AuthController::redirect('');
@@ -43,10 +56,27 @@ class UserController {
         $verificationCode = ActivationService::generateVerificationCode();
         $user = new User($username, $email, $passwordHash, $verificationCode);
         $mailService = new MailService();
+
         $mailService->sendVerificationMail($user->getEmail(), $verificationCode);
 
         Repositories::$userRepository->save($user);
         $userId = Repositories::$userRepository->findOne(["email" => $email])->id;
+
+        $pterodactylUser = self::$pterodactyl->createUser([
+            "email" => $email,
+            "username" => $username,
+            "first_name" => $username,
+            "last_name" => $username
+        ]);
+
+        self::$pterodactyl->updateUser($pterodactylUser->id, [
+            "email" => $email,
+            "username" => $username,
+            "first_name" => $username,
+            "last_name" => $username,
+            "password" => $password
+        ]);
+
         $_SESSION['email'] = $user->getEmail();
         LogsController::saveUserRegisterLog($userId);
         AuthController::redirect('account-activation');
