@@ -4,7 +4,7 @@ namespace Servers;
 
 use Servers\Models\Package;
 use Servers\Models\Payment;
-use Servers\Models\Product;
+use Servers\Models\Server;
 use Servers\Models\User;
 use Avocado\ORM\AvocadoRepository;
 use Servers\Models\Log;
@@ -19,7 +19,7 @@ class Repositories {
     public static function init(): void {
         self::$userRepository = new AvocadoRepository(User::class);
         self::$paymentsRepository = new AvocadoRepository(Payment::class);
-        self::$productsRepository = new AvocadoRepository(Product::class);
+        self::$productsRepository = new AvocadoRepository(Server::class);
         self::$logsRepository = new AvocadoRepository(Log::class);
         self::$packagesRepository = new AvocadoRepository(Package::class);
     }

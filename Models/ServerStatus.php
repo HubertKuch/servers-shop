@@ -2,7 +2,7 @@
 
 namespace Servers\Models;
 
-enum ProductStatus: string {
+enum ServerStatus: string {
     case IN_MAGAZINE = 'inMagazine';
     case SOLD = 'sold';
 }

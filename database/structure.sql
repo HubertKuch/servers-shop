@@ -25,16 +25,17 @@ create table if not exists payments (
     foreign key (user_id)   references users(id)
 );
 
-create table if not exists products(
+create table if not exists servers(
     id                          bigint not null auto_increment primary key,
     title                       text not null,
     status                      enum('inMagazine', 'sold') not null,
     createDate                  timestamp not null,
     expireDate                  timestamp not null,
-    package                     text not null,
+    package_id                  text not null,
     payment_id                  bigint,
 
-    foreign key (payment_id)    references payments(id)
+    foreign key (payment_id)    references payments(id),
+    foreign key (package_id)    references package(id)
 );
 
 create table if not exists logs (
@@ -47,7 +48,7 @@ create table if not exists logs (
     message                     text not null,
 
     foreign key (user_id)       references users(id),
-    foreign key (product_id)    references products(id),
+    foreign key (product_id)    references servers(id),
     foreign key (payment_id)    references payments(id)
 );
 

@@ -7,8 +7,8 @@ use Avocado\ORM\Id;
 use Avocado\ORM\Table;
 use Avocado\ORM\IgnoreFieldType;
 
-#[Table('products')]
-class Product {
+#[Table('servers')]
+class Server {
     #[Id]
     private int $id;
     #[Field]
