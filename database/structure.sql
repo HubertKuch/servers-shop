@@ -1,5 +1,7 @@
 create database if not exists servers;
 
+use servers;
+
 create table if not exists users (
      id                         bigint not null auto_increment primary key,
      username                   text not null,
@@ -25,13 +27,24 @@ create table if not exists payments (
     foreign key (user_id)   references users(id)
 );
 
+create table if not exists package (
+   id                       int not null auto_increment primary key,
+   name                     text not null,
+   ram_size                 int not null,
+   disk_size                int not null,
+   processor_power          int not null,
+   cost                     float not null,
+   image_src                text not null
+);
+
+
 create table if not exists servers(
     id                          bigint not null auto_increment primary key,
     title                       text not null,
     status                      enum('inMagazine', 'sold') not null,
-    createDate                  timestamp not null,
-    expireDate                  timestamp not null,
-    package_id                  text not null,
+    createDate                  bigint not null,
+    expireDate                  bigint not null,
+    package_id                  int not null,
     payment_id                  bigint,
 
     foreign key (payment_id)    references payments(id),
@@ -50,14 +63,4 @@ create table if not exists logs (
     foreign key (user_id)       references users(id),
     foreign key (product_id)    references servers(id),
     foreign key (payment_id)    references payments(id)
-);
-
-create table if not exists package (
-    id              int not null auto_increment primary key,
-    name            text not null,
-    ram_size        int not null,
-    disk_size       int not null,
-    processor_power int not null,
-    cost            float not null,
-    image_src       text not null
 );
