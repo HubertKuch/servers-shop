@@ -6,6 +6,8 @@ use Avocado\Router\AvocadoRequest;
 use HCGCloud\Pterodactyl\Pterodactyl;
 use Servers\Models\JavaVersion;
 use Servers\Models\MinecraftEggNames;
+use Servers\Models\Server;
+use Servers\Models\ServerStatus;
 use Servers\Repositories;
 
 class ServersController {
@@ -23,6 +25,7 @@ class ServersController {
         $minecraftVersion = $req->body['mc_version'] ?? null;
         $javaVersion = $req->body['java_version'] ?? null;
         $pterodactylUserId = $_SESSION['pterodactyl_user_id'];
+        $user = Repositories::$userRepository->findOneById($_SESSION['id']);
 
         if (!$eggType || !$packageId || !$name || !$minecraftVersion || !$javaVersion)
             AuthController::redirect('servers', ["message" => "Wszystkie dane muszą być podane"]);
@@ -50,10 +53,10 @@ class ServersController {
             'name' => $name,
             'user' => $pterodactylUserId,
             'egg' => $eggId,
-            'docker_image' => 'quay.io/pterodactyl/core:java',
-            'startup' => 'java -Xms128M -Xmx128M -jar server.jar',
+            'docker_image' => $egg->dockerImage,
+            'startup' => $egg->startup,
             'environment' => [
-                'VANILLA_VERSION' => 'latest',
+                'VANILLA_VERSION' => $minecraftVersion,
                 'SERVER_JARFILE' => 'server.jar',
             ],
             'limits' => [
@@ -73,6 +76,9 @@ class ServersController {
         ];
 
         self::$pterodactyl->createServer($serverData);
+        $server = new Server($name, ServerStatus::SOLD->value, time(), time(), $package->id, $user->id);
+        Repositories::$productsRepository->save($server);
+
         AuthController::redirect('servers', ["message" => "Zakupiono server"]);
     }
 
@@ -102,15 +108,12 @@ class ServersController {
         $allocations = self::$pterodactyl->allocations(1, $page);
         $id = null;
 
-        foreach ($allocations['data'] as $allocation) {
-            if (!$allocation->assigned) {
+        foreach ($allocations['data'] as $allocation)
+            if (!$allocation->assigned)
                 $id = $allocation->id;
-            }
-        }
 
         if (!$id)
             $id = self::getUnAssignedAllocationId($page+1);
-
 
         return $id;
     }

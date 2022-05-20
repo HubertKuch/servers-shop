@@ -20,18 +20,20 @@ class Server {
     private int $createDate;
     #[Field]
     private int $expireDate;
+    #[Field('package_id')]
+    private int $packageId;
     #[Field]
-    private string $package;
-    #[Field]
-    private int $payment_id;
+    private ?int $payment_id = null;
+    #[Field('user_id')]
+    private int $user_id;
 
-    public function __construct(string $title, string $status, int $createDate, int $expireDate, string $package, int $payment_id) {
+    public function __construct(string $title, string $status, int $createDate, int $expireDate, int $packageId, int $userId) {
         $this->title = $title;
         $this->status = $status;
         $this->createDate = $createDate;
         $this->expireDate = $expireDate;
-        $this->package = $package;
-        $this->payment_id = $payment_id;
+        $this->packageId = $packageId;
+        $this->user_id = $userId;
     }
 
     public function getId(): int { return $this->id; }

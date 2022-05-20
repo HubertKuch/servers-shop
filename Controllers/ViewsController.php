@@ -13,7 +13,11 @@ use Servers\Repositories;
 class ViewsController {
     public static final function main(): void {
         AuthController::authenticationMiddleware(["error" => "Unauthorized"]);
-        $servers = [];
+
+        $servers = Repositories::$productsRepository->findMany([
+            "user_id" => $_SESSION['id']
+        ]);
+
         require "./views/main.php";
     }
 

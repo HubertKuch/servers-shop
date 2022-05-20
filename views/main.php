@@ -1,5 +1,7 @@
 <?php
-    use Servers\views\components\MainPage;
+
+use Servers\Repositories;
+use Servers\views\components\MainPage;
 ?>
 
 <html lang="pl">
@@ -20,17 +22,22 @@
     </header>
 
     <main class="main-page-main">
-        <p>Twoje servery
-            <?php
-                if (empty($servers)) {
-                    echo "<div>Kup</div>";
-                } else {
-                    echo "<span class=\"main-page-main__counter\">0</span>";
-                }
-            ?>
-        </p>
         <div class="last-added-servers">
+            <p>Twoje servery
+                <?php
+                if (empty($servers)) {
+                    echo "<div>Zakup swój pierwszy server w panelu</div>";
+                } else {
+                    $serversCount = count($servers);
+                    echo "<span class=\"main-page-main__counter\">$serversCount</span>";
+                    foreach ($servers as $server) {
+                        $package = Repositories::$packagesRepository->findOneById($server->package_id);
 
+                        MainPage::server($server->title, $package->image_src);
+                    }
+                }
+                ?>
+            </p>
         </div>
     </main>
 </body>

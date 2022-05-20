@@ -3,13 +3,13 @@
 namespace Servers\views\components;
 
 class MainPage {
-    public static final function game(int $id, string $imageURL): void {
+    public static final function server(string $name, string $imgSrc): void {
         printf('
-            <div class="server__card" style="background: url(%s)">
-                <a href="%s">
-                </a>
+            <div class="server__card">
+                <img src="%s" alt=""><br>
+                <a href="index.php/panel" style="font-size: 32px">%s</a>
             </div>
-        ', $imageURL, $id);
+        ', $imgSrc, $name);
     }
 
     public static final function nav() {

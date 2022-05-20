@@ -18,7 +18,6 @@
     <nav class="admin__navigation">
         <ul class="navigation__list">
             <li data-section-class="payments" class="admin__panel--section-option">Platności</li>
-            <li data-section-class="user-servers" class="admin__panel--section-option">Wystawione serwery</li>
             <li data-section-class="bought-servers" class="admin__panel--section-option">Kupione serwery</li>
             <li data-section-class="" class="admin__panel--section-option">Zasilacz</li>
             <li data-section-class="settings" class="admin__panel--section-option">Ustawienia konta</li>
@@ -75,6 +74,16 @@
                 }
             ?>
 
+
+
+        </section>
+
+        <section class="bought-servers admin__panel--section section--invisible">
+            <p>
+                Dostęp do zarządzania zakupionymi serwerami jest dostępny w
+                <a target="_blank" href="http://178.32.202.241:85/" style="color: lightcoral">panelu</a>.
+                Zaloguj się za pomocą swojego loginu/maila i hasła.
+            </p>
             <table class="table">
                 <tr class="table__row">
                     <th>ID</th>
@@ -90,26 +99,13 @@
                         <td class="table__col"><?= $server->id ?></td>
                         <td class="table__col"><?= $server->title ?></td>
                         <td class="table__col"><?= $server->status ?></td>
-                        <td class="table__col"><?= $server->createDate ?></td>
-                        <td class="table__col"><?= $server->expireDate ?></td>
-                        <td class="table__col"><?= $server->package ?></td>
+                        <td class="table__col"><?= date('m/d/Y', $server->createDate) ?></td>
+                        <td class="table__col"><?= date('m/d/Y', $server->createDate) ?></td>
+                        <td class="table__col"><?= $server->package_id ?></td>
                         <td class="table__col"><?= $server->payment_id ?></td>
                     </tr>
                 <?php endforeach; ?>
             </table>
-
-        </section>
-
-        <section class="bought-servers admin__panel--section section--invisible">
-            <?php
-                if (empty($boughtServers)) {
-                    echo "<p>Nie kupiłeś jeszcze żadnego servera</p>";
-                }
-
-                foreach ($boughtServers as $server) {
-                    UserPanel::serverCard($server->id, $server->title, $server->createDate, $server->expireDate, $server->package, $server->payment->sum);
-                }
-            ?>
         </section>
 
         <section class="settings admin__panel--section section--invisible">

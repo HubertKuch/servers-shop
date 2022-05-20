@@ -13,7 +13,7 @@ class UserController {
     private static Pterodactyl $pterodactyl;
     private static \PDO $pterodactylDatabase;
 
-    public static final function init(Pterodactyl $pterodactyl) {
+    public static final function init(Pterodactyl $pterodactyl): void {
         self::$pterodactyl = $pterodactyl;
         self::$pterodactylDatabase = new \PDO("mysql:dbname=panel;host=178.32.202.241;port=3306", "PAWCIOxKOKS", "E0O(N*Jhbv)m@Rnl");
     }
@@ -99,6 +99,14 @@ class UserController {
         if ($isOldPasswordEqualsNew) AuthController::redirect('panel', ["message" => "Stare hasło jest identyczne jak stare."]);
 
         Repositories::$userRepository->updateOneById(["passwordHash" => password_hash($newPassword, PASSWORD_DEFAULT)], $userId);
+        self::$pterodactyl->user($_SESSION['pterodactyl_user_id'], [
+            "email" => $user->email,
+            "username" => $user->username,
+            "first_name" => $user->username,
+            "last_name" => $user->username,
+            "language" => "pl",
+            "password" => $newPassword
+        ]);
         AuthController::redirect('panel');
     }
 
@@ -108,7 +116,15 @@ class UserController {
 
         if (!$username) AuthController::redirect('panel', ["message" => "Nazwa uzytkownika musi byc podana"]);
 
+        $user = Repositories::$userRepository->findOneById($_SESSION['id']);
         Repositories::$userRepository->updateOneById(["username" => $username], $_SESSION['id']);
+        self::$pterodactyl->user($_SESSION['pterodactyl_user_id'], [
+            "email" => $user->email,
+            "username" => $user->username,
+            "first_name" => $user->username,
+            "last_name" => $user->username,
+            "language" => "pl"
+        ]);
         AuthController::redirect('panel');
     }
 
@@ -119,7 +135,16 @@ class UserController {
         if (!$email) AuthController::redirect('panel', ["message" => "Email musi byc podany."]);
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) AuthController::redirect('panel', ["message" => "Nieprawidłowy email"]);
 
+        $user = Repositories::$userRepository->findOneById($_SESSION['id']);
         Repositories::$userRepository->updateOneById(["email" => $email], $_SESSION['id']);
+
+        self::$pterodactyl->user($_SESSION['pterodactyl_user_id'], [
+            "email" => "gowno",
+            "username" => $user->username,
+            "first_name" => $user->username,
+            "last_name" => $user->username,
+            "language" => "pl"
+        ]);
         AuthController::redirect('panel', []);
     }
 
