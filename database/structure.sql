@@ -41,7 +41,7 @@ create table if not exists package (
 create table if not exists servers(
     id                          bigint not null auto_increment primary key,
     title                       text not null,
-    status                      enum('inMagazine', 'sold') not null,
+    status                      enum('inMagazine', 'sold', 'expired') not null,
     createDate                  bigint not null,
     expireDate                  bigint not null,
     package_id                  int not null,
