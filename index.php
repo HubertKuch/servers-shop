@@ -20,6 +20,7 @@ $mainDir = explode('/', $_SERVER['SCRIPT_NAME'])[1];
 putenv("MAIN_DIR=$mainDir");
 putenv("ROOT_PTERODACTYL_API_KEY=GIiB37cjhWGRMYwejj0XFsllqDgx5jghvvbdoGctj7dDsPl3");
 putenv("PTERODACTYL_IP=178.32.202.241:85");
+putenv("ENVIRONMENT=DEVELOPMENT");
 
 const __USER__CONTROLLER__NAMESPACE__ = __NAMESPACE__."\Controllers\UserController::";
 const __VIEWS__CONTROLLER__NAMESPACE__ = __NAMESPACE__."\Controllers\ViewsController::";

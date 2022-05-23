@@ -11,7 +11,7 @@ create table if not exists users (
      role                       enum('user', 'admin') default 'user',
      isActivated                bool default false,
      activationCode             int,
-     activationCodeExpiresIn    timestamp
+     activationCodeExpiresIn    bigint
 );
 
 create table if not exists payments (
@@ -46,9 +46,11 @@ create table if not exists servers(
     expireDate                  bigint not null,
     package_id                  int not null,
     payment_id                  bigint,
+    user_id                     bigint,
 
     foreign key (payment_id)    references payments(id),
-    foreign key (package_id)    references package(id)
+    foreign key (package_id)    references package(id),
+    foreign key (user_id)       references users(id)
 );
 
 create table if not exists logs (
