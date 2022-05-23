@@ -1,5 +1,6 @@
 <?php
 
+use Servers\Models\ServerStatus;
 use Servers\Utils\Environment;
 use Servers\views\components\UserPanel;
 
@@ -75,8 +76,6 @@ use Servers\views\components\UserPanel;
                 }
             ?>
 
-
-
         </section>
 
         <section class="bought-servers admin__panel--section section--invisible">
@@ -94,16 +93,27 @@ use Servers\views\components\UserPanel;
                     <th>DATA WYGAŚNIĘCIA</th>
                     <th>PACZKA</th>
                     <th>ID PŁATNOŚCI</th>
+                    <th>Odnów</th>
                 </tr>
                 <?php foreach($userServers as $server): ?>
                     <tr class="table__row">
                         <td class="table__col"><?= $server->id ?></td>
                         <td class="table__col"><?= $server->title ?></td>
-                        <td class="table__col"><?= $server->status ?></td>
+                        <td class="table__col"><?= match ($server->status) {
+                                ServerStatus::SOLD->value => "Aktywny",
+                                ServerStatus::IN_MAGAZINE->value,
+                                ServerStatus::EXPIRED->value => "Wygasł"
+                        } ?></td>
                         <td class="table__col"><?= date('m/d/Y', $server->createDate) ?></td>
-                        <td class="table__col"><?= date('m/d/Y', $server->createDate) ?></td>
+                        <td class="table__col"><?= date('m/d/Y', $server->expireDate) ?></td>
                         <td class="table__col"><?= $server->package_id ?></td>
                         <td class="table__col"><?= $server->payment_id ?></td>
+                        <td class="table__col">
+                            <form action="index.php/api/unsuspend-server/<?= $server->id ?>" method="post">
+                                <input type="hidden" name="_method" value="PATCH">
+                                <button type="submit">Odnów</button>
+                            </form>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </table>

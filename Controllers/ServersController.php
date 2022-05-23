@@ -9,12 +9,44 @@ use Servers\Models\MinecraftEggNames;
 use Servers\Models\Server;
 use Servers\Models\ServerStatus;
 use Servers\Repositories;
+use const http\Client\Curl\AUTH_ANY;
 
 class ServersController {
     private static Pterodactyl $pterodactyl;
+    private static int $expireDays = 31;
 
-    public static final function init(Pterodactyl $pterodactyl) {
+    public static final function init(Pterodactyl $pterodactyl): void {
         self::$pterodactyl = $pterodactyl;
+    }
+
+    public static final function suspendServer(object $server): void {
+        $pterodactylId = $server->pterodactyl_id ?? null;
+        $serverId = $server->id;
+
+        if (!$pterodactylId || $pterodactylId == 0)
+            AuthController::redirect('servers', ["message" => "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem domeny."]);
+
+        self::$pterodactyl->suspendServer($pterodactylId);
+        Repositories::$productsRepository->updateOneById(["status" => "expired"], $serverId);
+    }
+
+    public static final function unSuspendServer(AvocadoRequest $req): void {
+        AuthController::authenticationMiddleware();
+        $serverId = intval($req->params['id']) ?? null;
+
+        if (!$serverId)
+            AuthController::redirect('servers', ["message" => "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem domeny."]);
+
+        $server = Repositories::$productsRepository->findOneById($serverId);
+
+        $pterodactylId = $server->pterodactyl_id ?? null;
+
+        if (!$serverId || $serverId == 0)
+            AuthController::redirect('servers', ["message" => "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem domeny."]);
+
+        self::$pterodactyl->unsuspendServer($pterodactylId);
+        Repositories::$productsRepository->updateOneById(["status" => "sold", "expireDate" => time() + 24 * 60 * 60 * self::$expireDays], $serverId);
+        AuthController::redirect('panel');
     }
 
     public static final function create(AvocadoRequest $req): void {
@@ -75,8 +107,13 @@ class ServersController {
             ]
         ];
 
-        self::$pterodactyl->createServer($serverData);
-        $server = new Server($name, ServerStatus::SOLD->value, time(), time(), $package->id, $user->id);
+        $server = self::$pterodactyl->createServer($serverData);
+        $createDate = time();
+        $expireDate = time() + 24 * 60 * 60 * self::$expireDays;
+        $userId = $user->id;
+        $serverId = $server->id;
+
+        $server = new Server($name, ServerStatus::SOLD->value, $createDate, $expireDate, $package->id, $userId, $serverId);
         Repositories::$productsRepository->save($server);
 
         AuthController::redirect('servers', ["message" => "Zakupiono server"]);

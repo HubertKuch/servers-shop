@@ -5,7 +5,6 @@ namespace Servers\Controllers;
 use Avocado\ORM\FindForeign;
 use Avocado\Router\AvocadoRequest;
 use Avocado\Router\AvocadoResponse;
-use HCGCloud\Pterodactyl\Pterodactyl;
 use Servers\Models\ServerStatus;
 use Servers\Models\UserRole;
 use Servers\Repositories;
@@ -41,10 +40,15 @@ class ViewsController {
 
         $user = Repositories::$userRepository->findOneById($userId);
         $payments = Repositories::$paymentsRepository->findOneToManyRelation($findForeignPayments);
-        $boughtServers = Repositories::$productsRepository->findOneToManyRelation($findForeignBoughtServers, ["status" => ServerStatus::SOLD->value]);
         $userServers = Repositories::$productsRepository->findOneToManyRelation($findForeignBoughtServers, ["status" => ServerStatus::IN_MAGAZINE->value]);
 
         $isAdmin = $user->role === UserRole::ADMIN->value;
+
+        foreach ($userServers as $server)
+            if ($server->expireDate < time())
+                ServersController::suspendServer($server);
+
+        $userServers = Repositories::$productsRepository->findOneToManyRelation($findForeignBoughtServers, ["status" => ServerStatus::IN_MAGAZINE->value]);
 
         require "views/userPanel.php";
     }

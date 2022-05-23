@@ -47,11 +47,14 @@ create table if not exists servers(
     package_id                  int not null,
     payment_id                  bigint,
     user_id                     bigint,
+    pterodactyl_id              int not null,
 
     foreign key (payment_id)    references payments(id),
     foreign key (package_id)    references package(id),
     foreign key (user_id)       references users(id)
 );
+
+alter table servers add column if not exists pterodactyl_id int not null;
 
 create table if not exists logs (
     id                          bigint not null auto_increment primary key,

@@ -26,14 +26,17 @@ class Server {
     private ?int $payment_id = null;
     #[Field('user_id')]
     private int $user_id;
+    #[Field('pterodactyl_id')]
+    private int $pterodactyl_id;
 
-    public function __construct(string $title, string $status, int $createDate, int $expireDate, int $packageId, int $userId) {
+    public function __construct(string $title, string $status, int $createDate, int $expireDate, int $packageId, int $userId, int $pterodactylId) {
         $this->title = $title;
         $this->status = $status;
         $this->createDate = $createDate;
         $this->expireDate = $expireDate;
         $this->packageId = $packageId;
         $this->user_id = $userId;
+        $this->pterodactyl_id = $pterodactylId;
     }
 
     public function getId(): int { return $this->id; }

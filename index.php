@@ -25,6 +25,7 @@ putenv("ENVIRONMENT=DEVELOPMENT");
 const __USER__CONTROLLER__NAMESPACE__ = __NAMESPACE__."\Controllers\UserController::";
 const __VIEWS__CONTROLLER__NAMESPACE__ = __NAMESPACE__."\Controllers\ViewsController::";
 const __SERVERS__CONTROLLER__NAMESPACE__ = __NAMESPACE__."\Controllers\ServersController::";
+
 $pterodactyl = new Pterodactyl(getenv("ROOT_PTERODACTYL_API_KEY"), getenv("PTERODACTYL_IP"));
 
 Repositories::init();
@@ -54,6 +55,7 @@ AvocadoRouter::PATCH('/api/change-username', [], __USER__CONTROLLER__NAMESPACE__
 AvocadoRouter::PATCH('/api/change-email', [], __USER__CONTROLLER__NAMESPACE__."changeEmail");
 AvocadoRouter::PATCH('/api/activate-account', [], __USER__CONTROLLER__NAMESPACE__."activateAccount");
 AvocadoRouter::PATCH('/api/activate-account', [], __USER__CONTROLLER__NAMESPACE__."activateAccount");
+AvocadoRouter::PATCH('/api/unsuspend-server/:id', [], __SERVERS__CONTROLLER__NAMESPACE__."unSuspendServer");
 
 // SERVERS ACTIONS
 AvocadoRouter::POST('/api/create-server', [], __SERVERS__CONTROLLER__NAMESPACE__."create");
