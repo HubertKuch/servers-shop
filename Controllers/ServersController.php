@@ -9,14 +9,15 @@ use Servers\Models\MinecraftEggNames;
 use Servers\Models\Server;
 use Servers\Models\ServerStatus;
 use Servers\Repositories;
-use const http\Client\Curl\AUTH_ANY;
 
 class ServersController {
     private static Pterodactyl $pterodactyl;
     private static int $expireDays = 31;
+    private static array $mcVersions = [];
 
     public static final function init(Pterodactyl $pterodactyl): void {
         self::$pterodactyl = $pterodactyl;
+        self::$mcVersions = json_decode(file_get_contents("Utils/mc_versions.json"));
     }
 
     public static final function suspendServer(object $server): void {
@@ -54,7 +55,7 @@ class ServersController {
         $eggId = intval($req->body['egg_id']) ?? null;
         $packageId = intval($req->body['package_id']) ?? null;
         $name = $req->body['server_name'] ?? null;
-        $minecraftVersion = $req->body['mc_version'] ?? null;
+        $minecraftVersion = trim($req->body['mc_version']) ?? null;
         $javaVersion = $req->body['java_version'] ?? null;
         $pterodactylUserId = $_SESSION['pterodactyl_user_id'];
         $user = Repositories::$userRepository->findOneById($_SESSION['id']);
@@ -79,6 +80,9 @@ class ServersController {
 
         if (!self::isValidJavaVersion($javaVersion))
             AuthController::redirect('servers', ["message" => "Niepoprawna wersja Javy"]);
+
+        if (!in_array($minecraftVersion, self::$mcVersions))
+            AuthController::redirect('servers', ["message" => "Niepoprawna wersja Minecraft"]);
 
         $egg = self::$pterodactyl->egg(1, $eggId);
         $serverData = [
