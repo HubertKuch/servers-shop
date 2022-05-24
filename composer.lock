@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "37567fe3a5783638bd0a56018efe9b6f",
+    "content-hash": "c90921af92f4fd46b8879e9bda7ea164",
     "packages": [
         {
             "name": "doctrine/instantiator",
@@ -420,16 +420,16 @@
         },
         {
             "name": "hubert/avocado",
-            "version": "dev-main",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/HubertKuch/Avocado.git",
-                "reference": "f52b299caa126fed15679ed38a6e1911bc47554b"
+                "reference": "10ee18d9f5c5b946b741e386393feccb7aad74c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/HubertKuch/Avocado/zipball/f52b299caa126fed15679ed38a6e1911bc47554b",
-                "reference": "f52b299caa126fed15679ed38a6e1911bc47554b",
+                "url": "https://api.github.com/repos/HubertKuch/Avocado/zipball/10ee18d9f5c5b946b741e386393feccb7aad74c7",
+                "reference": "10ee18d9f5c5b946b741e386393feccb7aad74c7",
                 "shasum": ""
             },
             "require": {
@@ -437,7 +437,6 @@
                 "ext-pdo": "*",
                 "phpunit/phpunit": "9.5.18"
             },
-            "default-branch": true,
             "type": "framework",
             "autoload": {
                 "psr-4": {
@@ -465,9 +464,9 @@
             "homepage": "https://avocadoframework.com",
             "support": {
                 "issues": "https://github.com/HubertKuch/Avocado/issues",
-                "source": "https://github.com/HubertKuch/Avocado/tree/main"
+                "source": "https://github.com/HubertKuch/Avocado/tree/v1.0.0"
             },
-            "time": "2022-05-16T20:27:11+00:00"
+            "time": "2022-05-23T13:07:06+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -2858,14 +2857,12 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "hubert/avocado": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "ext-pdo": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }
