@@ -71,6 +71,7 @@ body, head {
     position: absolute;
     right: 50px;
     top: -50px;
+    display: none;
 }
 
 .main-page-main {
@@ -91,7 +92,7 @@ body, head {
 
 .last-added-servers {
     width: 60%;
-    height: 450px;
+    height: fit-content;
     white-space: nowrap;
     overflow-x: auto;
     overflow-y: hidden;
@@ -99,7 +100,7 @@ body, head {
 
 .server__card {
     width: 340px;
-    height: 420px;
+    height: fit-content;
 
     display: inline-block;
 
@@ -107,7 +108,7 @@ body, head {
     background-size: cover;
     background-position: center;
     background-attachment:fixed;
-    margin: 0 50px 0 0;
+    margin: 0 50px 20px 0;
 }
 
 .server__card img {
@@ -178,3 +179,8 @@ a {
     width: 70%;
 }
 
+@media screen and (min-width: 1378px) {
+    .header__gaming-console {
+        display: block;
+    }
+}

@@ -1,9 +1,7 @@
 .login__form {
     background: white;
     height: 60%;
-    width: 300px;
-    min-width: 250px;
-    max-width: 350px;
+    width: clamp(250px, 25vw, 100%);
     padding: 10px;
     position: absolute;
     left: 50%;
@@ -28,19 +26,16 @@
 }
 
 .form__button {
-    border: 1px solid black;
+    outline: none;
+    border: 1px solid #D8C2F4;
     border-radius: 10px;
-    background: rgb(0,212,255);
-    padding: 5px;
-    width: 30%;
-}
-
-.form__input--password {
-    font-size: .5rem;
+    background: rgb(234, 229, 178);
+    padding: 8px;
+    width: fit-content;
 }
 
 .login__form .form__bottom-section {
-    font-size: .6rem;
+    font-size: .8rem;
     width: 100%;
     height: 10%;
     position: absolute;
@@ -61,9 +56,13 @@
     border: none;
     outline: none;
     border-radius: 5px;
-    background: #D8C2F4;
+    background: #a187e1;
     color: #221B38;
     margin: 10px 0 0;
+    padding: 10px;
+    outline: 2px solid #cec4c4;
+    caret-color: #FEC556;
+    max-width: 100%;
 }
 
 .panel__button {

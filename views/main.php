@@ -24,21 +24,22 @@ use Servers\views\components\MainPage;
 
     <main class="main-page-main">
         <div class="last-added-servers">
-            <p>Twoje servery
-                <?php
+            <p>Twoje servery<span class="main-page-main__counter"><?= count($servers) ?></span></p>
+
+            <?php
+
                 if (empty($servers)) {
                     echo "<div>Zakup swój pierwszy server w panelu</div>";
                 } else {
                     $serversCount = count($servers);
-                    echo "<span class=\"main-page-main__counter\">$serversCount</span>";
                     foreach ($servers as $server) {
                         $package = Repositories::$packagesRepository->findOneById($server->package_id);
 
-                        MainPage::server($server->title, $package->image_src);
+                        MainPage::server($server, $package);
                     }
                 }
+
                 ?>
-            </p>
         </div>
     </main>
 </body>

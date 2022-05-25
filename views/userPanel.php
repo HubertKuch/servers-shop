@@ -2,7 +2,7 @@
 
 use Servers\Models\ServerStatus;
 use Servers\Utils\Environment;
-use Servers\views\components\UserPanel;
+use Servers\Repositories;
 
 ?>
 
@@ -15,23 +15,38 @@ use Servers\views\components\UserPanel;
     <title>Panel</title>
     <base href="<?= Environment::getBaseURL() ?>">
     <link rel="stylesheet" href="style/main.css">
+    <script src="https://kit.fontawesome.com/31d2710bc5.js" crossorigin="anonymous"></script>
 </head>
-<body>
+<body class="panel">
     <nav class="admin__navigation">
         <ul class="navigation__list">
-            <li data-section-class="payments" class="admin__panel--section-option">Platności</li>
-            <li data-section-class="bought-servers" class="admin__panel--section-option">Kupione serwery</li>
-            <li data-section-class="" class="admin__panel--section-option">Zasilacz</li>
-            <li data-section-class="settings" class="admin__panel--section-option">Ustawienia konta</li>
-        </ul>
-
-        <div class="navigation__bottom-settings">
+            <li>
+                <a href="index.php/">
+                    <i class="fa-solid fa-house"></i>
+                </a>
+            </li>
+            <li>
+                <i class="fa-solid fa-credit-card admin__panel--section-option" data-section-class="payments"></i>
+            </li>
+            <li>
+                <i class="fa-solid fa-server admin__panel--section-option" data-section-class="bought-servers"></i>
+            </li>
+            <li>
+                <i class="fa-solid fa-gear admin__panel--section-option" data-section-class="settings"></i>
+            </li>
             <?php if($isAdmin): ?>
-                <a href="index.php/admin">Admin</a>
+                <li>
+                    <a href="index.php/admin">
+                        <i class="fa-solid fa-user-astronaut"></i>
+                    </a>
+                </li>
             <?php endif; ?>
-            <a href="index.php/">Głowna</a>
-            <a href="index.php/api/logout">Logout</a>
-        </div>
+            <li>
+                <a href="index.php/api/logout">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </a>
+            </li>
+        </ul>
     </nav>
 
     <main class="admin__main">
@@ -100,18 +115,19 @@ use Servers\views\components\UserPanel;
                         <td class="table__col"><?= $server->id ?></td>
                         <td class="table__col"><?= $server->title ?></td>
                         <td class="table__col"><?= match ($server->status) {
-                                ServerStatus::SOLD->value => "Aktywny",
+                                ServerStatus::SOLD->value => '<span class="server-status server-status--active">Aktywny</span>',
                                 ServerStatus::IN_MAGAZINE->value,
-                                ServerStatus::EXPIRED->value => "Wygasł"
-                        } ?></td>
+                                ServerStatus::EXPIRED->value => '<span class="server-status server-status--expired">Wygasł</span>'
+                            } ?>
+                        </td>
                         <td class="table__col"><?= date('m/d/Y', $server->createDate) ?></td>
                         <td class="table__col"><?= date('m/d/Y', $server->expireDate) ?></td>
-                        <td class="table__col"><?= $server->package_id ?></td>
+                        <td class="table__col"><?php $package = Repositories::$packagesRepository->findOneById($server->package_id); echo "$package->name ({$package->ram_size}MB / {$package->disk_size}MB)" ?></td>
                         <td class="table__col"><?= $server->payment_id ?></td>
                         <td class="table__col">
                             <form action="index.php/api/unsuspend-server/<?= $server->id ?>" method="post">
                                 <input type="hidden" name="_method" value="PATCH">
-                                <button type="submit">Odnów</button>
+                                <button type="submit" class="button--renew">Odnów</button>
                             </form>
                         </td>
                     </tr>
@@ -137,14 +153,14 @@ use Servers\views\components\UserPanel;
             <form action="index.php/api/change-password" method="POST">
                 <input type="hidden" name="_method" value="PATCH">
                 <label>
-                    <span>Stare haslo</span>
+                    <span>Stare haslo</span><br>
                     <input class="panel__input" type="password" name="old-password">
                 </label><br>
 
                 <label>
-                    <span>Nowe haslo</span>
+                    <span>Nowe haslo</span><br>
                     <input class="panel__input" type="password" name="new-password">
-                </label><br>
+                </label><br><br>
 
                 <button type="submit" class="panel__button">Zapisz</button>
             </form>
@@ -155,9 +171,9 @@ use Servers\views\components\UserPanel;
             <form action="index.php/api/change-username" method="POST">
                 <input type="hidden" name="_method" value="PATCH">
                 <label>
-                    <span>Nowa nazwa</span>
+                    <span>Nowa nazwa</span><br>
                     <input class="panel__input" type="text" name="new-username">
-                </label><br>
+                </label><br><br>
 
                 <button type="submit" class="panel__button">Zapisz</button>
             </form>
@@ -168,9 +184,9 @@ use Servers\views\components\UserPanel;
             <form action="index.php/api/change-email" method="POST">
                 <input type="hidden" name="_method" value="PATCH">
                 <label>
-                    <span>Nowy email</span>
+                    <span>Nowy email</span><br>
                     <input class="panel__input" type="text" name="new-email">
-                </label><br>
+                </label><br><br>
 
                 <button type="submit" class="panel__button">Zapisz</button>
             </form>

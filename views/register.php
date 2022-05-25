@@ -32,7 +32,7 @@ use Servers\Utils\Environment;
         </label>
         <button type="submit" class="form__button">Zarejestruj się</button>
         <div class="form__bottom-section">
-            <a href="views/login.php">Logowanie</a>
+            <a href="index.php/login">Logowanie</a>
         </div>
     </form>
 </body>

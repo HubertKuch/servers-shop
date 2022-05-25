@@ -29,7 +29,7 @@ use Servers\Utils\Environment;
         </label>
         <button type="submit" class="form__button">Zaloguj się</button>
         <div class="form__bottom-section">
-            <a href="views/register.php">Nie masz konta? Zaloz je</a>
+            <a href="index.php/register">Nie masz konta? Zaloz je</a>
         </div>
     </form>
 </body>
