@@ -5,10 +5,12 @@ namespace Servers\views\components;
 class MainPage {
     public static final function server(object $server, object $package): void {
         printf('
-            <div class="server__card">
-                <img src="%s" alt=""><br>
-                <a href="index.php/panel" style="font-size: 32px">%s</a>
-                <span style="float: right">%s</span>
+            <div class="server__card" onclick="localStorage.setItem(\'user-panel-actual-visible\', \'bought-servers\')" ">
+                <a href="index.php/panel" style="font-size: 32px">
+                    <img src="%s" alt=""><br>
+                    <span>%s</span>
+                    <span style="float: right">%s</span>
+                </a>
             </div>
         ', $package->image_src, $server->title, $package->name);
     }

@@ -47,6 +47,7 @@ class ServersController {
 
         self::$pterodactyl->unsuspendServer($pterodactylId);
         Repositories::$productsRepository->updateOneById(["status" => "sold", "expireDate" => time() + 24 * 60 * 60 * self::$expireDays], $serverId);
+        echo "<script>localStorage.setItem('user-panel-actual-visible', 'bought-servers')</script>";
         AuthController::redirect('panel');
     }
 
@@ -120,7 +121,7 @@ class ServersController {
         $server = new Server($name, ServerStatus::SOLD->value, $createDate, $expireDate, $package->id, $userId, $serverId);
         Repositories::$productsRepository->save($server);
 
-        AuthController::redirect('servers', ["message" => "Zakupiono server"]);
+        AuthController::redirect('panel');
     }
 
     private static function isValidEggType(string $type): bool {

@@ -16,7 +16,6 @@ use HCGCloud\Pterodactyl\Pterodactyl;
 use Servers\Controllers\ServersController;
 use Servers\Controllers\UserController;
 use Servers\Controllers\ViewsController;
-use Servers\Models\Server;
 
 $mainDir = explode('/', $_SERVER['SCRIPT_NAME'])[1];
 putenv("MAIN_DIR=$mainDir");
