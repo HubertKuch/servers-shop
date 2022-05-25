@@ -41,8 +41,6 @@ use Servers\views\components\Servers;
                 <?php
                     Servers::minecraftEgg("views/assets/vanilla_mc.png", "Vanilla", 5);
                     Servers::minecraftEgg("views/assets/forge_mc.png", "Forge", 4);
-                    Servers::minecraftEgg("views/assets/paper_mc.png", "Paper", 3);
-                    Servers::minecraftEgg("views/assets/bungecord_mc.jpg", "BungeCord", 1);
                 ?>
             </section>
             <br><br>
@@ -96,9 +94,9 @@ use Servers\views\components\Servers;
 
         for (const egg of eggs) {
             egg.addEventListener('click', (e) => {
-                eggs.forEach(egg => egg.style.background = 'lightgray');
+                eggs.forEach(egg => egg.style.background = '#a187e1');
 
-                egg.style.background = 'lightblue'
+                egg.style.background = '#8659ea'
                 let eggTypeName = e.target.getAttribute('data-egg-name');
                 let selectedEggId = e.target.getAttribute('data-egg-id');
 
@@ -114,9 +112,9 @@ use Servers\views\components\Servers;
 
         for (const mcPackage of packages) {
             mcPackage.addEventListener('click', (e) => {
-                packages.forEach(mcPackage => mcPackage.style.background = 'lightgray');
+                packages.forEach(mcPackage => mcPackage.style.background = '#a187e1');
 
-                mcPackage.style.background = 'lightblue'
+                mcPackage.style.background = '#8659ea'
                 let packageId = e.target.getAttribute('data-package-id');
 
                 if(!packageId) {
