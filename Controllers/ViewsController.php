@@ -65,22 +65,30 @@ class ViewsController {
         require "./views/admin.php";
     }
 
-    public static final function login(AvocadoRequest $req, AvocadoResponse $res): void {
+    public static final function login(AvocadoRequest $req): void {
+        AuthController::notForLoggedIn();
+
         $errors = $req->query;
         require "views/login.php";
     }
 
     public static final function register(AvocadoRequest $req): void {
+        AuthController::notForLoggedIn();
+
         $errors = $req->query;
         require "views/register.php";
     }
 
-    public static final function accountActivation(AvocadoRequest $req): void {
+    public static final function accountActivation(): void {
+        AuthController::notForLoggedIn();
+
         $errors = $_GET;
         require "views/accountActivation.php";
     }
 
     public static final function accountActivated(): void {
+        AuthController::notForLoggedIn();
+
         require "views/accountActivated.php";
     }
 

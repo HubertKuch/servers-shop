@@ -3,13 +3,14 @@
 namespace Servers\views\components;
 
 class MainPage {
-    public static final function server(string $name, string $imgSrc): void {
+    public static final function server(object $server, object $package): void {
         printf('
             <div class="server__card">
                 <img src="%s" alt=""><br>
                 <a href="index.php/panel" style="font-size: 32px">%s</a>
+                <span style="float: right">%s</span>
             </div>
-        ', $imgSrc, $name);
+        ', $package->image_src, $server->title, $package->name);
     }
 
     public static final function nav() {

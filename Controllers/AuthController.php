@@ -10,6 +10,12 @@ class AuthController {
         return isset($_SESSION['id']);
     }
 
+    public static function notForLoggedIn(): void {
+        if (isset($_SESSION['id'])) {
+            self::redirect('');
+        }
+    }
+
     public static function authenticationMiddleware(?array $messages = []): void {
         $isLoggedIn = self::isLoggedIn();
 
