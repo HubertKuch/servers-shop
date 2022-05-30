@@ -4,6 +4,7 @@ namespace Servers\Controllers;
 
 use Avocado\Router\AvocadoRequest;
 use HCGCloud\Pterodactyl\Pterodactyl;
+use PDO;
 use Servers\Models\User;
 use Servers\Repositories;
 use Servers\Services\ActivationService;
@@ -11,11 +12,11 @@ use Servers\Services\MailService;
 
 class UserController {
     private static Pterodactyl $pterodactyl;
-    private static \PDO $pterodactylDatabase;
+    private static PDO $pterodactylDatabase;
 
     public static final function init(Pterodactyl $pterodactyl): void {
         self::$pterodactyl = $pterodactyl;
-        self::$pterodactylDatabase = new \PDO("mysql:dbname=panel;host=178.32.202.241;port=3306", "PAWCIOxKOKS", "E0O(N*Jhbv)m@Rnl");
+        self::$pterodactylDatabase = new PDO("mysql:dbname=panel;host=178.32.202.241;port=3306", "PAWCIOxKOKS", "E0O(N*Jhbv)m@Rnl");
     }
 
     public static final function login(AvocadoRequest $req): void {
@@ -25,17 +26,19 @@ class UserController {
 
         if (!$user) AuthController::redirect('login', ["message" => "Nieprawidlowe dane"]);
 
-        $isCorrectPassword = password_verify($req->body['password'], $user->passwordHash);
+        $isCorrectPassword = password_verify($req->body['password'], $user->getPasswordHash());
 
         if (!$isCorrectPassword) AuthController::redirect('login', ["message" => "Nieprawidlowe dane"]);
         $pterodactylUser = self::$pterodactylDatabase->prepare("SELECT * FROM users WHERE users.email = :email");
-        $pterodactylUser->bindParam(":email", $user->email);
+        $userEmail = $user->getEmail();
+
+        $pterodactylUser->bindParam(":email", $userEmail);
         $pterodactylUser->execute();
-        $pterodactylUser = $pterodactylUser->fetchAll(\PDO::FETCH_CLASS)[0];
+        $pterodactylUser = $pterodactylUser->fetchAll(PDO::FETCH_CLASS)[0];
 
         $_SESSION['pterodactyl_user_id'] = $pterodactylUser->id;
-        $_SESSION['id'] = $user->id;
-        LogsController::saveUserLoginLog($user->id, $user->username);
+        $_SESSION['id'] = $user->getId();
+        LogsController::saveUserLoginLog($user->getId(), $user->getUsername());
         AuthController::redirect('');
     }
 
@@ -92,18 +95,18 @@ class UserController {
 
         $userId = $_SESSION['id'];
         $user = Repositories::$userRepository->findOneById($userId);
-        $isOldPasswordIsCorrect = password_verify($oldPassword, $user->passwordHash);
-        $isOldPasswordEqualsNew = password_verify(password_hash($newPassword, PASSWORD_DEFAULT), $user->passwordHash);
+        $isOldPasswordIsCorrect = password_verify($oldPassword, $user->getPasswordHash());
+        $isOldPasswordEqualsNew = password_verify(password_hash($newPassword, PASSWORD_DEFAULT), $user->getPasswordHash());
 
         if (!$isOldPasswordIsCorrect) AuthController::redirect('panel', ["message" => "Stare hasło jest nieprawidłowe."]);
         if ($isOldPasswordEqualsNew) AuthController::redirect('panel', ["message" => "Stare hasło jest identyczne jak stare."]);
 
         Repositories::$userRepository->updateOneById(["passwordHash" => password_hash($newPassword, PASSWORD_DEFAULT)], $userId);
         self::$pterodactyl->user($_SESSION['pterodactyl_user_id'], [
-            "email" => $user->email,
-            "username" => $user->username,
-            "first_name" => $user->username,
-            "last_name" => $user->username,
+            "email" => $user->getEmail(),
+            "username" => $user->getUsername(),
+            "first_name" => $user->getUsername(),
+            "last_name" => $user->getUsername(),
             "language" => "pl",
             "password" => $newPassword
         ]);
@@ -119,10 +122,10 @@ class UserController {
         $user = Repositories::$userRepository->findOneById($_SESSION['id']);
         Repositories::$userRepository->updateOneById(["username" => $username], $_SESSION['id']);
         self::$pterodactyl->user($_SESSION['pterodactyl_user_id'], [
-            "email" => $user->email,
-            "username" => $user->username,
-            "first_name" => $user->username,
-            "last_name" => $user->username,
+            "email" => $user->getEmail(),
+            "username" => $user->getUsername(),
+            "first_name" => $user->getUsername(),
+            "last_name" => $user->getUsername(),
             "language" => "pl"
         ]);
         AuthController::redirect('panel');
@@ -140,9 +143,9 @@ class UserController {
 
         self::$pterodactyl->user($_SESSION['pterodactyl_user_id'], [
             "email" => "gowno",
-            "username" => $user->username,
-            "first_name" => $user->username,
-            "last_name" => $user->username,
+            "username" => $user->getUsername(),
+            "first_name" => $user->getUsername(),
+            "last_name" => $user->getUsername(),
             "language" => "pl"
         ]);
         AuthController::redirect('panel', []);

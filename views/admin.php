@@ -35,10 +35,10 @@ use Servers\Utils\Environment;
                     </tr>
                     <?php foreach($users as $user): ?>
                         <tr class="table__row">
-                            <td class="table__col"><?= $user->id ?></td>
-                            <td class="table__col"><?= $user->username ?></td>
-                            <td class="table__col"><?= $user->email ?></td>
-                            <td class="table__col"><?= $user->wallet ?></td>
+                            <td class="table__col"><?= $user->getId() ?></td>
+                            <td class="table__col"><?= $user->getUsername() ?></td>
+                            <td class="table__col"><?= $user->getEmail() ?></td>
+                            <td class="table__col"><?= $user->getWallet() ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </table>
@@ -58,13 +58,13 @@ use Servers\Utils\Environment;
                 </tr>
                 <?php foreach($payments as $payment): ?>
                     <tr class="table__row">
-                        <td class="table__col"><?= $payment->id ?></td>
-                        <td class="table__col"><?= $payment->paymentDate ?></td>
-                        <td class="table__col"><?= $payment->createDate ?></td>
-                        <td class="table__col"><?= $payment->ipAdress ?></td>
-                        <td class="table__col"><?= $payment->sum ?></td>
-                        <td class="table__col"><?= $payment->method ?></td>
-                        <td class="table__col"><?= $payment->user_id ?></td>
+                        <td class="table__col"><?= $payment->getId() ?></td>
+                        <td class="table__col"><?= $payment->getPaymentDate() ?></td>
+                        <td class="table__col"><?= $payment->getCreateDate() ?></td>
+                        <td class="table__col"><?= $payment->getIpAddress() ?></td>
+                        <td class="table__col"><?= $payment->getSum() ?></td>
+                        <td class="table__col"><?= $payment->getMethod() ?></td>
+                        <td class="table__col"><?= $payment->getUserId() ?></td>
                     </tr>
                 <?php endforeach; ?>
             </table>
@@ -83,13 +83,13 @@ use Servers\Utils\Environment;
                 </tr>
                 <?php foreach($soldServers as $server): ?>
                     <tr class="table__row">
-                        <td class="table__col"><?= $server->id ?></td>
-                        <td class="table__col"><?= $server->title ?></td>
-                        <td class="table__col"><?= $server->status ?></td>
-                        <td class="table__col"><?= $server->createDate ?></td>
-                        <td class="table__col"><?= $server->expireDate ?></td>
-                        <td class="table__col"><?= $server->package ?></td>
-                        <td class="table__col"><?= $server->payment_id ?></td>
+                        <td class="table__col"><?= $server->getId() ?></td>
+                        <td class="table__col"><?= $server->getTitle() ?></td>
+                        <td class="table__col"><?= $server->getStatus() ?></td>
+                        <td class="table__col"><?= $server->getCreateDate() ?></td>
+                        <td class="table__col"><?= $server->getExpireDate() ?></td>
+                        <td class="table__col"><?= $server->getPackage() ?></td>
+                        <td class="table__col"><?= $server->getPaymentId() ?></td>
                     </tr>
                 <?php endforeach; ?>
             </table>

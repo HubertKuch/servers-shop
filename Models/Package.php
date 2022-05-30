@@ -2,9 +2,9 @@
 
 namespace Servers\Models;
 
-use Avocado\ORM\Field;
-use Avocado\ORM\Id;
-use Avocado\ORM\Table;
+use Avocado\ORM\Attributes\Field;
+use Avocado\ORM\Attributes\Table;
+use Avocado\ORM\Attributes\Id;
 
 #[Table('package')]
 class Package {
@@ -30,5 +30,54 @@ class Package {
         $this->processorPower = $processorPower;
         $this->cost = $cost;
         $this->imageSrc = $imageSrc;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string {
+        return $this->name;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRamSize(): int {
+        return $this->ramSize;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDiskSize(): int {
+        return $this->diskSize;
+    }
+
+    /**
+     * @return int
+     */
+    public function getProcessorPower(): int {
+        return $this->processorPower;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCost(): float {
+        return $this->cost;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImageSrc(): string {
+        return $this->imageSrc;
     }
 }

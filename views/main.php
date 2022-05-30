@@ -33,7 +33,7 @@ use Servers\views\components\MainPage;
                 } else {
                     $serversCount = count($servers);
                     foreach ($servers as $server) {
-                        $package = Repositories::$packagesRepository->findOneById($server->package_id);
+                        $package = Repositories::$packagesRepository->findOneById($server->getPackageId());
 
                         MainPage::server($server, $package);
                     }

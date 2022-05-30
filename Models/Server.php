@@ -2,10 +2,10 @@
 
 namespace Servers\Models;
 
-use Avocado\ORM\Field;
-use Avocado\ORM\Id;
-use Avocado\ORM\Table;
-use Avocado\ORM\IgnoreFieldType;
+use Avocado\ORM\Attributes\Field;
+use Avocado\ORM\Attributes\Table;
+use Avocado\ORM\Attributes\Id;
+use Avocado\ORM\Attributes\IgnoreFieldType;
 
 #[Table('servers')]
 class Server {
@@ -49,9 +49,9 @@ class Server {
 
     public function getExpireDate(): int { return $this->expireDate; }
 
-    public function getPackage(): string { return $this->package; }
+    public function getPackage(): string { return $this->packageId; }
 
-    public function getPaymentId(): int { return $this->payment_id; }
+    public function getPaymentId(): int|null { return $this->payment_id; }
 
     public function setTitle(string $title): void { $this->title = $title; }
 
@@ -64,4 +64,10 @@ class Server {
     public function setPackage(string $package): void { $this->package = $package; }
 
     public function setPaymentId(int $payment_id): void { $this->payment_id = $payment_id; }
+
+    public function getPackageId(): int { return $this->packageId; }
+
+    public function getUserId(): int { return $this->user_id; }
+
+    public function getPterodactylId(): int { return $this->pterodactyl_id; }
 }

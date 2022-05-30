@@ -6,7 +6,6 @@ use Avocado\Router\AvocadoRequest;
 use HCGCloud\Pterodactyl\Pterodactyl;
 use Servers\Models\JavaVersion;
 use Servers\Models\MinecraftEggNames;
-use Servers\Models\PaymentMethods;
 use Servers\Models\Server;
 use Servers\Models\ServerStatus;
 use Servers\Repositories;
@@ -22,8 +21,8 @@ class ServersController {
     }
 
     public static final function suspendServer(object $server): void {
-        $pterodactylId = $server->pterodactyl_id ?? null;
-        $serverId = $server->id;
+        $pterodactylId = $server->getPterodactylId() ?? null;
+        $serverId = $server->getId();
 
         if (!$pterodactylId || $pterodactylId == 0)
             AuthController::redirect('servers', ["message" => "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem domeny."]);
@@ -41,7 +40,7 @@ class ServersController {
 
         $server = Repositories::$productsRepository->findOneById($serverId);
 
-        $pterodactylId = $server->pterodactyl_id ?? null;
+        $pterodactylId = $server->getPterodactylId() ?? null;
 
         if (!$serverId || $serverId == 0)
             AuthController::redirect('servers', ["message" => "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem domeny."]);
@@ -88,6 +87,8 @@ class ServersController {
 
         $egg = self::$pterodactyl->egg(1, $eggId);
 
+        var_dump($pterodactylUserId);
+
         $serverData = [
             'name' => $name,
             'user' => $pterodactylUserId,
@@ -99,11 +100,11 @@ class ServersController {
                 'SERVER_JARFILE' => 'server.jar',
             ],
             'limits' => [
-                'memory' => $package->ram_size,
+                'memory' => $package->getRamSize(),
                 'swap' => 0,
-                'disk' => $package->disk_size,
+                'disk' => $package->getDiskSize(),
                 'io' => 500,
-                'cpu' => $package->processor_power,
+                'cpu' => $package->getProcessorPower(),
             ],
             'feature_limits' => [
                 'databases' => 1,
@@ -118,10 +119,10 @@ class ServersController {
         $createDate = time();
         $expireDate = time() + 24 * 60 * 60 * self::$expireDays;
 
-        $userId = $user->id;
+        $userId = $user->getId();
         $serverId = $pterodactylServer->id;
 
-        $server = new Server($name, ServerStatus::EXPIRED->value, $createDate, $expireDate, $package->id, $userId, $serverId);
+        $server = new Server($name, ServerStatus::EXPIRED->value, $createDate, $expireDate, $package->getId(), $userId, $serverId);
         Repositories::$productsRepository->save($server);
 
         AuthController::redirect('panel');

@@ -10,8 +10,6 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
 
-use Avocado\Router\AvocadoRequest;
-use Avocado\Router\AvocadoRoute;
 use Avocado\Router\AvocadoRouter;
 use Avocado\ORM\AvocadoORMSettings;
 use HCGCloud\Pterodactyl\Pterodactyl;
@@ -31,12 +29,11 @@ putenv("ENVIRONMENT=DEVELOPMENT");
 
 $pterodactyl = new Pterodactyl(getenv("ROOT_PTERODACTYL_API_KEY"), getenv("PTERODACTYL_IP"));
 
+AvocadoORMSettings::useDatabase("mysql:host=localhost;dbname=servers;port=3306;", "root", "");
+
 Repositories::init();
 ServersController::init($pterodactyl);
 UserController::init($pterodactyl);
-
-AvocadoORMSettings::useDatabase("mysql:host=localhost;dbname=servers;port=3306;", "root", "");
-AvocadoORMSettings::useFetchOption(\PDO::FETCH_CLASS);
 
 // VIEWS
 AvocadoRouter::GET("/",                                     [], [ViewsController::class, "main"]);
@@ -65,5 +62,6 @@ AvocadoRouter::PATCH("/api/unsuspend-server/:id",           [], [ServersControll
 
 // PAYMENTS ACTIONS
 AvocadoRouter::PATCH("/api/add-amount",                     [], [PaymentsService::class, "createAmountRequest"]);
+AvocadoRouter::GET("/api/payment-notify",                   [], [PaymentsService::class, "paymentNotify"]);
 
 AvocadoRouter::listen();

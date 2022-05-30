@@ -4,6 +4,7 @@ namespace Servers\Services;
 
 use Avocado\Router\AvocadoRequest;
 use Avocado\Router\AvocadoResponse;
+use Avocado\Router\AvocadoRouter;
 use Servers\Controllers\AuthController;
 use Servers\Controllers\LogsController;
 use Servers\Models\Payment;
@@ -30,6 +31,9 @@ class PaymentsService {
         if (!$paymentMethodId)
             AuthController::redirect("panel", ["message" => "Metoda płatności nie jest ustawiona"]);
 
+        if (!floatval($amount))
+            AuthController::redirect("panel", ["message" => "Niepoprawna kwota"]);
+
         if (!$amount)
             AuthController::redirect("panel", ["message" => "Kwota nie może być pusta lub niższa od 1PLN"]);
 
@@ -45,7 +49,7 @@ class PaymentsService {
 
         $user = Repositories::$userRepository->findOneById($_SESSION['id']);
 
-        $title = "Doładowanie konta $user->username";
+        $title = "Doładowanie konta {$user->getUsername()}";
 
         $paymentResponse = self::createPayment($amount, $paymentMethod, $title);
 
@@ -64,7 +68,9 @@ class PaymentsService {
             "tid" => $tid
         ]);
 
-        LogsController::savePaymentLog($paymentFromDb->id);
+        LogsController::savePaymentLog($paymentFromDb->getId());
+
+        header("Location: $url");
     }
 
     private static function getIPAddress(): string {
@@ -75,6 +81,10 @@ class PaymentsService {
         else if (isset($_SERVER['HTTP_CLIENT_IP'])) $ip = $_SERVER['HTTP_CLIENT_IP'];
 
         return $ip;
+    }
+
+    public static function paymentNotify(AvocadoRequest $req) {
+        echo "OK";
     }
 
     private static function createPayment(float $sum, PaymentMethods $method, string $title): array {
@@ -122,8 +132,10 @@ class PaymentsService {
 
                 return $json;
             } else {
-                var_dump((curl_error($ch)));
+                return [];
             }
         }
+
+        return [];
     }
 }

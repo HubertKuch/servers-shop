@@ -2,9 +2,9 @@
 
 namespace Servers\Models;
 
-use Avocado\ORM\Field;
-use Avocado\ORM\Id;
-use Avocado\ORM\Table;
+use Avocado\ORM\Attributes\Field;
+use Avocado\ORM\Attributes\Id;
+use Avocado\ORM\Attributes\Table;
 
 #[Table('logs')]
 class Log {
