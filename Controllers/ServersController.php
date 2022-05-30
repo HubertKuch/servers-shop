@@ -6,6 +6,7 @@ use Avocado\Router\AvocadoRequest;
 use HCGCloud\Pterodactyl\Pterodactyl;
 use Servers\Models\JavaVersion;
 use Servers\Models\MinecraftEggNames;
+use Servers\Models\PaymentMethods;
 use Servers\Models\Server;
 use Servers\Models\ServerStatus;
 use Servers\Repositories;
@@ -52,14 +53,14 @@ class ServersController {
     }
 
     public static final function create(AvocadoRequest $req): void {
-        $eggType = $req->body['egg_type'] ?? null;
-        $eggId = intval($req->body['egg_id']) ?? null;
-        $packageId = intval($req->body['package_id']) ?? null;
-        $name = $req->body['server_name'] ?? null;
-        $minecraftVersion = trim($req->body['mc_version']) ?? null;
-        $javaVersion = $req->body['java_version'] ?? null;
-        $pterodactylUserId = $_SESSION['pterodactyl_user_id'];
-        $user = Repositories::$userRepository->findOneById($_SESSION['id']);
+        $eggType            = $req->body['egg_type'] ?? null;
+        $eggId              = intval($req->body['egg_id']) ?? null;
+        $packageId          = intval($req->body['package_id']) ?? null;
+        $name               = $req->body['server_name'] ?? null;
+        $minecraftVersion   = trim($req->body['mc_version']) ?? null;
+        $javaVersion        = $req->body['java_version'] ?? null;
+        $pterodactylUserId  = $_SESSION['pterodactyl_user_id'];
+        $user               = Repositories::$userRepository->findOneById($_SESSION['id']);
 
         if (!$eggType || !$packageId || !$name || !$minecraftVersion || !$javaVersion)
             AuthController::redirect('servers', ["message" => "Wszystkie dane muszą być podane"]);
@@ -86,6 +87,7 @@ class ServersController {
             AuthController::redirect('servers', ["message" => "Niepoprawna wersja Minecraft"]);
 
         $egg = self::$pterodactyl->egg(1, $eggId);
+
         $serverData = [
             'name' => $name,
             'user' => $pterodactylUserId,
@@ -112,13 +114,14 @@ class ServersController {
             ]
         ];
 
-        $server = self::$pterodactyl->createServer($serverData);
+        $pterodactylServer = self::$pterodactyl->createServer($serverData);
         $createDate = time();
         $expireDate = time() + 24 * 60 * 60 * self::$expireDays;
-        $userId = $user->id;
-        $serverId = $server->id;
 
-        $server = new Server($name, ServerStatus::SOLD->value, $createDate, $expireDate, $package->id, $userId, $serverId);
+        $userId = $user->id;
+        $serverId = $pterodactylServer->id;
+
+        $server = new Server($name, ServerStatus::EXPIRED->value, $createDate, $expireDate, $package->id, $userId, $serverId);
         Repositories::$productsRepository->save($server);
 
         AuthController::redirect('panel');

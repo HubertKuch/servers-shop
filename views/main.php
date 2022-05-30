@@ -38,8 +38,7 @@ use Servers\views\components\MainPage;
                         MainPage::server($server, $package);
                     }
                 }
-
-                ?>
+            ?>
         </div>
     </main>
 </body>

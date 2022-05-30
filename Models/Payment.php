@@ -24,8 +24,10 @@ class Payment {
     private string $method;
     #[Field]
     private int $user_id;
+    #[Field]
+    private string $tid;
 
-    public function __construct(int $paymentDate, int $createDate, string $ipAddress, string $status, float $sum, string $method, int $user_id) {
+    public function __construct(int $paymentDate, int $createDate, string $ipAddress, string $status, float $sum, string $method, int $user_id, string $tid) {
         $this->paymentDate = $paymentDate;
         $this->createDate = $createDate;
         $this->ipAddress = $ipAddress;
@@ -33,6 +35,7 @@ class Payment {
         $this->sum = $sum;
         $this->method = $method;
         $this->user_id = $user_id;
+        $this->tid = $tid;
     }
 
     public function getId(): int { return $this->id; }

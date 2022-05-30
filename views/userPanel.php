@@ -29,6 +29,9 @@ use Servers\Repositories;
                 <i class="fa-solid fa-credit-card admin__panel--section-option" data-section-class="payments"></i>
             </li>
             <li>
+                <i class="fa-solid fa-wallet admin__panel--section-option" data-section-class="wallet"></i>
+            </li>
+            <li>
                 <i class="fa-solid fa-server admin__panel--section-option" data-section-class="bought-servers"></i>
             </li>
             <li>
@@ -51,6 +54,82 @@ use Servers\Repositories;
 
     <main class="admin__main">
 
+        <section class="wallet admin__panel--section section--invisible">
+            <p style="font-size: 24px">Doładuj swoje konto</p>
+            <p class="waller__errros" style="color: red;">
+                <?php
+                foreach ($_GET as $error => $message) {
+                    echo $message;
+                }
+                ?>
+            </p>
+
+            <p>Wybierz metodę płatności</p>
+            <form action="index.php/api/add-amount" method="post">
+                <input type="hidden" class="payment_id" name="payment_id" value="0">
+                <input type="hidden" name="_method" value="PATCH">
+
+                <section class="payment__methods">
+                    <div data-payment-due-name="PSC_DUE" data-payment-method="8" class="methods__method"><img src="views/assets/psc.png" alt="psc"></div>
+                    <div data-payment-due-name="PAYPAL_DUE" data-payment-method="4" class="methods__method"><img src="views/assets/paypal.webp" alt="paypal"></div>
+                    <div data-payment-due-name="G2A_DUE" data-payment-method="32" class="methods__method"><img src="views/assets/g2apay.jpeg" alt="g2apay"></div>
+                    <div data-payment-due-name="SMS_PLUS_DUE" data-payment-method="64" class="methods__method"><img src="views/assets/justpay.jpg" alt="justpay"></div>
+                    <div data-payment-due-name="CASH_BILL_DUE" data-payment-method="128" class="methods__method"><img src="views/assets/cashbill.jpg" alt="cashbill"></div>
+                    <div data-payment-due-name="SMS_DUE" data-payment-method="256" class="methods__method"><img src="views/assets/cashbillsms.webp" alt="sms"></div>
+                </section>
+                <br>
+                <section class="add__amount">
+                    <span>Kwota</span>
+                    <span class="after-commission">(Po odjęciu prowizji <span class="after-commission__amount">0</span>)</span><br>
+                    <input type="text" name="amount" class="panel__input">
+                </section>
+                <br>
+                <button type="submit" class="panel__button">Dodaj środki</button>
+
+                <script>
+                    const paymentMethods = document.querySelectorAll('.methods__method');
+                    const paymentId = document.querySelector('.payment_id');
+                    const realAmount = document.querySelector('.after-commission__amount');
+                    const amount = document.querySelector('.add__amount [name=amount]');
+
+                    const dues =<?php echo "[";
+                            foreach ($_ENV as $key => $value) {
+                                if (str_contains($key, "DUE")) {
+                                    printf('{name: "%s", due: %s},', $key, $value);
+                                }
+                            } echo "]";?>
+
+                    const showRealAmount = (methodEl) => {
+                        const paymentMethodDueName = methodEl.getAttribute('data-payment-due-name');
+                        const failAmount = parseFloat(amount.value) ?? 0;
+                        const { due } = dues.find(due => due.name === paymentMethodDueName);
+                        realAmount.textContent = `${(failAmount * due)/ 100}`;
+                    }
+
+                    for (const method of paymentMethods) {
+                        method.addEventListener('click', (e) => {
+                            paymentMethods.forEach(el => el.removeAttribute('style'));
+
+                            let methodEl = e.target;
+                            let paymentMethodId = e.target.getAttribute('data-payment-method');
+
+                            if (!paymentMethodId) {
+                                paymentMethodId = e.target.parentElement.getAttribute('data-payment-method');
+                                methodEl = e.target.parentElement;
+                            }
+
+                            methodEl.style.background = '#8659ea';
+                            methodEl.style.border = "2px solid white";
+                            paymentId.value = paymentMethodId;
+
+                            amount.addEventListener('input', () => showRealAmount(methodEl));
+                            e.target.addEventListener('click', () => showRealAmount(methodEl));
+                        });
+                    }
+                </script>
+            </form>
+        </section>
+
         <section class="payments admin__panel--section section--visible">
             <?php
                 if (empty($payments)) {
@@ -67,17 +146,22 @@ use Servers\Repositories;
                     <th>STATUS</th>
                     <th>KWOTA</th>
                     <th>METODA</th>
-                    <th>ID UŻYTKOWNIKA</th>
                 </tr>
                 <?php foreach($payments as $payment): ?>
                     <tr class="table__row">
                         <td class="table__col"><?= $payment->id ?></td>
                         <td class="table__col"><?= $payment->paymentDate ?></td>
                         <td class="table__col"><?= $payment->createDate ?></td>
-                        <td class="table__col"><?= $payment->ipAdress ?></td>
+                        <td class="table__col"><?= $payment->ipAddress ?></td>
+                        <td class="table__col"><?= match ($payment->status) {
+                            "incoming" => "Przychodząca",
+                                "resolved" => "Zaakceptowana",
+                                "rejected" => "Odrzucona",
+                                default => "Nieznany"
+                        }
+                            ?></td>
                         <td class="table__col"><?= $payment->sum ?></td>
                         <td class="table__col"><?= $payment->method ?></td>
-                        <td class="table__col"><?= $payment->user_id ?></td>
                     </tr>
                 <?php endforeach; ?>
             </table>
