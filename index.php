@@ -10,12 +10,18 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
 
+use Avocado\Router\AvocadoRequest;
+use Avocado\Router\AvocadoRoute;
 use Avocado\Router\AvocadoRouter;
 use Avocado\ORM\AvocadoORMSettings;
 use HCGCloud\Pterodactyl\Pterodactyl;
 use Servers\Controllers\ServersController;
 use Servers\Controllers\UserController;
 use Servers\Controllers\ViewsController;
+use Dotenv\Dotenv;
+use Servers\Services\PaymentsService;
+
+Dotenv::createImmutable(__DIR__)->load();
 
 $mainDir = explode('/', $_SERVER['SCRIPT_NAME'])[1];
 putenv("MAIN_DIR=$mainDir");
@@ -56,5 +62,8 @@ AvocadoRouter::PATCH("/api/activate-account",               [], [UserController:
 // SERVERS ACTIONS
 AvocadoRouter::POST("/api/create-server",                   [], [ServersController::class, "create"]);
 AvocadoRouter::PATCH("/api/unsuspend-server/:id",           [], [ServersController::class, "unSuspendServer"]);
+
+// PAYMENTS ACTIONS
+AvocadoRouter::PATCH("/api/add-amount",                     [], [PaymentsService::class, "createAmountRequest"]);
 
 AvocadoRouter::listen();

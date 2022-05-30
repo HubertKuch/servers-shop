@@ -20,7 +20,9 @@
     "require": {
         "hubert/avocado": "^1.0.0",
         "phpmailer/phpmailer": "6.6.0",
+        "hcgcloud/pterodactyl-sdk": "v1.0.4",
+        "vlucas/phpdotenv": "v5.4.1",
         "ext-pdo": "*",
-        "hcgcloud/pterodactyl-sdk": "v1.0.4"
+        "ext-curl": "*"
     }
 }

@@ -181,14 +181,50 @@ a {
     width: 70%;
 }
 
+.server__cost {
+    position: fixed;
+    right: 50px;
+    top: 50px;
+}
+
+.payment__methods {
+    display: grid;
+    grid-template-rows: repeat(6, 1fr);
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.methods__method {
+    height: 100px;
+    width: 150px;
+    background: #a187e1;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.methods__method img {
+    height: 95%;
+    width: 95%;
+}
+
 @media screen and (min-width: 948px) {
     .create-server-main {
         padding: 50px 150px 0;
+    }
+
+    .payment__methods {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: repeat(4, 1fr);
     }
 }
 
 @media screen and (min-width: 1378px) {
     .header__gaming-console {
         display: block;
+    }
+
+    .payment__methods {
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: 1fr;
     }
 }

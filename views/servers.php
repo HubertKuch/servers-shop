@@ -73,7 +73,7 @@ use Servers\views\components\Servers;
 
                 <?php
                     foreach ($packages as $package) {
-                        Servers::package($package->id, $package->image_src, $package->name, "{$package->ram_size}MB ram / {$package->disk_size}MB dysku / {$package->processor_power}% procesora");
+                        Servers::package($package->id, $package->image_src, $package->name, "{$package->ram_size}MB ram / {$package->disk_size}MB dysku / {$package->processor_power}% procesora", $package->cost);
                     }
                 ?>
             </section>

@@ -16,16 +16,21 @@ create table if not exists users (
 
 create table if not exists payments (
     id                      bigint not null auto_increment primary key,
-    paymentDate             timestamp not null,
-    createDate              timestamp not null,
+    paymentDate             bigint,
+    createDate              bigint not null,
     ipAddress               text not null,
     status                  enum('rejected', 'incoming', 'resolved') not null,
     sum                     double not null,
     method                  text not null,
+    tid                     text not null,
 
     user_id                 bigint not null,
     foreign key (user_id)   references users(id)
 );
+
+alter table payments modify if exists paymentDate bigint;
+alter table payments modify if exists createDate bigint not null;
+alter table payments add column if not exists tid text not null;
 
 create table if not exists package (
    id                       int not null auto_increment primary key,

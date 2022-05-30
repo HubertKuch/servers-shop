@@ -12,13 +12,13 @@ class Servers {
         ', $name, $eggId, $imgSource, $name, $name);
     }
 
-    public static final function package(int $packageId, string $packageImgSource, string $name, string $desc): void {
+    public static final function package(int $packageId, string $packageImgSource, string $name, string $desc, float $price): void {
         printf('
-            <div class="package" data-package-id="%s">
+            <div class="package" data-package-id="%s" data-package-price="%s">
                 <img src="%s" alt="%s" class="egg__img">
                 <div class="egg__name">%s</div>
                 <div class="egg__desc">%s</div>
             </div>
-        ', $packageId, $packageImgSource, $name, $name, $desc);
+        ', $packageId, $price, $packageImgSource, $name, $name, $desc);
     }
 }
