@@ -2,9 +2,10 @@
 
 namespace Servers\Models;
 
-use Avocado\ORM\Field;
-use Avocado\ORM\Id;
-use Avocado\ORM\Table;
+
+use Avocado\ORM\Attributes\Field;
+use Avocado\ORM\Attributes\Table;
+use Avocado\ORM\Attributes\Id;
 
 #[Table('users')]
 class User {
@@ -55,4 +56,12 @@ class User {
     public function getWallet(): float { return $this->wallet; }
 
     public function setWallet(float $wallet): void { $this->wallet = $wallet; }
+
+    public function getRole(): string { return $this->role; }
+
+    public function getIsActivated(): int { return $this->isActivated; }
+
+    public function getActivationCode(): int { return $this->activationCode; }
+
+    public function getActivationCodeExpiresIn(): int { return $this->activationCodeExpiresIn; }
 }

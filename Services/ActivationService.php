@@ -17,7 +17,7 @@ class ActivationService {
 
     public static function isExpired(int $code): bool {
         $user = Repositories::$userRepository->findOne(["activationCode" => $code]);
-        $expiresTimestamp = $user->activationCodeExpiresIn;
+        $expiresTimestamp = $user->getActivationCodeExpiresIn();
 
         return !(time() < intval($expiresTimestamp));
     }

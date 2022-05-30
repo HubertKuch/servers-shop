@@ -26,7 +26,7 @@ class AuthController {
 
         $user = Repositories::$userRepository->findOneById($_SESSION['id']);
 
-        $isActivated = $user->isActivated;
+        $isActivated = $user->getIsActivated();
         if (!$isActivated) {
             self::redirect('account-activation');
         }
@@ -35,7 +35,7 @@ class AuthController {
     public static function restrictTo(string ...$roles) {
         $user = Repositories::$userRepository->findOneById($_SESSION['id'] ?? 0);
 
-        if(!in_array($user->role, $roles)) {
+        if(!in_array($user->getRole(), $roles)) {
             AuthController::redirect('');
         }
     }

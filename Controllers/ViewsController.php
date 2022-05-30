@@ -42,10 +42,10 @@ class ViewsController {
         $payments = Repositories::$paymentsRepository->findOneToManyRelation($findForeignPayments);
         $userServers = Repositories::$productsRepository->findOneToManyRelation($findForeignBoughtServers, ["status" => ServerStatus::IN_MAGAZINE->value]);
 
-        $isAdmin = $user->role === UserRole::ADMIN->value;
+        $isAdmin = $user->getRole() === UserRole::ADMIN->value;
 
         foreach ($userServers as $server)
-            if ($server->expireDate < time())
+            if ($server->getExpireDate() < time())
                 ServersController::suspendServer($server);
 
         $userServers = Repositories::$productsRepository->findOneToManyRelation($findForeignBoughtServers, ["status" => ServerStatus::IN_MAGAZINE->value]);
@@ -66,22 +66,16 @@ class ViewsController {
     }
 
     public static final function login(AvocadoRequest $req): void {
-        AuthController::notForLoggedIn();
-
         $errors = $req->query;
         require "views/login.php";
     }
 
     public static final function register(AvocadoRequest $req): void {
-        AuthController::notForLoggedIn();
-
         $errors = $req->query;
         require "views/register.php";
     }
 
     public static final function accountActivation(): void {
-        AuthController::notForLoggedIn();
-
         $errors = $_GET;
         require "views/accountActivation.php";
     }

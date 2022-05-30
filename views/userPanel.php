@@ -149,19 +149,19 @@ use Servers\Repositories;
                 </tr>
                 <?php foreach($payments as $payment): ?>
                     <tr class="table__row">
-                        <td class="table__col"><?= $payment->id ?></td>
-                        <td class="table__col"><?= $payment->paymentDate ?></td>
-                        <td class="table__col"><?= $payment->createDate ?></td>
-                        <td class="table__col"><?= $payment->ipAddress ?></td>
-                        <td class="table__col"><?= match ($payment->status) {
+                        <td class="table__col"><?= $payment->getId() ?></td>
+                        <td class="table__col"><?= $payment->getPaymentDate() ?></td>
+                        <td class="table__col"><?= $payment->getCreateDate() ?></td>
+                        <td class="table__col"><?= $payment->getIpAddress() ?></td>
+                        <td class="table__col"><?= match ($payment->getStatus()) {
                             "incoming" => "Przychodząca",
                                 "resolved" => "Zaakceptowana",
                                 "rejected" => "Odrzucona",
                                 default => "Nieznany"
                         }
                             ?></td>
-                        <td class="table__col"><?= $payment->sum ?></td>
-                        <td class="table__col"><?= $payment->method ?></td>
+                        <td class="table__col"><?= $payment->getSum() ?></td>
+                        <td class="table__col"><?= $payment->getMethod() ?></td>
                     </tr>
                 <?php endforeach; ?>
             </table>
@@ -196,20 +196,20 @@ use Servers\Repositories;
                 </tr>
                 <?php foreach($userServers as $server): ?>
                     <tr class="table__row">
-                        <td class="table__col"><?= $server->id ?></td>
-                        <td class="table__col"><?= $server->title ?></td>
-                        <td class="table__col"><?= match ($server->status) {
+                        <td class="table__col"><?= $server->getId() ?></td>
+                        <td class="table__col"><?= $server->getTitle() ?></td>
+                        <td class="table__col"><?= match ($server->getStatus()) {
                                 ServerStatus::SOLD->value => '<span class="server-status server-status--active">Aktywny</span>',
                                 ServerStatus::IN_MAGAZINE->value,
                                 ServerStatus::EXPIRED->value => '<span class="server-status server-status--expired">Wygasł</span>'
                             } ?>
                         </td>
-                        <td class="table__col"><?= date('m/d/Y', $server->createDate) ?></td>
-                        <td class="table__col"><?= date('m/d/Y', $server->expireDate) ?></td>
-                        <td class="table__col"><?php $package = Repositories::$packagesRepository->findOneById($server->package_id); echo "$package->name ({$package->ram_size}MB / {$package->disk_size}MB)" ?></td>
-                        <td class="table__col"><?= $server->payment_id ?></td>
+                        <td class="table__col"><?= date('m/d/Y', $server->getCreateDate()) ?></td>
+                        <td class="table__col"><?= date('m/d/Y', $server->getExpireDate()) ?></td>
+                        <td class="table__col"><?php $package = Repositories::$packagesRepository->findOneById($server->getPackageId()); echo "{$package->getName()} ({$package->getRamSize()}MB / {$package->getDiskSize()}MB)" ?></td>
+                        <td class="table__col"><?= $server->getPaymentId() ?? "BRAK" ?></td>
                         <td class="table__col">
-                            <form action="index.php/api/unsuspend-server/<?= $server->id ?>" method="post">
+                            <form action="index.php/api/unsuspend-server/<?= $server->getId() ?>" method="post">
                                 <input type="hidden" name="_method" value="PATCH">
                                 <button type="submit" class="button--renew">Odnów</button>
                             </form>
@@ -275,6 +275,7 @@ use Servers\Repositories;
                 <button type="submit" class="panel__button">Zapisz</button>
             </form>
         </section>
+
     </main>
 
     <script>
@@ -283,6 +284,7 @@ use Servers\Repositories;
         const options = document.querySelectorAll('.admin__panel--section-option');
         const sections = document.querySelectorAll('.admin__panel--section');
         const beforeActiveSectionClass = localStorage.getItem("user-panel-actual-visible") ?? null;
+        console.log(2)
 
         sections.forEach(section => {
             if (!section.classList.contains(beforeActiveSectionClass)) {
