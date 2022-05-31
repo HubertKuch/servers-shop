@@ -23,8 +23,18 @@ body, head {
     padding: 0;
     margin: 0;
     background: #2D2449;
-    font-family: "Arimo", sans-serif;
+    font-family: "Arimo", sans-serif !important;
     scrollbar-color: #D8C2F4 #493A76;
+}
+
+/*--------------GLOBAL-------------*/
+.text-gray-900 {
+    color: #3a3b45!important;
+}
+.btn-primary {
+    color: #fff !important;
+    background-color: #4e73df !important;
+    border-color: #4e73df !important;
 }
 
 .admin__panel--section.servers {
