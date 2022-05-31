@@ -12,7 +12,7 @@ class MainPage {
                     <span style="float: right">%s</span>
                 </a>
             </div>
-        ', $package->image_src, $server->title, $package->name);
+        ', $package->getImageSrc(), $server->getTitle(), $package->getName());
     }
 
     public static final function nav() {
