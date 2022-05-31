@@ -18,7 +18,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "hubert/avocado": "^1.0.0",
+        "hubert/avocado": "2.2.1",
         "phpmailer/phpmailer": "6.6.0",
         "hcgcloud/pterodactyl-sdk": "v1.0.4",
         "vlucas/phpdotenv": "v5.4.1",
