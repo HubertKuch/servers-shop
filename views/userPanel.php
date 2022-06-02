@@ -82,7 +82,7 @@ use Servers\Repositories;
             <br>
             <section class="add__amount">
                 <span>Kwota</span>
-                <span class="after-commission">(Po odjęciu prowizji <span class="after-commission__amount">0</span>)</span><br>
+                <span class="after-commission">(Po odjęciu prowizji <spaFn class="after-commission__amount">0</spaFn>)</span><br>
                 <input type="text" name="amount" class="panel__input">
             </section>
             <br>
