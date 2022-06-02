@@ -40,6 +40,10 @@ AvocadoRouter::GET("/",                                     [], [ViewsController
 AvocadoRouter::GET("/admin",                                [], [ViewsController::class, "admin"]);
 AvocadoRouter::GET("/login",                                [], [ViewsController::class, "login"]);
 AvocadoRouter::GET("/register",                             [], [ViewsController::class, "register"]);
+AvocadoRouter::GET("/settings",                             [], [ViewsController::class, "userSettings"]);
+AvocadoRouter::GET("/payments",                             [], [ViewsController::class, "userPayments"]);
+AvocadoRouter::GET("/server-list",                          [], [ViewsController::class, "userServerList"]);
+AvocadoRouter::GET("/recharge",                             [], [ViewsController::class, "userRecharge"]);
 AvocadoRouter::GET("/panel",                                [], [ViewsController::class, "userPanel"]);
 AvocadoRouter::GET("/account-activation",                   [], [ViewsController::class, "accountActivation"]);
 AvocadoRouter::GET("/account-activated",                    [], [ViewsController::class, "accountActivated"]);

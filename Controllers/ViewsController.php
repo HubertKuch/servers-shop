@@ -75,6 +75,26 @@ class ViewsController {
         require "views/register.php";
     }
 
+    public static final function userSettings(AvocadoRequest $req): void {
+        $errors = $req->query;
+        require "views/userPanel/settings.php";
+    }
+
+    public static final function userPayments(AvocadoRequest $req): void {
+        $errors = $req->query;
+        require "views/userPanel/payments.php";
+    }
+
+    public static final function userServerList(AvocadoRequest $req): void {
+        $errors = $req->query;
+        require "views/userPanel/serverList.php";
+    }
+
+    public static final function userRecharge(AvocadoRequest $req): void {
+        $errors = $req->query;
+        require "views/userPanel/recharge.php";
+    }
+
     public static final function accountActivation(): void {
         $errors = $_GET;
         require "views/accountActivation.php";
