@@ -22,19 +22,7 @@ use Servers\views\components\MainPage;
 </head>
 <body>
 <div id="wrapper">
-<!--    <nav class="main__nav">-->
-<!--        <a href="index.php/" class="nav__icon-link">-->
-<!--            <img class="nav__icon" src="views/icons/home.svg" alt="home">-->
-<!--        </a>-->
-<!---->
-<!--        <a href="index.php/servers" class="nav__icon-link">-->
-<!--            <img class="nav__icon" src="views/icons/game.svg" alt="game-panel">-->
-<!--        </a>-->
-<!---->
-<!--        <a href="index.php/panel" class="nav__icon-link">-->
-<!--            <img  class="nav__icon" src="views/icons/account.svg" alt="account-panel">-->
-<!--        </a>-->
-<!--    </nav>';-->
+
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
@@ -67,7 +55,7 @@ use Servers\views\components\MainPage;
         <li class="nav-item">
             <a class="nav-link" href="index.php/servers">
                 <i class="fas fa-fw fa-cog"></i>
-                <span>Serwery</span>
+                <span>Stwórz serwer</span>
             </a>
         </li>
 
@@ -87,16 +75,22 @@ use Servers\views\components\MainPage;
                 </div>
             </div>
         </li>
+
         <!-- Divider -->
-        <hr class="sidebar-divider">
-
+        <hr class="sidebar-divider mb-0">
         <li class="nav-item">
-
             <a class="nav-link" href="index.php/api/logout">
                 <i class="fas fa-sign-out-alt"></i>
                 <span>Wyloguj się</span>
             </a>
         </li>
+
+        <hr class="sidebar-divider">
+        <!-- Sidebar Toggler (Sidebar) -->
+        <div class="text-center d-none d-md-inline">
+            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+
     </ul>
 
     <!-- Content Wrapper -->
@@ -109,7 +103,7 @@ use Servers\views\components\MainPage;
                 </div>
             </div>
             <div class="row w-100 mt-5">
-                <div class="col-12 px-5">
+                <div class="col-10 px-5">
                     <?= count($servers) ?>
                     <?php
 
@@ -139,5 +133,16 @@ use Servers\views\components\MainPage;
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+    <script>
+        // Toggle the side navigation
+        $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
+            $("body").toggleClass("sidebar-toggled");
+            $(".sidebar").toggleClass("toggled");
+            if ($(".sidebar").hasClass("toggled")) {
+                $('.sidebar .collapse').collapse('hide');
+            };
+        });
+    </script>
+
 </body>
 </html>

@@ -54,7 +54,7 @@ use Servers\Repositories;
         <li class="nav-item">
             <a class="nav-link" href="index.php/servers">
                 <i class="fas fa-fw fa-cog"></i>
-                <span>Serwery</span>
+                <span>Stwórz serwer</span>
             </a>
         </li>
 
@@ -66,17 +66,29 @@ use Servers\Repositories;
             </a>
             <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Custom Utilities:</h6>
-                    <a class="collapse-item" href="utilities-color.html">Colors</a>
-                    <a class="collapse-item" href="utilities-border.html">Borders</a>
-                    <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                    <a class="collapse-item" href="utilities-other.html">Other</a>
+                    <h6 class="collapse-header">Ustawienia:</h6>
+                    <a class="collapse-item" href="index.php/recharge">Doładuj konto</a>
+                    <a class="collapse-item" href="index.php/server-list">Zakupione serwery</a>
+                    <a class="collapse-item" href="index.php/payments">Płatności</a>
+                    <a class="collapse-item" href="index.php/settings">Użytkownik</a>
                 </div>
             </div>
         </li>
 
         <!-- Divider -->
+        <hr class="sidebar-divider mb-0">
+        <li class="nav-item">
+            <a class="nav-link" href="index.php/api/logout">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Wyloguj się</span>
+            </a>
+        </li>
+
         <hr class="sidebar-divider">
+        <!-- Sidebar Toggler (Sidebar) -->
+        <div class="text-center d-none d-md-inline">
+            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
 
     </ul>
 
@@ -173,5 +185,15 @@ use Servers\Repositories;
 
 <!-- Custom scripts for all pages-->
 <script src="js/sb-admin-2.min.js"></script>
+<script>
+    // Toggle the side navigation
+    $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
+        $("body").toggleClass("sidebar-toggled");
+        $(".sidebar").toggleClass("toggled");
+        if ($(".sidebar").hasClass("toggled")) {
+            $('.sidebar .collapse').collapse('hide');
+        };
+    });
+</script>
 </body>
 </html>
