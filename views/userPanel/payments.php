@@ -89,111 +89,123 @@ use Servers\Repositories;
         <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
         </div>
-
     </ul>
-
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
         <!-- Main Content -->
         <div id="content">
-
-            <div class="row">
-                <?php
-                if (empty($payments)) {
-                    echo "Nie dokonnałeś jeszcze żadnego zakupu.";
-                }
-                ?>
-
-                <table class="table">
-                    <tr class="table__row">
-                        <th>ID</th>
-                        <th>DATA PŁATNOŚCI</th>
-                        <th>DATA UTWORZENIA</th>
-                        <th>IP</th>
-                        <th>STATUS</th>
-                        <th>KWOTA</th>
-                        <th>METODA</th>
-                    </tr>
-                    <?php foreach($payments as $payment): ?>
-                        <tr class="table__row">
-                            <td class="table__col"><?= $payment->getId() ?></td>
-                            <td class="table__col"><?= $payment->getPaymentDate() ?></td>
-                            <td class="table__col"><?= $payment->getCreateDate() ?></td>
-                            <td class="table__col"><?= $payment->getIpAddress() ?></td>
-                            <td class="table__col"><?= match ($payment->getStatus()) {
-                                    "incoming" => "Przychodząca",
-                                    "resolved" => "Zaakceptowana",
-                                    "rejected" => "Odrzucona",
-                                    default => "Nieznany"
+            <div class="container-fluid">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Płatności</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <?php
+                                if (empty($payments)) {
+                                    echo "Nie dokonnałeś jeszcze żadnego zakupu.";
                                 }
-                                ?></td>
-                            <td class="table__col"><?= $payment->getSum() ?></td>
-                            <td class="table__col"><?= $payment->getMethod() ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </table>
+                                ?>
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>DATA PŁATNOŚCI</th>
+                                    <th>DATA UTWORZENIA</th>
+                                    <th>IP</th>
+                                    <th>STATUS</th>
+                                    <th>KWOTA</th>
+                                    <th>METODA</th>
+                                </tr>
+                                </thead>
+                                <tfoot>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>DATA PŁATNOŚCI</th>
+                                    <th>DATA UTWORZENIA</th>
+                                    <th>IP</th>
+                                    <th>STATUS</th>
+                                    <th>KWOTA</th>
+                                    <th>METODA</th>
+                                </tr>
+                                </tfoot>
+                                <tbody>
+                                <?php foreach($payments as $payment): ?>
+                                <tr>
+                                    <td><?= $payment->getId() ?></td>
+                                    <td><?= $payment->getPaymentDate() ?></td>
+                                    <td><?= $payment->getCreateDate() ?></td>
+                                    <td><?= $payment->getIpAddress() ?></td>
+                                    <td><?= match ($payment->getStatus()) {
+                                            "incoming" => "Przychodząca",
+                                            "resolved" => "Zaakceptowana",
+                                            "rejected" => "Odrzucona",
+                                            default => "Nieznany"
+                                        }
+                                        ?></td>
+                                    <td><?= $payment->getSum() ?></td>
+                                    <td><?= $payment->getMethod() ?></td>
+                                </tr>
+                                <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-
-
         </div>
     </div>
-
-
-
 </div>
-
-
-<script>
-    'use strict';
-    const options = document.querySelectorAll('.admin__panel--section-option');
-    const sections = document.querySelectorAll('.admin__panel--section');
-    const beforeActiveSectionClass = localStorage.getItem("user-panel-actual-visible") ?? null;
-    console.log(2)
-
-    sections.forEach(section => {
-        if (!section.classList.contains(beforeActiveSectionClass)) {
-            section.classList.remove('section--visible');
-            section.classList.add('section--invisible');
-        } else {
-            section.classList.add('section--visible');
-            section.classList.remove('section--invisible');
-        }
-    })
-
-    options.forEach(option => option.addEventListener('click', ({ target }) => {
-        const sectionClass = target.getAttribute('data-section-class');
+    <script>
+        'use strict';
+        const options = document.querySelectorAll('.admin__panel--section-option');
+        const sections = document.querySelectorAll('.admin__panel--section');
+        const beforeActiveSectionClass = localStorage.getItem("user-panel-actual-visible") ?? null;
+        console.log(2)
 
         sections.forEach(section => {
-            if (!section.classList.contains(sectionClass)) {
+            if (!section.classList.contains(beforeActiveSectionClass)) {
                 section.classList.remove('section--visible');
                 section.classList.add('section--invisible');
             } else {
                 section.classList.add('section--visible');
                 section.classList.remove('section--invisible');
-                localStorage.setItem("user-panel-actual-visible", sectionClass);
             }
         })
-    }));
-</script>
-<!-- Bootstrap core JavaScript-->
-<script src="js/jquery/jquery.min.js"></script>
-<script src="js/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-<!-- Core plugin JavaScript-->
-<script src="js/jquery-easing/jquery.easing.min.js"></script>
+        options.forEach(option => option.addEventListener('click', ({ target }) => {
+            const sectionClass = target.getAttribute('data-section-class');
 
-<!-- Custom scripts for all pages-->
-<script src="js/sb-admin-2.min.js"></script>
-<script>
-    // Toggle the side navigation
-    $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
-        $("body").toggleClass("sidebar-toggled");
-        $(".sidebar").toggleClass("toggled");
-        if ($(".sidebar").hasClass("toggled")) {
-            $('.sidebar .collapse').collapse('hide');
-        };
-    });
-</script>
+            sections.forEach(section => {
+                if (!section.classList.contains(sectionClass)) {
+                    section.classList.remove('section--visible');
+                    section.classList.add('section--invisible');
+                } else {
+                    section.classList.add('section--visible');
+                    section.classList.remove('section--invisible');
+                    localStorage.setItem("user-panel-actual-visible", sectionClass);
+                }
+            })
+        }));
+    </script>
+    <!-- Bootstrap core JavaScript-->
+    <script src="js/jquery/jquery.min.js"></script>
+    <script src="js/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="js/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+    <script>
+        // Toggle the side navigation
+        $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
+            $("body").toggleClass("sidebar-toggled");
+            $(".sidebar").toggleClass("toggled");
+            if ($(".sidebar").hasClass("toggled")) {
+                $('.sidebar .collapse').collapse('hide');
+            };
+        });
+    </script>
 </body>
 </html>
