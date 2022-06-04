@@ -96,56 +96,73 @@ use Servers\Repositories;
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
-
-                <div class="row">
-                    <p>
-                        Dostęp do zarządzania zakupionymi serwerami jest dostępny w
-                        <a target="_blank" href="http://178.32.202.241:85/" style="color: lightcoral">panelu</a>.
-                        Zaloguj się za pomocą swojego loginu/maila i hasła.
-                    </p>
-                    <table class="table">
-                        <tr class="table__row">
-                            <th>ID</th>
-                            <th>TYTUŁ</th>
-                            <th>STATUS</th>
-                            <th>DATA UTWORZENIA</th>
-                            <th>DATA WYGAŚNIĘCIA</th>
-                            <th>PACZKA</th>
-                            <th>ID PŁATNOŚCI</th>
-                            <th>Odnów</th>
-                        </tr>
-                        <?php foreach($userServers as $server): ?>
-                            <tr class="table__row">
-                                <td class="table__col"><?= $server->getId() ?></td>
-                                <td class="table__col"><?= $server->getTitle() ?></td>
-                                <td class="table__col"><?= match ($server->getStatus()) {
-                                        ServerStatus::SOLD->value => '<span class="server-status server-status--active">Aktywny</span>',
-                                        ServerStatus::IN_MAGAZINE->value,
-                                        ServerStatus::EXPIRED->value => '<span class="server-status server-status--expired">Wygasł</span>'
-                                    } ?>
-                                </td>
-                                <td class="table__col"><?= date('m/d/Y', $server->getCreateDate()) ?></td>
-                                <td class="table__col"><?= date('m/d/Y', $server->getExpireDate()) ?></td>
-                                <td class="table__col"><?php $package = Repositories::$packagesRepository->findOneById($server->getPackageId()); echo "{$package->getName()} ({$package->getRamSize()}MB / {$package->getDiskSize()}MB)" ?></td>
-                                <td class="table__col"><?= $server->getPaymentId() ?? "BRAK" ?></td>
-                                <td class="table__col">
-                                    <form action="index.php/api/unsuspend-server/<?= $server->getId() ?>" method="post">
-                                        <input type="hidden" name="_method" value="PATCH">
-                                        <button type="submit" class="button--renew">Odnów</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </table>
+                <div class="container-fluid">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Lista serwerów</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <?php
+                                    if (empty($payments)) {
+                                        echo "Nie dokonnałeś jeszcze żadnego zakupu.";
+                                    }
+                                    ?>
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>TYTUŁ</th>
+                                        <th>STATUS</th>
+                                        <th>DATA UTWORZENIA</th>
+                                        <th>DATA WYGAŚNIĘCIA</th>
+                                        <th>PACZKA</th>
+                                        <th>ID PŁATNOŚCI</th>
+                                        <th>ODNÓW</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>TYTUŁ</th>
+                                        <th>STATUS</th>
+                                        <th>DATA UTWORZENIA</th>
+                                        <th>DATA WYGAŚNIĘCIA</th>
+                                        <th>PACZKA</th>
+                                        <th>ID PŁATNOŚCI</th>
+                                        <th>ODNÓW</th>
+                                    </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    <?php foreach($userServers as $server): ?>
+                                        <tr>
+                                            <td><?= $server->getId() ?></td>
+                                            <td><?= $server->getTitle() ?></td>
+                                            <td><?= match ($server->getStatus()) {
+                                                    ServerStatus::SOLD->value => '<span class="server-status server-status--active">Aktywny</span>',
+                                                    ServerStatus::IN_MAGAZINE->value,
+                                                    ServerStatus::EXPIRED->value => '<span class="server-status server-status--expired">Wygasł</span>'
+                                                } ?>
+                                            </td>
+                                            <td><?= date('m/d/Y', $server->getCreateDate()) ?></td>
+                                            <td><?= date('m/d/Y', $server->getExpireDate()) ?></td>
+                                            <td><?php $package = Repositories::$packagesRepository->findOneById($server->getPackageId()); echo "{$package->getName()} ({$package->getRamSize()}MB / {$package->getDiskSize()}MB)" ?></td>
+                                            <td><?= $server->getPaymentId() ?? "BRAK" ?></td>
+                                            <td>
+                                                <form action="index.php/api/unsuspend-server/<?= $server->getId() ?>" method="post">
+                                                    <input type="hidden" name="_method" value="PATCH">
+                                                    <button type="submit" class="button--renew">Odnów</button>
+                                                </form>
+                                            </td>
+                                    <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-
-
             </div>
         </div>
-
-
-
     </div>
 
 
