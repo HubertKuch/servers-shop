@@ -16,7 +16,7 @@ use Servers\Utils\Environment;
     <link href="style/app.css" rel="stylesheet">
 
 </head>
-<body class="bg-gradient-primary">
+<body>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-xl-10 col-lg-12 col-md-9">

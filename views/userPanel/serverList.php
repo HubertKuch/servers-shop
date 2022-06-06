@@ -97,7 +97,7 @@ use Servers\Repositories;
             <!-- Main Content -->
             <div id="content">
                 <div class="container-fluid">
-                    <div class="card shadow mb-4">
+                    <div class="card shadow mb-4 mt-5">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Lista serwerów</h6>
                         </div>
@@ -151,7 +151,7 @@ use Servers\Repositories;
                                             <td>
                                                 <form action="index.php/api/unsuspend-server/<?= $server->getId() ?>" method="post">
                                                     <input type="hidden" name="_method" value="PATCH">
-                                                    <button type="submit" class="button--renew">Odnów</button>
+                                                    <button type="submit" class="button--renew btn btn-success">Odnów</button>
                                                 </form>
                                             </td>
                                     <?php endforeach; ?>

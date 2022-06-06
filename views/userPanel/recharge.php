@@ -97,7 +97,7 @@ use Servers\Repositories;
             <!-- Main Content -->
             <div id="content">
                 <div class="row">
-                    <div class="col px-5">
+                    <div class="col px-5 mt-5">
                         <p style="font-size: 24px">Doładuj swoje konto</p>
                         <p class="waller__errros" style="color: red;">
                             <?php
@@ -107,57 +107,56 @@ use Servers\Repositories;
                             ?>
                         </p>
 
-                        <p>Wybierz metodę płatności</p>
+                        <p class="mb-0">Wybierz metodę płatności</p>
                         <form action="index.php/api/add-amount" method="post">
                             <input type="hidden" class="payment_id" name="payment_id" value="0">
                             <input type="hidden" name="_method" value="PATCH">
 
                             <div class="payment__methods row">
                                 <div class="col">
-                                    <div class="row ">
-                                        <div  class="card shadow mr-5" style="cursor: pointer">
+                                    <div class="row">
+                                        <div  class="card shadow mr-5 mt-5 col-xl-3 px-0 col-lg-5 col-12" style="cursor: pointer">
                                             <div data-payment-due-name="PSC_DUE" data-payment-method="8" class="card-body methods__method ">
                                                 <img src="views/assets/psc.png" alt="psc" style="aspect-ratio: 16/9 " height="120px">
                                             </div>
                                         </div>
-                                        <div class="card shadow mr-5" style="cursor: pointer">
+                                        <div class="card shadow mr-5 mt-5 col-xl-3 px-0 col-lg-5 col-12" style="cursor: pointer">
                                             <div data-payment-due-name="PAYPAL_DUE" data-payment-method="4" class="card-body methods__method">
                                                 <img src="views/assets/paypal.webp" alt="paypal"  style="aspect-ratio: 16/9 " height="120px" style="cursor: pointer">
                                             </div>
                                         </div>
-                                        <div class="card shadow mr-5" style="cursor: pointer">
+                                        <div class="card shadow mr-5 mt-5 col-xl-3 px-0 col-lg-5 col-12" style="cursor: pointer">
                                             <div data-payment-due-name="G2A_DUE" data-payment-method="32"  class="card-body methods__method">
                                                 <img src="views/assets/g2apay.jpeg" alt="g2apay"  style="aspect-ratio: 16/9 " height="120px">
                                             </div>
                                         </div>
 
-                                    </div>
-                                    <div class="row">
-                                        <div class="card shadow mr-5 mt-5" style="cursor: pointer">
+                                        <div class="card shadow mr-5 mt-5 col-xl-3 px-0 col-lg-5 col-12" style="cursor: pointer">
                                             <div data-payment-due-name="SMS_PLUS_DUE" data-payment-method="64"  class="card-body methods__method ">
                                                 <img src="views/assets/justpay.jpg" alt="justpay" style="aspect-ratio: 16/9 " height="120px">
                                             </div>
                                         </div>
-                                        <div class="card shadow mr-5 mt-5" style="cursor: pointer">
+                                        <div class="card shadow mr-5 mt-5 col-xl-3 px-0 col-lg-5 col-12" style="cursor: pointer">
                                             <div data-payment-due-name="CASH_BILL_DUE" data-payment-method="128" class="card-body methods__method ">
                                                 <img src="views/assets/cashbill.jpg" alt="cashbill" style="aspect-ratio: 16/9 " height="120px">
                                             </div>
                                         </div>
-                                        <div class=" card shadow mr-5 mt-5" style="cursor: pointer">
+                                        <div class=" card shadow mr-5 mt-5 col-xl-3 px-0 col-lg-5 col-12" style="cursor: pointer">
                                             <div data-payment-due-name="SMS_DUE" data-payment-method="256" class="card-body methods__method">
                                                 <img src="views/assets/cashbillsms.webp" alt="sms" style="aspect-ratio: 16/9" height="120px">
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
 
+                                    </div>
+
+                                </div>
 
                             </div>
                             <br>
                             <section class="add__amount">
                                 <span>Kwota</span>
                                 <span class="after-commission">(Po odjęciu prowizji <spaFn class="after-commission__amount">0</spaFn>)</span><br>
-                                <input type="text" name="amount" class="panel__input">
+                                <input type="text" name="amount" class="panel__input form-control form-control-user col-xl-2 col-lg-6 col-4 p-4" style="border-radius:20px ">
                             </section>
                             <br>
 
