@@ -97,14 +97,16 @@ use Servers\views\components\MainPage;
     <div id="content-wrapper" class="d-flex flex-column">
         <!-- Main Content -->
         <div id="content">
-            <div class="row ">
-                <div class="col-12 mt-5">
-                    <h1 class="text-gray-900 text-center">Serwery <span style="color: #AF88E1;">Minecraft</span> pod <span style="color: #AF88E1;">pod ręką</span>.</h1>
+            <div class="row">
+                <div class="col-12 mt-5 px-5">
+                    <h1 class="text-gray-900 font-weight-bold">Serwery Minecraft pod ręką! </h1>
+                    <hr class="sidebar-divider">
                 </div>
             </div>
-            <div class="row w-100 mt-5">
-                <div class="col-10 px-5">
-                    <?= count($servers) ?>
+            <div class="row w-100 mt-3">
+                <div class="col-xl-10 col-12 px-5">
+                    <p class="font-weight-bold"> Ilość serwerów: <?= count($servers) ?></p>
+
                     <?php
 
                     if (empty($servers)) {

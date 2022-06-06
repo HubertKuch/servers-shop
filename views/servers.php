@@ -99,9 +99,13 @@ use Servers\views\components\Servers;
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
-                <div class="col px-5">
-                    <h1 class="text-gray-900 mt-2">Stwórz server według swoich potrzeb</h1>
-
+                <div class="col px-5 ">
+                    <div class="row">
+                        <div class="col px-0">
+                            <h1 class="text-gray-900 mt-5 font-weight-bold">Stwórz server według swoich potrzeb</h1>
+                            <hr class="sidebar-divider">
+                        </div>
+                    </div>
                     <form action="index.php/api/create-server" method="post">
                         <input type="hidden" class="egg_type" name="egg_type" value="vanilla">
                         <input type="hidden" class="package_id" name="package_id" value="0">
@@ -114,13 +118,13 @@ use Servers\views\components\Servers;
                         ?>
 
                         <div class="row">
-                            <div class="col">
+                            <div class="col mt-3">
                                 <div class="row">
                                     <h1 class="h4 text-gray-900 font-weight-bold mb-3">Typ serwera</h1>
                                 </div>
 
                                 <div class="row">
-                                    <div class="card col-4 mr-5 box-shadow-transition ">
+                                    <div class="card col-12 col-xl-4 mr-xl-5 box-shadow-transition egg">
                                         <div class="card-body eggs">
                                             <?php
                                             Servers::minecraftEgg("views/assets/vanilla_mc.png", "Vanilla", 5);
@@ -128,7 +132,7 @@ use Servers\views\components\Servers;
                                         </div>
 
                                     </div>
-                                    <div class="card col-4 box-shadow-transition">
+                                    <div class="card col-12 col-xl-4 mt-xl-0 mt-3 box-shadow-transition egg">
                                         <div class="card-body eggs">
                                             <?php
                                             Servers::minecraftEgg("views/assets/forge_mc.png", "Forge", 4);
@@ -148,14 +152,15 @@ use Servers\views\components\Servers;
                                     <h1 class="h4 text-gray-900 font-weight-bold">Pakiet</h1>
                                 </div>
                                 <div class="row">
-                                    <div class="card col-4 mr-5 box-shadow-transition">
-                                        <div class="eggs card-body">
-
-                                            <?php
-                                            foreach ($packages as $package) {
-                                                Servers::package($package->getId(), $package->getImageSrc(), $package->getName(), "{$package->getRamSize()}MB ram / {$package->getDiskSize()}MB dysku / {$package->getProcessorPower()}% procesora", $package->getCost());
-                                            }
-                                            ?>
+                                    <div class="col">
+                                        <div class="eggs ">
+                                            <div class="row">
+                                                <?php
+                                                foreach ($packages as $package) {
+                                                    Servers::package($package->getId(), $package->getImageSrc(), $package->getName(), "{$package->getRamSize()}MB ram / {$package->getDiskSize()}MB dysku / {$package->getProcessorPower()}% procesora", $package->getCost());
+                                                }
+                                                ?>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -237,9 +242,9 @@ use Servers\views\components\Servers;
 
         for (const mcPackage of packages) {
             mcPackage.addEventListener('click', (e) => {
-                packages.forEach(mcPackage => mcPackage.style.background = '#a187e1');
+                packages.forEach(mcPackage => mcPackage.classList.remove('border-bottom-success'));
 
-                mcPackage.style.background = '#8659ea'
+                mcPackage.classList.add('border-bottom-success')
                 let packageId = e.target.getAttribute('data-package-id');
 
                 if(!packageId) {

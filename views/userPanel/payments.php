@@ -95,7 +95,7 @@ use Servers\Repositories;
         <!-- Main Content -->
         <div id="content">
             <div class="container-fluid">
-                <div class="card shadow mb-4">
+                <div class="card shadow mb-4 mt-5">
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">Płatności</h6>
                     </div>
