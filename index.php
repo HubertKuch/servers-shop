@@ -13,6 +13,7 @@ session_start();
 use Avocado\Router\AvocadoRouter;
 use Avocado\ORM\AvocadoORMSettings;
 use HCGCloud\Pterodactyl\Pterodactyl;
+use Servers\Controllers\PaymentsController;
 use Servers\Controllers\ServersController;
 use Servers\Controllers\UserController;
 use Servers\Controllers\ViewsController;
@@ -36,36 +37,37 @@ ServersController::init($pterodactyl);
 UserController::init($pterodactyl);
 
 // VIEWS
-AvocadoRouter::GET("/",                                     [], [ViewsController::class, "main"]);
-AvocadoRouter::GET("/admin",                                [], [ViewsController::class, "admin"]);
-AvocadoRouter::GET("/login",                                [], [ViewsController::class, "login"]);
-AvocadoRouter::GET("/register",                             [], [ViewsController::class, "register"]);
-AvocadoRouter::GET("/settings",                             [], [ViewsController::class, "userSettings"]);
-AvocadoRouter::GET("/payments",                             [], [ViewsController::class, "userPayments"]);
-AvocadoRouter::GET("/server-list",                          [], [ViewsController::class, "userServerList"]);
-AvocadoRouter::GET("/recharge",                             [], [ViewsController::class, "userRecharge"]);
-AvocadoRouter::GET("/panel",                                [], [ViewsController::class, "userPanel"]);
-AvocadoRouter::GET("/account-activation",                   [], [ViewsController::class, "accountActivation"]);
-AvocadoRouter::GET("/account-activated",                    [], [ViewsController::class, "accountActivated"]);
-AvocadoRouter::GET("/servers",                              [], [ViewsController::class, "servers"]);
+AvocadoRouter::GET("/",                                     [], [ViewsController::class,    "main"]);
+AvocadoRouter::GET("/admin",                                [], [ViewsController::class,    "admin"]);
+AvocadoRouter::GET("/login",                                [], [ViewsController::class,    "login"]);
+AvocadoRouter::GET("/register",                             [], [ViewsController::class,    "register"]);
+AvocadoRouter::GET("/settings",                             [], [ViewsController::class,    "userSettings"]);
+AvocadoRouter::GET("/payments",                             [], [ViewsController::class,    "userPayments"]);
+AvocadoRouter::GET("/server-list",                          [], [ViewsController::class,    "userServerList"]);
+AvocadoRouter::GET("/recharge",                             [], [ViewsController::class,    "userRecharge"]);
+AvocadoRouter::GET("/panel",                                [], [ViewsController::class,    "userPanel"]);
+AvocadoRouter::GET("/account-activation",                   [], [ViewsController::class,    "accountActivation"]);
+AvocadoRouter::GET("/account-activated",                    [], [ViewsController::class,    "accountActivated"]);
+AvocadoRouter::GET("/servers",                              [], [ViewsController::class,    "servers"]);
 
 // USER PANEL ACTIONS
-AvocadoRouter::GET("/api/logout",                           [], [UserController::class, "logout"]);
-AvocadoRouter::GET("/api/generate-activation-code/:email",  [], [UserController::class, "generateActivationCode"]);
-AvocadoRouter::POST("/api/login",                           [], [UserController::class, "login"]);
-AvocadoRouter::POST("/api/register",                        [], [UserController::class, "register"]);
-AvocadoRouter::PATCH("/api/change-password",                [], [UserController::class, "changePassword"]);
-AvocadoRouter::PATCH("/api/change-username",                [], [UserController::class, "changeUsername"]);
-AvocadoRouter::PATCH("/api/change-email",                   [], [UserController::class, "changeEmail"]);
-AvocadoRouter::PATCH("/api/activate-account",               [], [UserController::class, "activateAccount"]);
-AvocadoRouter::PATCH("/api/activate-account",               [], [UserController::class, "activateAccount"]);
+AvocadoRouter::GET("/api/logout",                           [], [UserController::class,     "logout"]);
+AvocadoRouter::GET("/api/generate-activation-code/:email",  [], [UserController::class,     "generateActivationCode"]);
+AvocadoRouter::POST("/api/login",                           [], [UserController::class,     "login"]);
+AvocadoRouter::POST("/api/register",                        [], [UserController::class,     "register"]);
+AvocadoRouter::PATCH("/api/change-password",                [], [UserController::class,     "changePassword"]);
+AvocadoRouter::PATCH("/api/change-username",                [], [UserController::class,     "changeUsername"]);
+AvocadoRouter::PATCH("/api/change-email",                   [], [UserController::class,     "changeEmail"]);
+AvocadoRouter::PATCH("/api/activate-account",               [], [UserController::class,     "activateAccount"]);
+AvocadoRouter::PATCH("/api/activate-account",               [], [UserController::class,     "activateAccount"]);
 
 // SERVERS ACTIONS
-AvocadoRouter::POST("/api/create-server",                   [], [ServersController::class, "create"]);
-AvocadoRouter::PATCH("/api/unsuspend-server/:id",           [], [ServersController::class, "unSuspendServer"]);
+AvocadoRouter::POST("/api/create-server",                   [], [ServersController::class,  "create"]);
+AvocadoRouter::PATCH("/api/unsuspend-server/:id",           [], [ServersController::class,  "unSuspendServer"]);
 
 // PAYMENTS ACTIONS
-AvocadoRouter::PATCH("/api/add-amount",                     [], [PaymentsService::class, "createAmountRequest"]);
-AvocadoRouter::GET("/api/payment-notify",                   [], [PaymentsService::class, "paymentNotify"]);
+AvocadoRouter::PATCH("/api/add-amount",                     [], [PaymentsService::class,    "createAmountRequest"]);
+AvocadoRouter::GET("/api/payment-notify",                   [], [PaymentsService::class,    "paymentNotify"]);
+AvocadoRouter::PATCH("/api/fund-user",                      [], [PaymentsController::class, "fundToUser"]);
 
 AvocadoRouter::listen();
