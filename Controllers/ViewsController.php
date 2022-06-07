@@ -75,6 +75,84 @@ class ViewsController {
         require "views/register.php";
     }
 
+    public static final function userSettings(AvocadoRequest $req): void {
+        $errors = $req->query;
+        require "views/userPanel/settings.php";
+    }
+
+    public static final function userPayments(AvocadoRequest $req): void {
+        $errors = $req->query;
+
+        AuthController::authenticationMiddleware(["error" => "Unauthorized"]);
+        $userId = $_SESSION['id'];
+        $findForeignPayments = new FindForeign();
+        $findForeignBoughtServers = new FindForeign();
+
+        $findForeignPayments
+            -> key("user_id")
+            -> reference("users")
+            -> by("id")
+            -> equals($userId);
+
+        $findForeignBoughtServers
+            -> key("user_id")
+            -> reference("users")
+            -> by("id")
+            -> equals($userId);
+
+        $user = Repositories::$userRepository->findOneById($userId);
+        $payments = Repositories::$paymentsRepository->findOneToManyRelation($findForeignPayments);
+        $userServers = Repositories::$productsRepository->findOneToManyRelation($findForeignBoughtServers, ["status" => ServerStatus::IN_MAGAZINE->value]);
+
+        $isAdmin = $user->getRole() === UserRole::ADMIN->value;
+
+        foreach ($userServers as $server)
+            if ($server->getExpireDate() < time())
+                ServersController::suspendServer($server);
+
+        $userServers = Repositories::$productsRepository->findOneToManyRelation($findForeignBoughtServers, ["status" => ServerStatus::IN_MAGAZINE->value]);
+        require "views/userPanel/payments.php";
+    }
+
+    public static final function userServerList(AvocadoRequest $req): void {
+        $errors = $req->query;
+
+        AuthController::authenticationMiddleware(["error" => "Unauthorized"]);
+        $userId = $_SESSION['id'];
+        $findForeignPayments = new FindForeign();
+        $findForeignBoughtServers = new FindForeign();
+
+        $findForeignPayments
+            -> key("user_id")
+            -> reference("users")
+            -> by("id")
+            -> equals($userId);
+
+        $findForeignBoughtServers
+            -> key("user_id")
+            -> reference("users")
+            -> by("id")
+            -> equals($userId);
+
+        $user = Repositories::$userRepository->findOneById($userId);
+        $payments = Repositories::$paymentsRepository->findOneToManyRelation($findForeignPayments);
+        $userServers = Repositories::$productsRepository->findOneToManyRelation($findForeignBoughtServers, ["status" => ServerStatus::IN_MAGAZINE->value]);
+
+        $isAdmin = $user->getRole() === UserRole::ADMIN->value;
+
+        foreach ($userServers as $server)
+            if ($server->getExpireDate() < time())
+                ServersController::suspendServer($server);
+
+        $userServers = Repositories::$productsRepository->findOneToManyRelation($findForeignBoughtServers, ["status" => ServerStatus::IN_MAGAZINE->value]);
+        require "views/userPanel/serverList.php";
+    }
+
+    public static final function userRecharge(AvocadoRequest $req): void {
+        $errors = $req->query;
+        require "views/userPanel/recharge.php";
+    }
+
     public static final function accountActivation(): void {
         $errors = $_GET;
         require "views/accountActivation.php";

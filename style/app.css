@@ -10,6 +10,7 @@
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
+
 :root {
   --blue: #4e73df;
   --indigo: #6610f2;
@@ -64,7 +65,7 @@ body {
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #858796;
+  /*color: #858796;*/
   text-align: left;
   background-color: #fff;
 }
@@ -11278,4 +11279,48 @@ footer.sticky-footer .copyright {
 
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
+}
+
+/* CUSTOM STYLES*/
+.main__nav {
+  padding: 20px;
+  width: fit-content;
+  height: fit-content;
+  background: #221B38;
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  border-radius: 0 20px 20px 0;
+  z-index: 10000;
+}
+
+.nav__icon-link {
+  display: block;
+}
+
+.nav__icon-link:not(:first-child) {
+  margin: 24px 0 0;
+}
+
+.nav__icon {
+  width: 45px;
+  height: 45px;
+}
+
+/* BOX SHADOW ON CARDS*/
+.egg__img {
+  aspect-ratio: 16/9;
+  height: 120px;
+}
+
+/* The slow way */
+.box-shadow-transition {
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+/* Transition to a bigger shadow on hover */
+.box-shadow-transition:hover {
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }

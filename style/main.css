@@ -22,8 +22,8 @@ body, head {
     height: 100%;
     padding: 0;
     margin: 0;
-    background: #2D2449;
-    font-family: "Arimo", sans-serif !important;
+    /*background: #2D2449;*/
+    /*font-family: "Arimo", sans-serif !important;*/
     scrollbar-color: #D8C2F4 #493A76;
 }
 
@@ -71,7 +71,7 @@ body, head {
     width: 100%;
     height: 10%;
     padding: 50px 0 0 100px;
-    color: white;
+    /*color: white;*/
 }
 
 .header__title {
