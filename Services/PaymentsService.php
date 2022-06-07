@@ -10,6 +10,7 @@ use Servers\Controllers\LogsController;
 use Servers\Models\Payment;
 use Servers\Models\PaymentMethods;
 use Servers\Models\PaymentStatus;
+use Servers\Models\User;
 use Servers\Repositories;
 
 class PaymentsService {
@@ -22,9 +23,7 @@ class PaymentsService {
         256 => "SMS_DUE",
     ];
 
-    public static function createAmountRequest(AvocadoRequest $req): void {
-        AuthController::authenticationMiddleware();
-
+    public static function validateAmountRequest(AvocadoRequest $req): void {
         $paymentMethodId = $req->body['payment_id'] ?? null;
         $amount = $req->body['amount'] ?? null;
 
@@ -42,35 +41,56 @@ class PaymentsService {
         if (!$paymentMethod)
             AuthController::redirect("panel", ["message" => "Nie znana metoda płatności"]);
 
+        $paymentMethod = PaymentMethods::tryFrom($paymentMethodId);
+
+        if (!$paymentMethod)
+            AuthController::redirect("panel", ["message" => "Nie znana metoda płatności"]);
+
         $paymentDueEnvName = self::PAYMENT_DUE_ENV_NAMES[$paymentMethod->value] ?? null;
 
         if (!$paymentDueEnvName || !$_ENV[$paymentDueEnvName])
             AuthController::redirect("panel", ["message" => "Niepoprawna metoda płatności"]);
+    }
+
+    public static function createAmountRequest(AvocadoRequest $req): void {
+        AuthController::authenticationMiddleware();
+
+        $paymentMethodId = $req->body['payment_id'] ?? null;
+        $amount = $req->body['amount'] ?? null;
+        $paymentMethod = PaymentMethods::tryFrom($paymentMethodId);
+
+        self::validateAmountRequest($req);
 
         $user = Repositories::$userRepository->findOneById($_SESSION['id']);
-
         $title = "Doładowanie konta {$user->getUsername()}";
-
-        $paymentResponse = self::createPayment($amount, $paymentMethod, $title);
+        $paymentResponse = self::createPaymentRequest($amount, $paymentMethod, $title);
 
         if (!$paymentResponse['success'])
             AuthController::redirect('panel', ["message" => "Płatność nie powiodła się. Spróbuj ponownie lub skontaktuj się z administratorem domeny."]);
 
         $url = $paymentResponse['data']['url'];
-        $tid = $paymentResponse['data']['tid'];
-        $ip = self::getIPAddress();
-        $now = time();
 
-        $payment = new Payment(0, $now, $ip, PaymentStatus::INCOMING->value, $amount, $paymentMethod->value, $_SESSION['id'], $tid);
-
+        $payment = self::createPayment($req, $paymentResponse);
         Repositories::$paymentsRepository->save($payment);
+
         $paymentFromDb = Repositories::$paymentsRepository->findOne([
-            "tid" => $tid
+            "tid" => $payment->getTid()
         ]);
 
         LogsController::savePaymentLog($paymentFromDb->getId());
 
         header("Location: $url");
+    }
+
+    public static function createPayment(AvocadoRequest $req, array $paymentResponse): Payment {
+        $paymentMethodId = $req->body['payment_id'] ?? null;
+        $amount = $req->body['amount'] ?? null;
+        $tid = $paymentResponse['data']['tid'];
+        $ip = self::getIPAddress();
+        $now = time();
+        $paymentMethod = PaymentMethods::tryFrom($paymentMethodId);
+
+        return new Payment(0, $now, $ip, PaymentStatus::INCOMING->value, $amount, $paymentMethod?->value, $_SESSION['id'], $tid);
     }
 
     private static function getIPAddress(): string {
@@ -87,7 +107,7 @@ class PaymentsService {
         echo "OK";
     }
 
-    private static function createPayment(float $sum, PaymentMethods $method, string $title): array {
+    public static function createPaymentRequest(float $sum, PaymentMethods $method, string $title): array {
         $signature = self::createPaymentSignature($title, $method, $sum);
 
         return self::sendPaymentRequest([
