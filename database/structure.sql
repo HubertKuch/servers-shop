@@ -11,7 +11,8 @@ create table if not exists users (
      role                       enum('user', 'admin') default 'user',
      isActivated                bool default false,
      activationCode             int,
-     activationCodeExpiresIn    bigint
+     activationCodeExpiresIn    bigint,
+     unique(username)
 );
 
 create table if not exists payments (
