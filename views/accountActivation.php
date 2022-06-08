@@ -11,30 +11,57 @@ use Servers\Utils\Environment;
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Aktywacja konta</title>
     <base href="<?= Environment::getBaseURL() ?>">
-    <link rel="stylesheet" href="style/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="style/app.css" rel="stylesheet">
+    <link href="style/main.css" rel="stylesheet">
+    <style>
+        body {
+            overflow-y: hidden ;
+        }
+    </style>
 </head>
 <body>
-    <main class="account-activation-section">
-        <div class="account-activation-section__container">
-            <div class="container__message">
-                Dziękujemy za założenie konta w naszym poratlu, żebyś w pełni mógł z niego korzystać musisz aktywować swoje konto kodem wysłanym na Twojego maila <?= $_SESSION['email'] ?? '' ?>.
-            </div>
-            <div>
-                <?php foreach ($errors as $error): ?>
-                    <span class="error"><?= $error ?></span>
-                <?php endforeach; ?>
-            </div>
-            <form action="index.php/api/activate-account" class="container__activation-form" method="POST">
-                <input type="hidden" name="_method" value="PATCH">
-                <label>
-                    Kod aktywacyjny: <br>
-                    <input type="text" name="activation-code" class="input--pin-code" maxlength="6"><br><br>
-                </label>
-                <button type="submit" class="panel__button">Aktywuj konto</button><br><br>
-                <a href="index.php/api/generate-activation-code/<?= $_SESSION['email'] ?? '' ?>" style="font-size: 18px">Wyślij nowy kod aktywacyjny</a>
-            </form>
+    <div id="content">
+        <div class="container-fluid">
+                <div class="text-center mt-5">
+                    <h1 class="text-gray-900 h4 font-weight-bold">Dziękujemy za założenie konta w naszym poratlu!</h1>
+                    <p class="">Żebyś w pełni mógł z niego korzystać musisz aktywować swoje <br>
+                        konto kodem wysłanym na Twojego maila <span style="color: #4e73df"><?= $_SESSION['email'] ?? '' ?> </span>.</p>
+                </div>
+                <div>
+                    <?php foreach ($errors as $error): ?>
+                        <span class="error"><?= $error ?></span>
+                    <?php endforeach; ?>
+                </div>
+                <form action="index.php/api/activate-account" class="user" method="POST">
+                    <input type="hidden" name="_method" value="PATCH">
+                    <div class="row justify-content-center flex-column">
+                        <div class="form-group d-flex justify-content-center">
+                            <label class="font-weight-bold">
+                                Kod aktywacyjny:<br>
+                                <input type="text" name="activation-code" class="input--pin-code" maxlength="6">
+                            </label>
+                        </div>
+                        <div class="form-group d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary btn-user btn-block mt-auto mt-5 col-3">Aktywuj konto</button><br><br>
+                        </div>
+                        <div class="form-group d-flex justify-content-center">
+                            <a href="index.php/api/generate-activation-code/<?= $_SESSION['email'] ?? '' ?>" style="font-size: 18px; color: #4e73df">Wyślij nowy kod aktywacyjny</a>
+                        </div>
+                    </div>
+                </form>
         </div>
-    </main>
+    </div>
+
 </body>
+<!-- Bootstrap core JavaScript-->
+<script src="js/jquery/jquery.min.js"></script>
+<script src="js/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="js/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="js/app/app.min.js"></script>
 </html>
 

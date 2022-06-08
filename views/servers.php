@@ -110,14 +110,16 @@ use Servers\views\components\Servers;
                         <input type="hidden" class="egg_type" name="egg_type" value="vanilla">
                         <input type="hidden" class="package_id" name="package_id" value="0">
                         <input type="hidden" class="egg_id" name="egg_id" value="1">
-
-                        <?php
-                        foreach ($errors as $error) {
-                            echo "<span class='error'>$error</span>";
-                        }
-                        ?>
+                        <div class="row">
+                            <?php
+                            foreach ($errors as $error) {
+                                echo "<div style='color: red'>$error !</div>";
+                            }
+                            ?>
+                        </div>
 
                         <div class="row">
+
                             <div class="col mt-3">
                                 <div class="row">
                                     <h1 class="h4 text-gray-900 font-weight-bold mb-3">Typ serwera</h1>
