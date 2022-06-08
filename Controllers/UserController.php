@@ -63,7 +63,7 @@ class UserController {
         $mailService->sendVerificationMail($user->getEmail(), $verificationCode);
 
         Repositories::$userRepository->save($user);
-        $userId = Repositories::$userRepository->findOne(["email" => $email])->id;
+        $userId = Repositories::$userRepository->findOne(["email" => $email])->getId();
 
         $pterodactylUser = self::$pterodactyl->createUser([
             "email" => $email,

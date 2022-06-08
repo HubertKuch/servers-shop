@@ -87,8 +87,6 @@ class ServersController {
 
         $egg = self::$pterodactyl->egg(1, $eggId);
 
-        var_dump($pterodactylUserId);
-
         $serverData = [
             'name' => $name,
             'user' => $pterodactylUserId,
