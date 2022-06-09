@@ -24,6 +24,7 @@ use Servers\Utils\Environment;
                             <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
                             <div class="col-lg-6">
                                 <div class="p-5">
+
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Zaloguj się!</h1>
                                     </div>
@@ -32,6 +33,11 @@ use Servers\Utils\Environment;
                                             <input type="text" class="form-control form-control-user" name="username" aria-describedby="emailHelp" placeholder="Nazwa użytkownika" required>
                                         </div>
                                         <div class="form-group mb-3">
+                                                <?php
+                                                foreach ($errors as $error) {
+                                                    echo "<div style='color: red; font-size: 0.8rem' class='font-weight-bold'>$error !</div>";
+                                                }
+                                                ?>
                                             <input type="email" class="form-control form-control-user" name="email" aria-describedby="emailHelp" placeholder="Adres email" required>
                                         </div>
                                         <div class="form-group mb-5">

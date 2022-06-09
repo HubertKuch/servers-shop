@@ -31,6 +31,11 @@ use Servers\Utils\Environment;
                                     </div>
                                     <form class="user" action="index.php/api/login" method="post" >
                                         <div class="form-group mb-3">
+                                            <?php
+                                            foreach ($errors as $error) {
+                                                echo "<div style='color: red; font-size: 0.8rem' class='font-weight-bold'>$error !</div>";
+                                            }
+                                            ?>
                                             <input type="text" class="form-control form-control-user" name="username" aria-describedby="emailHelp" placeholder="Nazwa użytkownika" required>
                                         </div>
                                         <div class="form-group mb-5">

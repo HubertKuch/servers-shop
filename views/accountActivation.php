@@ -28,15 +28,17 @@ use Servers\Utils\Environment;
                     <p class="">Żebyś w pełni mógł z niego korzystać musisz aktywować swoje <br>
                         konto kodem wysłanym na Twojego maila <span style="color: #4e73df"><?= $_SESSION['email'] ?? '' ?> </span>.</p>
                 </div>
-                <div>
-                    <?php foreach ($errors as $error): ?>
-                        <span class="error"><?= $error ?></span>
-                    <?php endforeach; ?>
-                </div>
+
                 <form action="index.php/api/activate-account" class="user" method="POST">
                     <input type="hidden" name="_method" value="PATCH">
                     <div class="row justify-content-center flex-column">
+                        <?php
+                        foreach ($errors as $error) {
+                            echo "<div style='color: red; font-size: 0.8rem' class='font-weight-bold text-center mb-3'>$error !</div>";
+                        }
+                        ?>
                         <div class="form-group d-flex justify-content-center">
+
                             <label class="font-weight-bold">
                                 Kod aktywacyjny:<br>
                                 <input type="text" name="activation-code" class="input--pin-code" maxlength="6">
