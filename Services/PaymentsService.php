@@ -128,6 +128,14 @@ class PaymentsService {
             "paymentDate" => time(),
             "status" => PaymentStatus::RESOLVED
         ], $payment->getId());
+
+        self::fundAccount(Repositories::$userRepository->findOneById($_SESSION['user_id']), $payment);
+    }
+
+    private static function fundAccount(User $user, Payment $payment): void {
+        Repositories::$userRepository->updateOneById([
+           "wallet" => $payment->getSum()
+        ], $user->getId());
     }
 
     private static function rejectPayment(Payment $payment): void {

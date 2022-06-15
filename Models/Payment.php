@@ -27,7 +27,7 @@ class Payment {
     #[Field]
     private string $tid;
     #[Field('payment_status')]
-    private int $paymentStatus;
+    private int $paymentStatus = 0;
 
     public function __construct(int $paymentDate, int $createDate, string $ipAddress, string $status, float $sum, string $method, int $user_id, string $tid) {
         $this->paymentDate = $paymentDate;
