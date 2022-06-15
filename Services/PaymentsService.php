@@ -103,7 +103,6 @@ class PaymentsService {
         return $ip;
     }
 
-    // TODO: CHECKING SIGNATURE, REDIRECT TO ERROR PAGE
     public static function paymentNotify(AvocadoRequest $req): void {
         $status = $req->body['status'];
         $key = $req->body['key'];
