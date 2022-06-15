@@ -26,7 +26,7 @@ use Servers\Utils\Environment;
                                 <div class="p-5">
 
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Zaloguj się!</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Zarejestruj się!</h1>
                                     </div>
                                     <form class="user" action="index.php/api/register" method="post">
                                         <div class="form-group mb-3">
