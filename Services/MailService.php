@@ -10,6 +10,7 @@ class MailService {
 
     public function __construct() {
         $mailer = new PHPMailer();
+        $mailer->SMTPDebug = SMTP::DEBUG_SERVER;
         $mailer->isSMTP();
         $mailer->Host = 'smtp.gmail.com';
         $mailer->SMTPAuth = true;
@@ -36,9 +37,11 @@ class MailService {
 
         try {
             if(!$this->mailer->send()) {
+                var_dump($this->mailer->ErrorInfo);
                 // TODO: REDIRECT TO INTERNAL ERROR PAGE
             }
         } catch (\Exception $exception) {
+            var_dump($exception);
             // TODO: REDIRECT TO INTERNAL ERROR PAGE
         }
     }

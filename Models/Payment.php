@@ -27,7 +27,7 @@ class Payment {
     #[Field]
     private string $tid;
     #[Field('payment_status')]
-    private int $paymentStatus = 0;
+    private int $payment_status = 0;
 
     public function __construct(int $paymentDate, int $createDate, string $ipAddress, string $status, float $sum, string $method, int $user_id, string $tid) {
         $this->paymentDate = $paymentDate;
@@ -72,5 +72,5 @@ class Payment {
 
     public function getTid(): string { return $this->tid; }
 
-    public function getPaymentStatus(): int { return $this->paymentStatus; }
+    public function getPaymentStatus(): int { return $this->payment_status; }
 }

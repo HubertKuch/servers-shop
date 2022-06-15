@@ -83,6 +83,8 @@ class PaymentsService {
     }
 
     public static function createPayment(AvocadoRequest $req, array $paymentResponse): Payment {
+        AuthController::authenticationMiddleware();
+
         $paymentMethodId = $req->body['payment_id'] ?? null;
         $amount = $req->body['amount'] ?? null;
         $tid = $paymentResponse['data']['tid'];
@@ -104,6 +106,8 @@ class PaymentsService {
     }
 
     public static function paymentNotify(AvocadoRequest $req): void {
+        AuthController::authenticationMiddleware();
+
         $status = $req->body['status'];
         $key = $req->body['key'];
         $tid = $req->body['tid'];
@@ -111,9 +115,8 @@ class PaymentsService {
 
         if (!($key === $_ENV['PUBLIC_KEY'])) { return; }
 
-        if (intval($status) === 3 &&  $payment->getPaymentStatus() != 3) {
+        if (intval($status) === 3) {
             self::resolvePayment($payment);
-            echo "OK";
         }
 
         if (intval($status) === 4 || intval($status) === 5) {
@@ -125,22 +128,24 @@ class PaymentsService {
     private static function resolvePayment(Payment $payment): void {
         Repositories::$paymentsRepository->updateOneById([
             "paymentDate" => time(),
-            "status" => PaymentStatus::RESOLVED
+            "payment_status" => 3,
+            "status" => PaymentStatus::RESOLVED->value
         ], $payment->getId());
 
-        self::fundAccount(Repositories::$userRepository->findOneById($_SESSION['user_id']), $payment);
+        self::fundAccount(Repositories::$userRepository->findOneById($_SESSION['id']), $payment);
+        echo "OK";
     }
 
     private static function fundAccount(User $user, Payment $payment): void {
         Repositories::$userRepository->updateOneById([
-           "wallet" => $payment->getSum()
+           "wallet" => $user->getWallet() + $payment->getSum()
         ], $user->getId());
     }
 
     private static function rejectPayment(Payment $payment): void {
         Repositories::$paymentsRepository->updateOneById([
             "paymentDate" => time(),
-            "status" => PaymentStatus::REJECTED
+            "status" => PaymentStatus::REJECTED->value
         ], $payment->getId());
     }
 

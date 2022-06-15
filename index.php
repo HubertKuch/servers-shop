@@ -31,10 +31,6 @@ putenv("ENVIRONMENT=DEVELOPMENT");
 
 $pterodactyl = new Pterodactyl(getenv("ROOT_PTERODACTYL_API_KEY"), getenv("PTERODACTYL_IP"));
 
-$mailService = new MailService();
-
-$mailService->sendVerificationMail("kuchhubert@gmail.com", 123241);
-
 AvocadoORMSettings::useDatabase("mysql:host=localhost;dbname=servers;port=3306;", "root", "");
 AvocadoRouter::useJSON();
 
@@ -73,7 +69,7 @@ AvocadoRouter::PATCH("/api/unsuspend-server/:id",           [], [ServersControll
 
 // PAYMENTS ACTIONS
 AvocadoRouter::PATCH("/api/add-amount",                     [], [PaymentsService::class,    "createAmountRequest"]);
-AvocadoRouter::PATCH("/api/payment-notify",                   [], [PaymentsService::class,    "paymentNotify"]);
+AvocadoRouter::PATCH("/api/payment-notify",                 [], [PaymentsService::class,    "paymentNotify"]);
 AvocadoRouter::PATCH("/api/fund-user",                      [], [PaymentsController::class, "fundToUser"]);
 
 AvocadoRouter::listen();
