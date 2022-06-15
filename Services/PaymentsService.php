@@ -106,8 +106,6 @@ class PaymentsService {
     }
 
     public static function paymentNotify(AvocadoRequest $req): void {
-        AuthController::authenticationMiddleware();
-
         $status = $req->body['status'];
         $key = $req->body['key'];
         $tid = $req->body['tid'];
