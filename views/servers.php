@@ -137,7 +137,7 @@ use Servers\views\components\Servers;
                                     <div class="card col-12 col-xl-4 mt-xl-0 mt-3 box-shadow-transition egg">
                                         <div class="card-body eggs">
                                             <?php
-                                            Servers::minecraftEgg("views/assets/forge_mc.png", "Forge", 4);
+                                            Servers::minecraftEgg("views/assets/forge_mc_v2.jpg", "Forge", 4);
                                             ?>
                                         </div>
 

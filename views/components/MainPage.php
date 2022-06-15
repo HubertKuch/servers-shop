@@ -17,14 +17,14 @@ class MainPage {
                                 </div>
                                 <div class="col mr-2 mt-lg-0 mt-3">
                                     <div class="row">
-                                           <a class="col" style="font-size: 22px; cursor: pointer; text-decoration-color: #1cc88a; color: #2d2e33" href="index.php/server-list">
-                                          <p class="col">
+                                        <a class="col" style="font-size: 22px; cursor: pointer; text-decoration-color: #1cc88a; color: #2d2e33" href="index.php/server-list">
+                                          <p class="col d-flex flex-column justify-content-center text-center">
                                             <span class="font-weight-bold px-0">Nazwa serwera:</span>
                                             <span class="col px-0">%s</span>
                                           </p>
                                        </a>
                                        <a class="col" style="font-size: 22px; cursor: pointer; text-decoration-color: #1cc88a; color: #2d2e33" href="index.php/server-list">
-                                          <p class="col">
+                                          <p class="col d-flex flex-column justify-content-center text-center">
                                             <span class="font-weight-bold px-0">Typ serwera:</span>
                                             <span  class="col px-0">%s</span>
                                           </p>

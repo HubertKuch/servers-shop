@@ -41,7 +41,7 @@ use Servers\Utils\Environment;
 
                             <label class="font-weight-bold">
                                 Kod aktywacyjny:<br>
-                                <input type="text" name="activation-code" class="input--pin-code" maxlength="6">
+                                <input type="text" name="activation-code" class="input--pin-code" maxlength="6" style="color: #2d2e33">
                             </label>
                         </div>
                         <div class="form-group d-flex justify-content-center">
