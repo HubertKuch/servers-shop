@@ -18,6 +18,7 @@ use Servers\Controllers\ServersController;
 use Servers\Controllers\UserController;
 use Servers\Controllers\ViewsController;
 use Dotenv\Dotenv;
+use Servers\Services\MailService;
 use Servers\Services\PaymentsService;
 
 Dotenv::createImmutable(__DIR__)->load();
@@ -29,6 +30,10 @@ putenv("PTERODACTYL_IP=178.32.202.241:85");
 putenv("ENVIRONMENT=DEVELOPMENT");
 
 $pterodactyl = new Pterodactyl(getenv("ROOT_PTERODACTYL_API_KEY"), getenv("PTERODACTYL_IP"));
+
+$mailService = new MailService();
+
+$mailService->sendVerificationMail("kuchhubert@gmail.com", 123241);
 
 AvocadoORMSettings::useDatabase("mysql:host=localhost;dbname=servers;port=3306;", "root", "");
 AvocadoRouter::useJSON();
@@ -68,7 +73,7 @@ AvocadoRouter::PATCH("/api/unsuspend-server/:id",           [], [ServersControll
 
 // PAYMENTS ACTIONS
 AvocadoRouter::PATCH("/api/add-amount",                     [], [PaymentsService::class,    "createAmountRequest"]);
-AvocadoRouter::GET("/api/payment-notify",                   [], [PaymentsService::class,    "paymentNotify"]);
+AvocadoRouter::PATCH("/api/payment-notify",                   [], [PaymentsService::class,    "paymentNotify"]);
 AvocadoRouter::PATCH("/api/fund-user",                      [], [PaymentsController::class, "fundToUser"]);
 
 AvocadoRouter::listen();
