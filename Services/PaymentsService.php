@@ -103,8 +103,38 @@ class PaymentsService {
         return $ip;
     }
 
-    public static function paymentNotify(AvocadoRequest $req) {
-        echo "OK";
+    // TODO: CHECKING SIGNATURE, REDIRECT TO ERROR PAGE
+    public static function paymentNotify(AvocadoRequest $req): void {
+        $status = $req->body['status'];
+        $key = $req->body['key'];
+        $tid = $req->body['tid'];
+        $payment = Repositories::$paymentsRepository->findOne(["tid" => $tid]);
+
+        if (!($key === $_ENV['PUBLIC_KEY'])) { return; }
+
+        if (intval($status) === 3 &&  $payment->getPaymentStatus() != 3) {
+            self::resolvePayment($payment);
+            echo "OK";
+        }
+
+        if (intval($status) === 4 || intval($status) === 5) {
+            self::rejectPayment($payment);
+            echo "error";
+        }
+    }
+
+    private static function resolvePayment(Payment $payment): void {
+        Repositories::$paymentsRepository->updateOneById([
+            "paymentDate" => time(),
+            "status" => PaymentStatus::RESOLVED
+        ], $payment->getId());
+    }
+
+    private static function rejectPayment(Payment $payment): void {
+        Repositories::$paymentsRepository->updateOneById([
+            "paymentDate" => time(),
+            "status" => PaymentStatus::REJECTED
+        ], $payment->getId());
     }
 
     public static function createPaymentRequest(float $sum, PaymentMethods $method, string $title): array {

@@ -27,7 +27,6 @@ class PaymentsController {
         if (!$userToFund)
             AuthController::redirect('');
 
-
         $paymentResponse = PaymentsService::createPaymentRequest($amount, $paymentMethod, $title);
         $payment = PaymentsService::createPayment($req, $paymentResponse);
 

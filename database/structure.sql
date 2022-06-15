@@ -24,6 +24,7 @@ create table if not exists payments (
     sum                     double not null,
     method                  text not null,
     tid                     text not null,
+    payment_status          int default null,
 
     user_id                 bigint not null,
     foreign key (user_id)   references users(id)
@@ -32,6 +33,7 @@ create table if not exists payments (
 alter table payments modify if exists paymentDate bigint;
 alter table payments modify if exists createDate bigint not null;
 alter table payments add column if not exists tid text not null;
+alter table payments add column if not exists payment_status int default null;
 
 create table if not exists package (
    id                       int not null auto_increment primary key,
