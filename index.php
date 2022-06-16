@@ -70,6 +70,5 @@ AvocadoRouter::PATCH("/api/unsuspend-server/:id",           [], [ServersControll
 // PAYMENTS ACTIONS
 AvocadoRouter::PATCH("/api/add-amount",                     [], [PaymentsService::class,    "createAmountRequest"]);
 AvocadoRouter::POST("/api/payment-notify",                  [], [PaymentsService::class,    "paymentNotify"]);
-AvocadoRouter::PATCH("/api/fund-user",                      [], [PaymentsController::class, "fundToUser"]);
 
 AvocadoRouter::listen();

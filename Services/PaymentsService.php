@@ -58,11 +58,20 @@ class PaymentsService {
         $paymentMethodId = $req->body['payment_id'] ?? null;
         $amount = $req->body['amount'] ?? null;
         $paymentMethod = PaymentMethods::tryFrom($paymentMethodId);
-        $userId = $req->body['user_id'] ?? $_SESSION['id'];
+        $email = $req->body['email'] ?? null;
 
         self::validateAmountRequest($req);
 
-        $user = Repositories::$userRepository->findOneById($userId);
+        $user = Repositories::$userRepository->findOneById($_SESSION['id']);
+
+        if ($email) {
+            $user = Repositories::$userRepository->findOne(["email" => $email]);
+
+            if (!$user) {
+                AuthController::redirect('panel', ["message" => "Użytkownik z emailem $email nie istnieje."]);
+            }
+        }
+
         $title = "Doładowanie konta {$user->getUsername()}";
         $paymentResponse = self::createPaymentRequest($amount, $paymentMethod, $title);
 
