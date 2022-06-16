@@ -1,6 +1,7 @@
 
 <?php
 
+use Servers\Models\PaymentMethods;
 use Servers\Models\ServerStatus;
 use Servers\Utils\Environment;
 use Servers\Repositories;
@@ -127,8 +128,8 @@ use Servers\views\components\UserPanel;
                                 <?php foreach($payments as $payment): ?>
                                 <tr>
                                     <td><?= $payment->getId() ?></td>
-                                    <td><?= $payment->getPaymentDate() ?></td>
-                                    <td><?= $payment->getCreateDate() ?></td>
+                                    <td><?= date('d/m/Y', $payment->getPaymentDate()) ?></td>
+                                    <td><?= date('d/m/Y', $payment->getCreateDate()) ?></td>
                                     <td><?= $payment->getIpAddress() ?></td>
                                     <td><?= match ($payment->getStatus()) {
                                             "incoming" => "Przychodząca",
@@ -138,7 +139,7 @@ use Servers\views\components\UserPanel;
                                         }
                                         ?></td>
                                     <td><?= $payment->getSum() ?></td>
-                                    <td><?= $payment->getMethod() ?></td>
+                                    <td><?= str_replace('_', '', PaymentMethods::tryFrom($payment->getMethod())->name) ?></td>
                                 </tr>
                                 <?php endforeach; ?>
                                 </tbody>
