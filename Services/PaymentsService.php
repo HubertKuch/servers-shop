@@ -120,12 +120,14 @@ class PaymentsService {
         $status = $req->body['status'];
         $key = $req->body['key'];
         $tid = $req->body['tid'];
+        $userId = $req->query['id'];
         $payment = Repositories::$paymentsRepository->findOne(["tid" => $tid]);
+        $user = Repositories::$userRepository->findOneById($userId);
 
         if (!($key === $_ENV['PUBLIC_KEY'])) { return; }
 
         if (intval($status) === 3) {
-            self::resolvePayment($payment);
+            self::resolvePayment($payment, $user);
         }
 
         if (intval($status) === 4 || intval($status) === 5) {
@@ -134,14 +136,14 @@ class PaymentsService {
         }
     }
 
-    private static function resolvePayment(Payment $payment): void {
+    private static function resolvePayment(Payment $payment, User $user): void {
         Repositories::$paymentsRepository->updateOneById([
             "paymentDate" => time(),
             "payment_status" => 3,
             "status" => PaymentStatus::RESOLVED->value
         ], $payment->getId());
 
-        self::fundAccount(Repositories::$userRepository->findOneById($_SESSION['id']), $payment);
+        self::fundAccount($user, $payment);
         echo "OK";
     }
 
@@ -161,13 +163,15 @@ class PaymentsService {
     public static function createPaymentRequest(float $sum, PaymentMethods $method, string $title): array {
         $signature = self::createPaymentSignature($title, $method, $sum);
 
+        $notifyUrl = $_ENV['NOTIFY_URL']."?id=".$_SESSION['id'];
+
         return self::sendPaymentRequest([
             "key"   => $_ENV['PUBLIC_KEY'],
             "method" => $method->value,
             "price" => $sum,
             "title" => $title,
             "url_return" => $_ENV['RETURN_URL'],
-            "url_notify" => $_ENV['NOTIFY_URL'],
+            "url_notify" => $notifyUrl,
             "signature" => $signature,
         ]);
     }
