@@ -120,9 +120,9 @@ class PaymentsService {
         $status = $req->body['status'];
         $key = $req->body['key'];
         $tid = $req->body['tid'];
-        $userId = $req->query['id'];
+
         $payment = Repositories::$paymentsRepository->findOne(["tid" => $tid]);
-        $user = Repositories::$userRepository->findOneById($userId);
+        $user = Repositories::$userRepository->findOneById($payment->getUserId());
 
         if (!($key === $_ENV['PUBLIC_KEY'])) { return; }
 
@@ -163,15 +163,13 @@ class PaymentsService {
     public static function createPaymentRequest(float $sum, PaymentMethods $method, string $title): array {
         $signature = self::createPaymentSignature($title, $method, $sum);
 
-        $notifyUrl = $_ENV['NOTIFY_URL']."?id=".$_SESSION['id'];
-
         return self::sendPaymentRequest([
             "key"   => $_ENV['PUBLIC_KEY'],
             "method" => $method->value,
             "price" => $sum,
             "title" => $title,
             "url_return" => $_ENV['RETURN_URL'],
-            "url_notify" => $notifyUrl,
+            "url_notify" => $_ENV['NOTIFY_URL'],
             "signature" => $signature,
         ]);
     }
