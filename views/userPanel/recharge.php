@@ -98,7 +98,7 @@ use Servers\Repositories;
             <div id="content">
                 <div class="row">
                     <div class="col px-5 mt-5">
-                        <p style="font-size: 24px">Doładuj swoje konto</p>
+                        <p style="font-size: 24px">Doładuj swoje konto. Twój aktualny stan konta: <?= Repositories::$userRepository->findOneById($_SESSION['id'])->getWallet() ?></p>
                         <p class="waller__errros" style="color: red;">
                             <?php
                             foreach ($_GET as $error => $message) {
