@@ -3,19 +3,16 @@
 namespace Servers\views\components;
 
 class UserPanel {
-    public static function serverCard(int $id, string $title, string $createDate, string $expireDate, string $package, float $cost): void {
-        printf('
-            <div class="server__card">
-                <div class="card__image">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeHevG6-E4Dnz5f5f1_wsqlQkXg78F-3Jp2w&usqp=CAU" alt="">
+    public static final function nav() {
+        echo '<div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Ustawienia:</h6>
+                    <a class="collapse-item" href="index.php/recharge">Doładuj konto</a>
+                    <a class="collapse-item" href="index.php/recharge-friend">Doładuj konto znajomemu</a>
+                    <a class="collapse-item" href="index.php/server-list">Zakupione serwery</a>
+                    <a class="collapse-item" href="index.php/payments">Płatności</a>
+                    <a class="collapse-item" href="index.php/settings">Użytkownik</a>
                 </div>
-                <div class="card__footer">
-                    <div class="footer__title">%s</div>
-                    <div class="footer__cost">Cena: %d</div>
-                    <div class="footer__create-date">Kupinono: %s</div>
-                    <div class="footer__expire-date">Wygasa: %s</div>
-                </div>
-            </div>
-        ', $title, $cost, $createDate, $expireDate);
+            </div>';
     }
 }

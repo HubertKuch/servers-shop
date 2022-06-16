@@ -28,28 +28,28 @@ class PaymentsService {
         $amount = $req->body['amount'] ?? null;
 
         if (!$paymentMethodId)
-            AuthController::redirect("panel", ["message" => "Metoda płatności nie jest ustawiona"]);
+            AuthController::redirect("recharge", ["message" => "Metoda płatności nie jest ustawiona"]);
 
         if (!floatval($amount))
-            AuthController::redirect("panel", ["message" => "Niepoprawna kwota"]);
+            AuthController::redirect("recharge", ["message" => "Niepoprawna kwota"]);
 
         if (!$amount)
-            AuthController::redirect("panel", ["message" => "Kwota nie może być pusta lub niższa od 1PLN"]);
+            AuthController::redirect("recharge", ["message" => "Kwota nie może być pusta lub niższa od 1PLN"]);
 
         $paymentMethod = PaymentMethods::tryFrom($paymentMethodId);
 
         if (!$paymentMethod)
-            AuthController::redirect("panel", ["message" => "Nie znana metoda płatności"]);
+            AuthController::redirect("recharge", ["message" => "Nie znana metoda płatności"]);
 
         $paymentMethod = PaymentMethods::tryFrom($paymentMethodId);
 
         if (!$paymentMethod)
-            AuthController::redirect("panel", ["message" => "Nie znana metoda płatności"]);
+            AuthController::redirect("recharge", ["message" => "Nie znana metoda płatności"]);
 
         $paymentDueEnvName = self::PAYMENT_DUE_ENV_NAMES[$paymentMethod->value] ?? null;
 
         if (!$paymentDueEnvName || !$_ENV[$paymentDueEnvName])
-            AuthController::redirect("panel", ["message" => "Niepoprawna metoda płatności"]);
+            AuthController::redirect("recharge", ["message" => "Niepoprawna metoda płatności"]);
     }
 
     public static function createAmountRequest(AvocadoRequest $req): void {
@@ -68,15 +68,16 @@ class PaymentsService {
             $user = Repositories::$userRepository->findOne(["email" => $email]);
 
             if (!$user) {
-                AuthController::redirect('panel', ["message" => "Użytkownik z emailem $email nie istnieje."]);
+                AuthController::redirect('recharge-friend', ["message" => "Użytkownik z emailem $email nie istnieje."]);
             }
         }
 
         $title = "Doładowanie konta {$user->getUsername()}";
+        var_dump($user);
         $paymentResponse = self::createPaymentRequest($amount, $paymentMethod, $title);
 
         if (!$paymentResponse['success'])
-            AuthController::redirect('panel', ["message" => "Płatność nie powiodła się. Spróbuj ponownie lub skontaktuj się z administratorem domeny."]);
+            AuthController::redirect('recharge-friend', ["message" => "Płatność nie powiodła się. Spróbuj ponownie lub skontaktuj się z administratorem domeny."]);
 
         $url = $paymentResponse['data']['url'];
 

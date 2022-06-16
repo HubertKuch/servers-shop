@@ -4,6 +4,8 @@
 use Servers\Models\ServerStatus;
 use Servers\Utils\Environment;
 use Servers\Repositories;
+use Servers\views\components\UserPanel;
+
 ?>
 
 <html lang="pl">
@@ -64,15 +66,7 @@ use Servers\Repositories;
                     <i class="fas fa-fw fa-wrench"></i>
                     <span>Ustawienia konta</span>
                 </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Ustawienia:</h6>
-                        <a class="collapse-item" href="index.php/recharge">Doładuj konto</a>
-                        <a class="collapse-item" href="index.php/server-list">Zakupione serwery</a>
-                        <a class="collapse-item" href="index.php/payments">Płatności</a>
-                        <a class="collapse-item" href="index.php/settings">Użytkownik</a>
-                    </div>
-                </div>
+                <?php UserPanel::nav(); ?>
             </li>
 
             <!-- Divider -->

@@ -153,6 +153,11 @@ class ViewsController {
         require "views/userPanel/recharge.php";
     }
 
+    public static final function friendRecharge(AvocadoRequest $req): void {
+        $errors = $req->query;
+        require "views/userPanel/rechargeFriend.php";
+    }
+
     public static final function accountActivation(): void {
         $errors = $_GET;
         require "views/accountActivation.php";
