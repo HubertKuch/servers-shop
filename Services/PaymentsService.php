@@ -58,10 +58,11 @@ class PaymentsService {
         $paymentMethodId = $req->body['payment_id'] ?? null;
         $amount = $req->body['amount'] ?? null;
         $paymentMethod = PaymentMethods::tryFrom($paymentMethodId);
+        $userId = $req->body['user_id'] ?? $_SESSION['id'];
 
         self::validateAmountRequest($req);
 
-        $user = Repositories::$userRepository->findOneById($_SESSION['id']);
+        $user = Repositories::$userRepository->findOneById($userId);
         $title = "Doładowanie konta {$user->getUsername()}";
         $paymentResponse = self::createPaymentRequest($amount, $paymentMethod, $title);
 
@@ -70,7 +71,7 @@ class PaymentsService {
 
         $url = $paymentResponse['data']['url'];
 
-        $payment = self::createPayment($req, $paymentResponse);
+        $payment = self::createPayment($req, $paymentResponse, $user);
         Repositories::$paymentsRepository->save($payment);
 
         $paymentFromDb = Repositories::$paymentsRepository->findOne([
@@ -82,7 +83,7 @@ class PaymentsService {
         header("Location: $url");
     }
 
-    public static function createPayment(AvocadoRequest $req, array $paymentResponse): Payment {
+    public static function createPayment(AvocadoRequest $req, array $paymentResponse, User $user): Payment {
         AuthController::authenticationMiddleware();
 
         $paymentMethodId = $req->body['payment_id'] ?? null;
@@ -92,7 +93,7 @@ class PaymentsService {
         $now = time();
         $paymentMethod = PaymentMethods::tryFrom($paymentMethodId);
 
-        return new Payment(0, $now, $ip, PaymentStatus::INCOMING->value, $amount, $paymentMethod?->value, $_SESSION['id'], $tid);
+        return new Payment(0, $now, $ip, PaymentStatus::INCOMING->value, $amount, $paymentMethod?->value, $user->getId(), $tid);
     }
 
     private static function getIPAddress(): string {
