@@ -73,7 +73,7 @@ class PaymentsService {
         }
 
         $title = "Doładowanie konta {$user->getUsername()}";
-        var_dump($user);
+
         $paymentResponse = self::createPaymentRequest($amount, $paymentMethod, $title);
 
         if (!$paymentResponse['success'])
