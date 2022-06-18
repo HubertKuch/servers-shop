@@ -136,6 +136,16 @@ class ServersController {
             2 => self::getForgeEnvironmentData($minecraftVersion, $forgeVersion)
         };
 
+        $userCash = $user->getWallet();
+        $serverPrice = $package->getCost();
+
+        if ($userCash <= $serverPrice)
+            AuthController::redirect('servers', ["message" => "Nie masz wystarczającej ilości pieniędzy"]);
+
+        Repositories::$userRepository->updateOneById([
+            "wallet" => $userCash - $serverPrice
+        ], $user->getId());
+
         try {
             $pterodactylServer = self::$pterodactyl->createServer($serverData);
             $createDate = time();
