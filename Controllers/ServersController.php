@@ -51,82 +51,107 @@ class ServersController {
         AuthController::redirect('panel');
     }
 
+    private static function getVanillaEnvironmentData($minecraftVersion) {
+        return [
+            'VANILLA_VERSION' => $minecraftVersion,
+            'SERVER_JARFILE' => 'server.jar',
+        ];
+    }
+
+    private static function getForgeEnvironmentData($minecraftVersion, $forgeVersion) {
+        return [
+            'MC_VERSION' => $minecraftVersion,
+            'BUILD_TYPE' => 'recommended',
+            'FORGE_VERSION' => $forgeVersion,
+            'SERVER_JARFILE' => 'server.jar',
+        ];
+    }
+
     public static final function create(AvocadoRequest $req): void {
-        var_dump($req->body);
-//        $eggType            = $req->body['egg_type'] ?? null;
-//        $eggId              = intval($req->body['egg_id']) ?? null;
-//        $packageId          = intval($req->body['package_id']) ?? null;
-//        $name               = $req->body['server_name'] ?? null;
-//        $minecraftVersion   = trim($req->body['mc_version']) ?? null;
-//        $javaVersion        = $req->body['java_version'] ?? null;
-//        $pterodactylUserId  = $_SESSION['pterodactyl_user_id'];
-//        $user               = Repositories::$userRepository->findOneById($_SESSION['id']);
-//
-//        var_dump($eggType, $packageId, $name, $minecraftVersion, $javaVersion);
+        $eggType            = $req->body['egg_type'] ?? null;
+        $eggId              = intval($req->body['egg_id']) ?? null;
+        $packageId          = intval($req->body['package_id']) ?? null;
+        $name               = $req->body['server_name'] ?? null;
+        $minecraftVersion   = trim($req->body['mc_version']) ?? null;
+        $javaVersion        = $req->body['java_version'] ?? null;
+        $forgeVersion       = $req->body['forge_version'] ?? null;
+        $pterodactylUserId  = $_SESSION['pterodactyl_user_id'];
+        $user               = Repositories::$userRepository->findOneById($_SESSION['id']);
+        $isForge            = $eggId == 2;
 
-//        if (!$eggType || !$packageId || !$name || !$minecraftVersion || !$javaVersion)
-//            AuthController::redirect('servers', ["message" => "Wszystkie dane muszą być podane"]);
+        if (!$eggType || !$packageId || !$name || !$minecraftVersion || !$javaVersion)
+            AuthController::redirect('servers', ["message" => "Wszystkie dane muszą być podane"]);
 
-//        $eggType = strtolower(trim($eggType));
-//        $package = Repositories::$packagesRepository->findOneById(intval($packageId));
-//
-//        if(!self::isValidEggType($eggType))
-//            AuthController::redirect('servers', ["message" => "Nieporawny typ servera"]);
-//
-//        if(!$eggId)
-//            AuthController::redirect('servers', ["message" => "Niepoprawne id typu servera"]);
-//
-//        if (!$package)
-//            AuthController::redirect('servers', ["message" => "Nieporawny typ paczki"]);
-//
-//        if (strlen($name) == 0)
-//            AuthController::redirect('servers', ["message" => "Nazwa servera jest niepoprawna"]);
-//
-//        if (!self::isValidJavaVersion($javaVersion))
-//            AuthController::redirect('servers', ["message" => "Niepoprawna wersja Javy"]);
-//
-//        if (!in_array($minecraftVersion, self::$mcVersions))
-//            AuthController::redirect('servers', ["message" => "Niepoprawna wersja Minecraft"]);
-//
-//        $egg = self::$pterodactyl->egg(1, $eggId);
-//
-//        $serverData = [
-//            'name' => $name,
-//            'user' => $pterodactylUserId,
-//            'egg' => $eggId,
-//            'docker_image' => $egg->dockerImage,
-//            'startup' => $egg->startup,
-//            'environment' => [
-//                'VANILLA_VERSION' => $minecraftVersion,
-//                'SERVER_JARFILE' => 'server.jar',
-//            ],
-//            'limits' => [
-//                'memory' => $package->getRamSize(),
-//                'swap' => 0,
-//                'disk' => $package->getDiskSize(),
-//                'io' => 500,
-//                'cpu' => $package->getProcessorPower(),
-//            ],
-//            'feature_limits' => [
-//                'databases' => 1,
-//                'backups' => 1,
-//            ],
-//            'allocation' => [
-//                'default' => self::getUnAssignedAllocationId(),
-//            ]
-//        ];
-//
-//        $pterodactylServer = self::$pterodactyl->createServer($serverData);
-//        $createDate = time();
-//        $expireDate = time() + 24 * 60 * 60 * self::$expireDays;
-//
-//        $userId = $user->getId();
-//        $serverId = $pterodactylServer->id;
-//
-//        $server = new Server($name, ServerStatus::EXPIRED->value, $createDate, $expireDate, $package->getId(), $userId, $serverId);
-//        Repositories::$productsRepository->save($server);
-//
-//        AuthController::redirect('panel');
+        $eggType = strtolower(trim($eggType));
+        $package = Repositories::$packagesRepository->findOneById(intval($packageId));
+
+        if(!self::isValidEggType($eggType))
+            AuthController::redirect('servers', ["message" => "Nieporawny typ servera"]);
+
+        if(!$eggId)
+            AuthController::redirect('servers', ["message" => "Niepoprawne id typu servera"]);
+
+        if (!$package)
+            AuthController::redirect('servers', ["message" => "Nieporawny typ paczki"]);
+
+        if (strlen($name) == 0)
+            AuthController::redirect('servers', ["message" => "Nazwa servera jest niepoprawna"]);
+
+        if (!self::isValidJavaVersion($javaVersion))
+            AuthController::redirect('servers', ["message" => "Niepoprawna wersja Javy"]);
+
+        if (!in_array($minecraftVersion, self::$mcVersions))
+            AuthController::redirect('servers', ["message" => "Niepoprawna wersja Minecraft"]);
+
+        // is forge
+        if ($isForge && !$forgeVersion)
+            AuthController::redirect('servers', ["message" => "Niepoprawna wersja Forge"]);
+
+        $egg = self::$pterodactyl->egg(1, $eggId);
+
+        $serverData = [
+            'name' => $name,
+            'user' => $pterodactylUserId,
+            'egg' => $eggId,
+            'docker_image' => $egg->dockerImage,
+            'startup' => $egg->startup,
+            'limits' => [
+                'memory' => $package->getRamSize(),
+                'swap' => 0,
+                'disk' => $package->getDiskSize(),
+                'io' => 500,
+                'cpu' => $package->getProcessorPower(),
+            ],
+            'feature_limits' => [
+                'databases' => 1,
+                'backups' => 1,
+            ],
+            'allocation' => [
+                'default' => self::getUnAssignedAllocationId(),
+            ]
+        ];
+
+        $serverData['environment'] = match ($eggId) {
+            5 => self::getVanillaEnvironmentData($minecraftVersion),
+            2 => self::getForgeEnvironmentData($minecraftVersion, $forgeVersion)
+        };
+
+        try {
+            $pterodactylServer = self::$pterodactyl->createServer($serverData);
+            $createDate = time();
+            $expireDate = time() + 24 * 60 * 60 * self::$expireDays;
+
+            $userId = $user->getId();
+            $serverId = $pterodactylServer->id;
+
+            $server = new Server($name, ServerStatus::SOLD->value, $createDate, $expireDate, $package->getId(), $userId, $serverId);
+            Repositories::$productsRepository->save($server);
+
+            AuthController::redirect('server-list');
+        } catch (\Exception $e) {
+            var_dump($e->getMessage());
+            AuthController::redirect('servers', ["message" => "Wystąpił nieoczekiwany błąd skontaktuj się z administratorem domeny."]);
+        }
     }
 
     private static function isValidEggType(string $type): bool {

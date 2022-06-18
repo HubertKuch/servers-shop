@@ -6,7 +6,7 @@ class Servers {
     public static final function minecraftEgg(string $imgSource, string $name, int $eggId): void {
 //  temp comment class: egg
         printf('
-            <div class="row" data-egg-name="%s" data-egg-id="%s">
+            <div class="row egg" data-egg-name="%s" data-egg-id="%s">
                 <div class="col-12">
                     <div class="row justify-content-center">
                         <div class="egg__name d-flex align-items-center justify-content-center">

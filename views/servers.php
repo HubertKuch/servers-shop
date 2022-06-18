@@ -119,7 +119,7 @@ use Servers\views\components\UserPanel;
                                 </div>
 
                                 <div class="row">
-                                    <div class="card col-12 col-xl-4 mr-xl-5 box-shadow-transition egg">
+                                    <div class="card col-12 col-xl-4 mr-xl-5 box-shadow-transition">
                                         <div class="card-body eggs">
                                             <?php
                                             Servers::minecraftEgg("views/assets/vanilla_mc.png", "Vanilla", 5);
@@ -127,10 +127,10 @@ use Servers\views\components\UserPanel;
                                         </div>
 
                                     </div>
-                                    <div class="card col-12 col-xl-4 mt-xl-0 mt-3 box-shadow-transition egg">
+                                    <div class="card col-12 col-xl-4 mt-xl-0 mt-3 box-shadow-transition">
                                         <div class="card-body eggs">
                                             <?php
-                                            Servers::minecraftEgg("views/assets/forge_mc_v2.jpg", "Forge", 4);
+                                            Servers::minecraftEgg("views/assets/forge_mc_v2.jpg", "Forge", 2);
                                             ?>
                                         </div>
 
@@ -177,6 +177,10 @@ use Servers\views\components\UserPanel;
                                             <p>Wersja Minecraft</p>
                                             <input type="text"  class="form-control form-control-user panel__input p-4" style="border-radius:20px " name="mc_version" placeholder="1.18.2">
                                         </div>
+                                        <div class="form-group d-none forge-version-version-container">
+                                            <p>Wersja Forge</p>
+                                            <input type="text"  class="form-control form-control-user panel__input p-4" style="border-radius:20px " name="forge_version" placeholder="1.18.2">
+                                        </div>
                                         <div class="form-group">
                                             <p>Wersja Javy</p>
                                                 <select class="panel__input form-control" name="java_version" style="border-radius:20px; height: 50px" >
@@ -220,18 +224,23 @@ use Servers\views\components\UserPanel;
             egg.addEventListener('click', (e) => {
                 eggs.forEach(egg => egg.classList.remove('border-bottom-success'));
 
-                let eggTypeName = e.target.getAttribute('data-egg-name');
-                let selectedEggId = e.target.getAttribute('data-egg-id');
-
-                if(!eggTypeName) {
-                    eggTypeName = e.target.parentElement.getAttribute('data-egg-name')
-                    selectedEggId = e.target.parentElement.getAttribute('data-egg-id');
-                }
+                const eggTypeName = e.currentTarget.getAttribute('data-egg-name');
+                const selectedEggId = e.currentTarget.getAttribute('data-egg-id');
 
                 egg.classList.add('border-bottom-success')
 
                 eggType.value = eggTypeName;
                 eggId.value = selectedEggId;
+
+                const forgeVersionContainer = document.querySelector('.forge-version-version-container');
+
+                if (parseInt(eggId.value) === 2) {
+                    forgeVersionContainer.classList.remove('d-none')
+                    forgeVersionContainer.classList.add('d-block')
+                } else {
+                    forgeVersionContainer.classList.remove('d-block')
+                    forgeVersionContainer.classList.add('d-none')
+                }
             });
         }
 
@@ -240,12 +249,8 @@ use Servers\views\components\UserPanel;
                 packages.forEach(mcPackage => mcPackage.classList.remove('border-bottom-success'));
 
                 mcPackage.classList.add('border-bottom-success')
-                let packageId = e.target.getAttribute('data-package-id');
 
-                if(!packageId) {
-                    packageId = e.target.parentElement.getAttribute('data-package-id')
-                }
-                packageIdElem.value = packageId;
+                packageIdElem.value = e.currentTarget.getAttribute('data-package-id');
             });
         }
     </script>
