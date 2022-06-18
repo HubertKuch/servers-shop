@@ -9,7 +9,7 @@ class MainPage {
         printf('
             <div class="row mb-3 " onclick="localStorage.setItem(\'user-panel-actual-visible\', \'bought-servers\')">
                 <div class="col-12 box-shadow-transition px-0 mb-4">
-                    <div class="card border-left-success shadow h-100 py-2 ">
+                    <div class="card %s shadow h-100 py-2 ">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col-lg-4 col-12 mr-2">
@@ -36,7 +36,7 @@ class MainPage {
                     </div>
                 </div>                
             </div>
-        ', $package->getImageSrc(), $server->getTitle(), $package->getName());
+        ', $server->getStatus() === "expired" ? "border-left-warning" : "border-left-success", $package->getImageSrc(), $server->getTitle(), $package->getName());
     }
 
     public static final function nav() {

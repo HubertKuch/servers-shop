@@ -222,14 +222,11 @@ use Servers\Repositories;
     </section>
 
     <section class="settings admin__panel--section section--invisible">
-
         <div class="row">
             <div class="col mt-5">
                 <h1 class="text-gray-900">Ustawienia konta</h1>
             </div>
         </div>
-
-
 
         <p class="settings__errors" style="color: red;">
             <?php

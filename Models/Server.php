@@ -70,4 +70,9 @@ class Server {
     public function getUserId(): int { return $this->user_id; }
 
     public function getPterodactylId(): int { return $this->pterodactyl_id; }
+
+    public function isExpired(): bool {
+        echo time();
+        return $this->getExpireDate() < time();
+    }
 }
