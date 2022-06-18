@@ -25,7 +25,7 @@ class ServersController {
         $serverId = $server->getId();
 
         if (!$pterodactylId || $pterodactylId == 0)
-            AuthController::redirect('servers', ["message" => "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem domeny."]);
+            AuthController::redirect('server-list', ["message" => "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem domeny."]);
 
         self::$pterodactyl->suspendServer($pterodactylId);
         Repositories::$productsRepository->updateOneById(["status" => "expired"], $serverId);
@@ -36,19 +36,31 @@ class ServersController {
         $serverId = intval($req->params['id']) ?? null;
 
         if (!$serverId)
-            AuthController::redirect('servers', ["message" => "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem domeny."]);
+            AuthController::redirect('server-list', ["message" => "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem domeny."]);
 
         $server = Repositories::$productsRepository->findOneById($serverId);
 
         $pterodactylId = $server->getPterodactylId() ?? null;
 
+        $user = Repositories::$userRepository->findOneById($_SESSION['id']);
+        $userMoney = $user->getWallet();
+
+        $packageCost = Repositories::$packagesRepository->findOneById(intval($server->getPackage()))->getCost();
+
+        if ($userMoney < $packageCost)
+            AuthController::redirect('server-list', ["message" => "Nie masz wystarczających pieniędzy do dokonania akcji."]);
+
+        Repositories::$userRepository->updateOneById([
+            'wallet' => $userMoney - $packageCost
+        ], $user->getId());
+
         if (!$serverId || $serverId == 0)
-            AuthController::redirect('servers', ["message" => "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem domeny."]);
+            AuthController::redirect('server-list', ["message" => "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem domeny."]);
 
         self::$pterodactyl->unsuspendServer($pterodactylId);
         Repositories::$productsRepository->updateOneById(["status" => "sold", "expireDate" => time() + 24 * 60 * 60 * self::$expireDays], $serverId);
         echo "<script>localStorage.setItem('user-panel-actual-visible', 'bought-servers')</script>";
-        AuthController::redirect('panel');
+        AuthController::redirect('');
     }
 
     private static function getVanillaEnvironmentData($minecraftVersion) {
@@ -139,7 +151,7 @@ class ServersController {
         $userCash = $user->getWallet();
         $serverPrice = $package->getCost();
 
-        if ($userCash <= $serverPrice)
+        if ($userCash < $serverPrice)
             AuthController::redirect('servers', ["message" => "Nie masz wystarczającej ilości pieniędzy"]);
 
         Repositories::$userRepository->updateOneById([
