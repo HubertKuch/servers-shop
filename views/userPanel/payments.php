@@ -138,7 +138,7 @@ use Servers\views\components\UserPanel;
                                             default => "Nieznany"
                                         }
                                         ?></td>
-                                    <td><?= $payment->getSum() ?></td>
+                                    <td><?= $payment->getSum() ?>zł</td>
                                     <td><?= str_replace('_', '', PaymentMethods::tryFrom($payment->getMethod())->name) ?></td>
                                 </tr>
                                 <?php endforeach; ?>
