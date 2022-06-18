@@ -80,4 +80,8 @@ class Package {
     public function getImageSrc(): string {
         return $this->imageSrc;
     }
+
+    public function getDescription() {
+        return sprintf("%s (%sMB / %sMB)", $this->getName(), $this->getRamSize(), $this->getDiskSize());
+    }
 }

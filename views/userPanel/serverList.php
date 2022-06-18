@@ -111,7 +111,6 @@ use Servers\views\components\UserPanel;
                                         <th>DATA UTWORZENIA</th>
                                         <th>DATA WYGAŚNIĘCIA</th>
                                         <th>PACZKA</th>
-                                        <th>ID PŁATNOŚCI</th>
                                         <th>ODNÓW</th>
                                     </tr>
                                     </thead>
@@ -123,7 +122,6 @@ use Servers\views\components\UserPanel;
                                         <th>DATA UTWORZENIA</th>
                                         <th>DATA WYGAŚNIĘCIA</th>
                                         <th>PACZKA</th>
-                                        <th>ID PŁATNOŚCI</th>
                                         <th>ODNÓW</th>
                                     </tr>
                                     </tfoot>
@@ -140,8 +138,7 @@ use Servers\views\components\UserPanel;
                                             </td>
                                             <td><?= date('m/d/Y', $server->getCreateDate()) ?></td>
                                             <td><?= date('m/d/Y', $server->getExpireDate()) ?></td>
-                                            <td><?php $package = Repositories::$packagesRepository->findOneById($server->getPackageId()); echo "{$package->getName()} ({$package->getRamSize()}MB / {$package->getDiskSize()}MB)" ?></td>
-                                            <td><?= $server->getPaymentId() ?? "BRAK" ?></td>
+                                            <td><?php $package = Repositories::$packagesRepository->findOneById($server->getPackageId()); echo $package->getDescription() ?></td>
                                             <td>
                                                 <form action="index.php/api/unsuspend-server/<?= $server->getId() ?>" method="post">
                                                     <input type="hidden" name="_method" value="PATCH">
