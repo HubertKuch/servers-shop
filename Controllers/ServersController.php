@@ -171,8 +171,7 @@ class ServersController {
 
             AuthController::redirect('server-list');
         } catch (\Exception $e) {
-            var_dump($e->getMessage());
-//            AuthController::redirect('servers', ["message" => "Wystąpił nieoczekiwany błąd skontaktuj się z administratorem domeny."]);
+            AuthController::redirect('servers', ["message" => "Wystąpił nieoczekiwany błąd skontaktuj się z administratorem domeny."]);
         }
     }
 
