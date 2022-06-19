@@ -175,8 +175,21 @@ use Servers\views\components\UserPanel;
                                             <input type="text" class="form-control form-control-user panel__input p-4" style="border-radius:20px " name="server_name" placeholder="Podaj nazwę" required>
                                         </div>
                                         <div class="form-group">
-                                            <p>Wersja Minecraft</p>
-                                            <input type="text"  class="form-control form-control-user panel__input p-4" style="border-radius:20px " name="mc_version" placeholder="1.18.2">
+                                            <label>
+                                                <p>Wersja Minecraft</p>
+                                                <select class="custom-select" name="mc_version">
+                                                    <?php
+                                                    $mcVersions = json_decode(file_get_contents('Utils/mc_versions.json'));
+                                                    $mcVersions = array_filter(
+                                                        $mcVersions,
+                                                        fn($version) => strlen($version) <= 6 && is_numeric(substr($version, -1, 1))
+                                                    );
+
+                                                    foreach($mcVersions as $version): ?>
+                                                        <option value="<?= $version ?>"><?= $version ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </label>
                                         </div>
                                         <div class="form-group d-none forge-version-version-container">
                                             <p>Wersja Forge</p>

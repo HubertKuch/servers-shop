@@ -148,16 +148,6 @@ class ServersController {
             2 => self::getForgeEnvironmentData($minecraftVersion, $forgeVersion)
         };
 
-        $userCash = $user->getWallet();
-        $serverPrice = $package->getCost();
-
-        if ($userCash < $serverPrice)
-            AuthController::redirect('servers', ["message" => "Nie masz wystarczającej ilości pieniędzy"]);
-
-        Repositories::$userRepository->updateOneById([
-            "wallet" => $userCash - $serverPrice
-        ], $user->getId());
-
         try {
             $pterodactylServer = self::$pterodactyl->createServer($serverData);
             $createDate = time();
@@ -169,10 +159,20 @@ class ServersController {
             $server = new Server($name, ServerStatus::SOLD->value, $createDate, $expireDate, $package->getId(), $userId, $serverId);
             Repositories::$productsRepository->save($server);
 
+            $userCash = $user->getWallet();
+            $serverPrice = $package->getCost();
+
+            if ($userCash < $serverPrice)
+                AuthController::redirect('servers', ["message" => "Nie masz wystarczającej ilości pieniędzy"]);
+
+            Repositories::$userRepository->updateOneById([
+                "wallet" => $userCash - $serverPrice
+            ], $user->getId());
+
             AuthController::redirect('server-list');
         } catch (\Exception $e) {
             var_dump($e->getMessage());
-            AuthController::redirect('servers', ["message" => "Wystąpił nieoczekiwany błąd skontaktuj się z administratorem domeny."]);
+//            AuthController::redirect('servers', ["message" => "Wystąpił nieoczekiwany błąd skontaktuj się z administratorem domeny."]);
         }
     }
 
