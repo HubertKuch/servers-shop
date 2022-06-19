@@ -10,16 +10,18 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
 
+use Avocado\ORM\AvocadoModelException;
 use Avocado\Router\AvocadoRouter;
 use Avocado\ORM\AvocadoORMSettings;
 use HCGCloud\Pterodactyl\Pterodactyl;
-use Servers\Controllers\PaymentsController;
 use Servers\Controllers\ServersController;
 use Servers\Controllers\UserController;
 use Servers\Controllers\ViewsController;
 use Dotenv\Dotenv;
-use Servers\Services\MailService;
 use Servers\Services\PaymentsService;
+
+set_error_handler([ViewsController::class, "internalServerError"], E_ALL);
+set_exception_handler([ViewsController::class, "internalServerError"]);
 
 Dotenv::createImmutable(__DIR__)->load();
 
@@ -71,5 +73,5 @@ AvocadoRouter::PATCH("/api/unsuspend-server/:id",           [], [ServersControll
 // PAYMENTS ACTIONS
 AvocadoRouter::PATCH("/api/add-amount",                     [], [PaymentsService::class,    "createAmountRequest"]);
 AvocadoRouter::POST("/api/payment-notify",                  [], [PaymentsService::class,    "paymentNotify"]);
-
+AvocadoRouter::notFoundHandler([ViewsController::class, "pageNotFound"]);
 AvocadoRouter::listen();

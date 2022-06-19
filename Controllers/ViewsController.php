@@ -174,4 +174,14 @@ class ViewsController {
         $packages = Repositories::$packagesRepository->findMany();
         require "views/servers.php";
     }
+
+    public static final function pageNotFound(): void {
+        ob_clean();
+        require "views/errors/404.php";
+    }
+
+    public static final function internalServerError(): void {
+        ob_clean();
+        require "views/errors/internalErrorView.php";
+    }
 }

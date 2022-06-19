@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9bd28f50abcc5ed9f5bb30ccaed0399d",
+    "content-hash": "12ac44a8646a9b6fb222223d3e1f591e",
     "packages": [
         {
             "name": "graham-campbell/result-type",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/GrahamCampbell/Result-Type.git",
-                "reference": "ec4daa4b45faf6a683c9c0acf92fe1377d695a54"
+                "reference": "2c41119c817eaf5bf08d362005b980dc45999b5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GrahamCampbell/Result-Type/zipball/ec4daa4b45faf6a683c9c0acf92fe1377d695a54",
-                "reference": "ec4daa4b45faf6a683c9c0acf92fe1377d695a54",
+                "url": "https://api.github.com/repos/GrahamCampbell/Result-Type/zipball/2c41119c817eaf5bf08d362005b980dc45999b5b",
+                "reference": "2c41119c817eaf5bf08d362005b980dc45999b5b",
                 "shasum": ""
             },
             "require": {
@@ -67,7 +67,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-02-07T10:52:05+00:00"
+            "time": "2022-05-30T20:57:52+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -75,12 +75,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "f092dd734083473658de3ee4bef093ed77d2689c"
+                "reference": "724562fa861e21a4071c652c8a159934e4f05592"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/f092dd734083473658de3ee4bef093ed77d2689c",
-                "reference": "f092dd734083473658de3ee4bef093ed77d2689c",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/724562fa861e21a4071c652c8a159934e4f05592",
+                "reference": "724562fa861e21a4071c652c8a159934e4f05592",
                 "shasum": ""
             },
             "require": {
@@ -182,7 +182,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-05-25T13:19:12+00:00"
+            "time": "2022-06-09T21:36:50+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -435,26 +435,28 @@
         },
         {
             "name": "hubert/avocado",
-            "version": "2.2.1",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/HubertKuch/Avocado.git",
-                "reference": "b6bb23cd9c614ebe862d489c26465e32e878b01f"
+                "reference": "91d8c4803fa3ecfb615a85bf6797fd3137d3942b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/HubertKuch/Avocado/zipball/b6bb23cd9c614ebe862d489c26465e32e878b01f",
-                "reference": "b6bb23cd9c614ebe862d489c26465e32e878b01f",
+                "url": "https://api.github.com/repos/HubertKuch/Avocado/zipball/91d8c4803fa3ecfb615a85bf6797fd3137d3942b",
+                "reference": "91d8c4803fa3ecfb615a85bf6797fd3137d3942b",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
-                "ext-pdo": "*"
+                "ext-pdo": "*",
+                "php": "8.1.*"
             },
             "require-dev": {
                 "phpstan/phpstan": "^1.7",
                 "phpunit/phpunit": "9.5.18"
             },
+            "default-branch": true,
             "type": "framework",
             "autoload": {
                 "psr-4": {
@@ -481,9 +483,9 @@
             "homepage": "https://avocadoframework.com",
             "support": {
                 "issues": "https://github.com/HubertKuch/Avocado/issues",
-                "source": "https://github.com/HubertKuch/Avocado/tree/v2.2.1"
+                "source": "https://github.com/HubertKuch/Avocado/tree/main"
             },
-            "time": "2022-05-26T11:11:13+00:00"
+            "time": "2022-06-19T08:51:53+00:00"
         },
         {
             "name": "phpmailer/phpmailer",
@@ -798,7 +800,7 @@
                 "portable"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-ctype/tree/main"
+                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.26.0"
             },
             "funding": [
                 {
@@ -886,7 +888,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-intl-idn/tree/main"
+                "source": "https://github.com/symfony/polyfill-intl-idn/tree/v1.26.0"
             },
             "funding": [
                 {
@@ -971,7 +973,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-intl-normalizer/tree/main"
+                "source": "https://github.com/symfony/polyfill-intl-normalizer/tree/v1.26.0"
             },
             "funding": [
                 {
@@ -1055,7 +1057,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-mbstring/tree/main"
+                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.26.0"
             },
             "funding": [
                 {
@@ -1132,7 +1134,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php72/tree/main"
+                "source": "https://github.com/symfony/polyfill-php72/tree/v1.26.0"
             },
             "funding": [
                 {
@@ -1216,7 +1218,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php80/tree/main"
+                "source": "https://github.com/symfony/polyfill-php80/tree/v1.26.0"
             },
             "funding": [
                 {
@@ -1318,7 +1320,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "hubert/avocado": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
