@@ -1,5 +1,6 @@
 <?php
 
+use Avocado\HTTP\JSON\JSON;
 use Servers\Utils\Environment;
 use Servers\views\components\MainPage;
 use Servers\views\components\Servers;
@@ -217,8 +218,10 @@ use Servers\views\components\UserPanel;
         const eggs = document.querySelectorAll('.egg');
         const eggType = document.querySelector('.egg_type');
         const eggId = document.querySelector('.egg_id');
-        const packages = document.querySelectorAll('.package');
+        const packagesElements = document.querySelectorAll('.package');
         const packageIdElem = document.querySelector('.package_id');
+        const packages = <?= (new JSON($packages, true))->getSerializedData() ?>;
+        const submitButton = document.querySelector('form button[type=submit]');
 
         for (const egg of eggs) {
             egg.addEventListener('click', (e) => {
@@ -244,13 +247,18 @@ use Servers\views\components\UserPanel;
             });
         }
 
-        for (const mcPackage of packages) {
+        for (const mcPackage of packagesElements) {
             mcPackage.addEventListener('click', (e) => {
-                packages.forEach(mcPackage => mcPackage.classList.remove('border-bottom-success'));
+                packagesElements.forEach(mcPackage => mcPackage.classList.remove('border-bottom-success'));
 
                 mcPackage.classList.add('border-bottom-success')
 
-                packageIdElem.value = e.currentTarget.getAttribute('data-package-id');
+                const id = e.currentTarget.getAttribute('data-package-id');
+
+                const packagePrice = packages.find(p => p.id === parseInt(id)).cost;
+
+                submitButton.textContent = `Kup za ${packagePrice}zł`;
+                packageIdElem.value = id;
             });
         }
     </script>
