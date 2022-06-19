@@ -2,6 +2,8 @@
 
 namespace Servers\views\components;
 
+use Servers\Models\Package;
+
 class Servers {
     public static final function minecraftEgg(string $imgSource, string $name, int $eggId): void {
 //  temp comment class: egg
@@ -23,7 +25,7 @@ class Servers {
         ', $name, $eggId, $name, $imgSource, $name);
     }
 
-    public static final function package(int $packageId, string $packageImgSource, string $name, string $desc, float $price): void {
+    public static final function package(Package $package): void {
         printf('
             <div class="package col-xl-4 mt-xl-0 mt-3 mr-5 card col-12 box-shadow-transition " data-package-id="%s" data-package-price="%s">
                 <div class="card-body ">
@@ -37,6 +39,6 @@ class Servers {
                     <div class="egg__desc d-flex align-items-center justify-content-center ml-3 text-center">%s</div>
                 </div> 
             </div>
-        ', $packageId, $price, $packageImgSource, $name, $name, $desc);
+        ', $package->getId(), $package->getCost(), $package->getImageSrc(), $package->getName(), $package->getName(), $package->getDescription());
     }
 }

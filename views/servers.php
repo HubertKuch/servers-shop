@@ -152,7 +152,7 @@ use Servers\views\components\UserPanel;
                                             <div class="row">
                                                 <?php
                                                 foreach ($packages as $package) {
-                                                    Servers::package($package->getId(), $package->getImageSrc(), $package->getName(), "{$package->getRamSize()}MB ram / {$package->getDiskSize()}MB dysku / {$package->getProcessorPower()}% procesora", $package->getCost());
+                                                    Servers::package($package);
                                                 }
                                                 ?>
                                             </div>
