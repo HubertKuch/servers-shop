@@ -29,11 +29,14 @@ $mainDir = explode('/', $_SERVER['SCRIPT_NAME'])[1];
 putenv("MAIN_DIR=$mainDir");
 putenv("ROOT_PTERODACTYL_API_KEY=GIiB37cjhWGRMYwejj0XFsllqDgx5jghvvbdoGctj7dDsPl3");
 putenv("PTERODACTYL_IP=178.32.202.241:85");
-putenv("ENVIRONMENT=DEVELOPMENT");
 
 $pterodactyl = new Pterodactyl(getenv("ROOT_PTERODACTYL_API_KEY"), getenv("PTERODACTYL_IP"));
 
-AvocadoORMSettings::useDatabase("mysql:host=localhost;dbname=servers;port=3306;", "root", "");
+$dbHost = $_ENV['DB_HOST'];
+$dbPort = $_ENV['DB_PORT'];
+$dbName = $_ENV['DB_NAME'];
+
+AvocadoORMSettings::useDatabase("mysql:host=$dbHost;dbname=$dbName;port=$dbPort;", $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD']);
 AvocadoRouter::useJSON();
 
 Repositories::init();
