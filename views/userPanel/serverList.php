@@ -117,6 +117,7 @@ use Servers\views\components\UserPanel;
                                         <th>DATA WYGAŚNIĘCIA</th>
                                         <th>PACZKA</th>
                                         <th>ODNÓW</th>
+                                        <th>ZARZĄDZAJ</th>
                                     </tr>
                                     </thead>
                                     <tfoot>
@@ -127,6 +128,7 @@ use Servers\views\components\UserPanel;
                                         <th>DATA WYGAŚNIĘCIA</th>
                                         <th>PACZKA</th>
                                         <th>ODNÓW</th>
+                                        <th>ZARZĄDZAJ</th>
                                     </tr>
                                     </tfoot>
                                     <tbody>
@@ -147,6 +149,9 @@ use Servers\views\components\UserPanel;
                                                     <input type="hidden" name="_method" value="PATCH">
                                                     <button type="submit" class="button--renew btn btn-success">Odnów</button>
                                                 </form>
+                                            </td>
+                                            <td>
+                                                <button class="btn-warning btn"><a class="text-white" href="http://178.32.202.241:85/">Zarządzaj</a></button>
                                             </td>
                                     <?php endforeach; ?>
                                     </tbody>
