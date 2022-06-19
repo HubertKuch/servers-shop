@@ -111,7 +111,6 @@ use Servers\views\components\UserPanel;
                                     ?>
                                     <thead>
                                     <tr>
-                                        <th>ID</th>
                                         <th>TYTUŁ</th>
                                         <th>STATUS</th>
                                         <th>DATA UTWORZENIA</th>
@@ -122,7 +121,6 @@ use Servers\views\components\UserPanel;
                                     </thead>
                                     <tfoot>
                                     <tr>
-                                        <th>ID</th>
                                         <th>TYTUŁ</th>
                                         <th>STATUS</th>
                                         <th>DATA UTWORZENIA</th>
@@ -134,7 +132,6 @@ use Servers\views\components\UserPanel;
                                     <tbody>
                                     <?php foreach($userServers as $server): ?>
                                         <tr>
-                                            <td><?= $server->getId() ?></td>
                                             <td><?= $server->getTitle() ?></td>
                                             <td><?= match ($server->getStatus()) {
                                                     ServerStatus::SOLD->value => '<span class="server-status server-status--active">Aktywny</span>',
