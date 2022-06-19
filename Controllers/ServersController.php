@@ -176,6 +176,16 @@ class ServersController {
         }
     }
 
+    public static function getReleasedMinecraftVersions(): array {
+        $mcVersions = json_decode(file_get_contents('Utils/mc_versions.json'));
+
+        // is match {D.DD.D} patten
+        return array_filter(
+            $mcVersions,
+            fn($version) => strlen($version) <= 6 && is_numeric(substr($version, -1, 1))
+        );
+    }
+
     private static function isValidEggType(string $type): bool {
         $isValid = false;
         foreach (MinecraftEggNames::cases() as $eggType)

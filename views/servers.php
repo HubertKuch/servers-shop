@@ -1,6 +1,7 @@
 <?php
 
 use Avocado\HTTP\JSON\JSON;
+use Servers\Controllers\ServersController;
 use Servers\Utils\Environment;
 use Servers\views\components\MainPage;
 use Servers\views\components\Servers;
@@ -179,15 +180,11 @@ use Servers\views\components\UserPanel;
                                                 <p>Wersja Minecraft</p>
                                                 <select class="custom-select" name="mc_version">
                                                     <?php
-                                                    $mcVersions = json_decode(file_get_contents('Utils/mc_versions.json'));
-                                                    $mcVersions = array_filter(
-                                                        $mcVersions,
-                                                        fn($version) => strlen($version) <= 6 && is_numeric(substr($version, -1, 1))
-                                                    );
 
-                                                    foreach($mcVersions as $version): ?>
+                                                    foreach(ServersController::getReleasedMinecraftVersions() as $version): ?>
                                                         <option value="<?= $version ?>"><?= $version ?></option>
                                                     <?php endforeach; ?>
+
                                                 </select>
                                             </label>
                                         </div>
