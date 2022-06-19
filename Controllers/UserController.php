@@ -164,7 +164,7 @@ class UserController {
         if (!$isCorrect) AuthController::redirect('account-activation', ["message" => "Kod aktywacyjny jest niepoprawny"]);
 
         ActivationService::activeAccountByCode($code);
-        AuthController::redirect('account-activated');
+        AuthController::redirect('login');
     }
 
     public static final function generateActivationCode(AvocadoRequest $req): void {
