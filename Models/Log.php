@@ -34,13 +34,13 @@ class Log {
 
     public function getId(): int { return $this->id; }
 
-    public function getType(): int { return $this->type; }
+    public function getType(): int|string { return $this->type; }
 
-    public function getUserId(): int { return $this->userId; }
+    public function getUserId(): int|string|null { return $this->userId; }
 
-    public function getProductId(): int { return $this->productId; }
+    public function getProductId(): int|null { return $this->productId; }
 
-    public function getPaymentId(): int { return $this->paymentId; }
+    public function getPaymentId(): int|string|null { return $this->paymentId; }
 
     public function getTimestamp(): string { return $this->timestamp; }
 

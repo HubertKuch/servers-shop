@@ -109,13 +109,13 @@ use Servers\Utils\Environment;
                 </tr>
                 <?php foreach($logs as $log): ?>
                     <tr class="table__row">
-                        <td class="table__col"><?= $log->id ?></td>
-                        <td class="table__col"><?= $log->type ?></td>
-                        <td class="table__col"><?= $log->user_id ?: "nie dotyczy" ?></td>
-                        <td class="table__col"><?= $log->payment_id ?: "nie dotyczy" ?></td>
-                        <td class="table__col"><?= $log->product_id ?: "nie dotyczy" ?></td>
-                        <td class="table__col"><?= $log->date ?></td>
-                        <td class="table__col"><?= $log->message ?></td>
+                        <td class="table__col"><?= $log->getId() ?></td>
+                        <td class="table__col"><?= $log->getType() ?></td>
+                        <td class="table__col"><?= $log->getUserId() ?: "nie dotyczy" ?></td>
+                        <td class="table__col"><?= $log->getPaymentId() ?: "nie dotyczy" ?></td>
+                        <td class="table__col"><?= $log->getProductId() ?: "nie dotyczy" ?></td>
+                        <td class="table__col"><?= $log->getTimestamp() ?></td>
+                        <td class="table__col"><?= $log->getMessage() ?></td>
                     </tr>
                 <?php endforeach; ?>
             </table>
@@ -129,8 +129,11 @@ use Servers\Utils\Environment;
         const options = document.querySelectorAll('.admin__panel--section-option');
         const sections = document.querySelectorAll('.admin__panel--section');
 
+        console.log(2)
+
         options.forEach(option => option.addEventListener('click', ({ target }) => {
             const sectionClass = target.getAttribute('data-section-class');
+            console.log()
 
             sections.forEach(section => {
                 if (!section.classList.contains(sectionClass)) {
