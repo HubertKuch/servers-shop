@@ -10,9 +10,7 @@ class ActivationService {
     }
 
     public static function isCorrectCode(int $code): bool {
-        $user = Repositories::$userRepository->findOne(["activationCode" => $code]);
-
-        return isset($user);
+        return Repositories::$userRepository->findOne(["activationCode" => $code]) !== null;
     }
 
     public static function isExpired(int $code): bool {

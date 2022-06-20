@@ -84,7 +84,6 @@ class UserController {
             $_SESSION['email'] = $user->getEmail();
             LogsController::saveUserRegisterLog($userId);
             AuthController::redirect('account-activation');
-
         } catch (ValidationException $e) {
             AuthController::redirect('register', ["message" => "Email jest zajety"]);
         }
@@ -124,11 +123,9 @@ class UserController {
         if (!$code || strlen($code) == 0) AuthController::redirect('account-activation', ["message" => "Kod aktywacyjny nie jest wprowadzony."]);
 
         $code = (int)$code;
-        $isCorrect = ActivationService::isCorrectCode($code);
-        $isExpired = ActivationService::isExpired($code);
 
-        if ($isExpired) AuthController::redirect('account-activation', ["message" => "Kod aktywacyjny wygasł. Zaloguj się ponownie by wygenerować nowy."]);
-        if (!$isCorrect) AuthController::redirect('account-activation', ["message" => "Kod aktywacyjny jest niepoprawny"]);
+        if (!ActivationService::isCorrectCode($code)) AuthController::redirect('account-activation', ["message" => "Kod aktywacyjny jest niepoprawny"]);
+        if (ActivationService::isExpired($code)) AuthController::redirect('account-activation', ["message" => "Kod aktywacyjny wygasł. Zaloguj się ponownie by wygenerować nowy."]);
 
         ActivationService::activeAccountByCode($code);
         AuthController::redirect('login');
