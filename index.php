@@ -20,8 +20,8 @@ use Servers\Controllers\ViewsController;
 use Dotenv\Dotenv;
 use Servers\Services\PaymentsService;
 
-//set_error_handler([ViewsController::class, "internalServerError"], E_ALL);
-//set_exception_handler([ViewsController::class, "internalServerError"]);
+set_error_handler([ViewsController::class, "internalServerError"], E_ALL);
+set_exception_handler([ViewsController::class, "internalServerError"]);
 
 Dotenv::createImmutable(__DIR__)->load();
 
