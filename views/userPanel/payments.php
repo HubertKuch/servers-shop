@@ -23,6 +23,8 @@ use Servers\views\components\UserPanel;
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
     <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://kit.fontawesome.com/31d2710bc5.js" crossorigin="anonymous"></script>
+
 </head>
 <body class="panel">
 
