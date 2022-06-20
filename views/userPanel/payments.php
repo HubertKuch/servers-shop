@@ -125,8 +125,8 @@ use Servers\views\components\UserPanel;
                                 <tbody>
                                 <?php foreach($payments as $payment): ?>
                                 <tr>
-                                    <td><?= date('d/m/Y', $payment->getPaymentDate()) ?></td>
-                                    <td><?= date('d/m/Y', $payment->getCreateDate()) ?></td>
+                                    <td><?= date('d/m/Y H.i.s', $payment->getPaymentDate()) ?></td>
+                                    <td><?= date('d/m/Y H.i.s', $payment->getCreateDate()) ?></td>
                                     <td><?= $payment->getIpAddress() ?></td>
                                     <td><?= match ($payment->getStatus()) {
                                             "incoming" => "Przychodząca",
