@@ -2,6 +2,8 @@
 
 namespace Servers\views\components;
 
+use Servers\Repositories;
+
 class UserPanel {
     public static final function nav() {
         printf('<div class="text-white">Stan konta: %s</div><div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
