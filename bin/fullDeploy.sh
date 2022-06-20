@@ -1,4 +1,4 @@
 #!/bin/bash
 
-sh dbReset.sh
 sh deploy.sh
+sh dbReset.sh
