@@ -86,7 +86,7 @@ class UserController {
             AuthController::redirect('account-activation');
 
         } catch (ValidationException $e) {
-            if ($isEmailIsBusy) AuthController::redirect('register', ["message" => "Email jest zajety"]);
+            AuthController::redirect('register', ["message" => "Email jest zajety"]);
         }
     }
 
