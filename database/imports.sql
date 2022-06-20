@@ -1,3 +1,5 @@
+TRUNCATE TABLE `servers`.`package`;
+
 INSERT INTO
     `servers`.`package` (`id`, `name`, `ram_size`, `disk_size`, `processor_power`, `cost`, `image_src`)
 VALUES
