@@ -172,7 +172,7 @@ use Servers\views\components\UserPanel;
                                     const paymentMethodDueName = methodEl.getAttribute('data-payment-due-name');
                                     const failAmount = parseFloat(amount.value) ?? 0;
                                     const { due } = dues.find(due => due.name === paymentMethodDueName);
-                                    realAmount.textContent = `${(failAmount * due)/ 100}`;
+                                    realAmount.textContent = `${(failAmount * due)/ 100} PLN`;
                                 }
 
                                 for (const method of paymentMethods) {
@@ -188,7 +188,6 @@ use Servers\views\components\UserPanel;
                                         }
 
                                         methodEl.classList.add("border-bottom-success")
-                                        // methodEl.style.border = "2px solid white";
                                         paymentId.value = paymentMethodId;
 
                                         amount.addEventListener('input', () => showRealAmount(methodEl));
