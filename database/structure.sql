@@ -17,7 +17,7 @@ create table if not exists users (
 
 create table if not exists payments (
     id                      bigint not null auto_increment primary key,
-    paymentDate             bigint,
+    paymentDate             bigint default null,
     createDate              bigint not null,
     ipAddress               text not null,
     status                  enum('rejected', 'incoming', 'resolved') not null,
