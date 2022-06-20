@@ -54,8 +54,10 @@ class UserController {
 
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
         $isEmailIsBusy  = Repositories::$userRepository->findOne(["email" => $email]);
+        $isUsernameIsBusy  = Repositories::$userRepository->findOne(["username" => $username]);
 
         if ($isEmailIsBusy) AuthController::redirect('register', ["message" => "Email jest zajety"]);
+        if ($isUsernameIsBusy) AuthController::redirect('register', ["message" => "Nazwa użytkownika jest zajeta"]);
 
         $verificationCode = ActivationService::generateVerificationCode();
         $user = new User($username, $email, $passwordHash, $verificationCode);
