@@ -113,44 +113,6 @@ class UserController {
         AuthController::redirect('panel');
     }
 
-    public static final function changeUsername(AvocadoRequest $req): void {
-        AuthController::authenticationMiddleware();
-        $username = $req->body['new-username'] ?? null;
-
-        if (!$username) AuthController::redirect('panel', ["message" => "Nazwa uzytkownika musi byc podana"]);
-
-        $user = Repositories::$userRepository->findOneById($_SESSION['id']);
-        Repositories::$userRepository->updateOneById(["username" => $username], $_SESSION['id']);
-        self::$pterodactyl->user($_SESSION['pterodactyl_user_id'], [
-            "email" => $user->getEmail(),
-            "username" => $user->getUsername(),
-            "first_name" => $user->getUsername(),
-            "last_name" => $user->getUsername(),
-            "language" => "pl"
-        ]);
-        AuthController::redirect('panel');
-    }
-
-    public static final function changeEmail(AvocadoRequest $req): void {
-        AuthController::authenticationMiddleware();
-        $email = $req->body['new-email'] ?? null;
-
-        if (!$email) AuthController::redirect('panel', ["message" => "Email musi byc podany."]);
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) AuthController::redirect('panel', ["message" => "Nieprawidłowy email"]);
-
-        $user = Repositories::$userRepository->findOneById($_SESSION['id']);
-        Repositories::$userRepository->updateOneById(["email" => $email], $_SESSION['id']);
-
-        self::$pterodactyl->user($_SESSION['pterodactyl_user_id'], [
-            "email" => "gowno",
-            "username" => $user->getUsername(),
-            "first_name" => $user->getUsername(),
-            "last_name" => $user->getUsername(),
-            "language" => "pl"
-        ]);
-        AuthController::redirect('panel', []);
-    }
-
     public static final function activateAccount(AvocadoRequest $req): void {
         $code = $req->body['activation-code'] ?? null;
 

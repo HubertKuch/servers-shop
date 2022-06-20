@@ -64,8 +64,6 @@ AvocadoRouter::GET("/api/generate-activation-code/:email",  [], [UserController:
 AvocadoRouter::POST("/api/login",                           [], [UserController::class,     "login"]);
 AvocadoRouter::POST("/api/register",                        [], [UserController::class,     "register"]);
 AvocadoRouter::PATCH("/api/change-password",                [], [UserController::class,     "changePassword"]);
-AvocadoRouter::PATCH("/api/change-username",                [], [UserController::class,     "changeUsername"]);
-AvocadoRouter::PATCH("/api/change-email",                   [], [UserController::class,     "changeEmail"]);
 AvocadoRouter::PATCH("/api/activate-account",               [], [UserController::class,     "activateAccount"]);
 AvocadoRouter::PATCH("/api/activate-account",               [], [UserController::class,     "activateAccount"]);
 

@@ -131,55 +131,10 @@ use Servers\views\components\UserPanel;
                         </div>
                     </form>
                     <hr style="color: white">
-
-                    <h4 class="text-gray-900 mb-2 pt-3">Nazwa użytkownika</h4>
-                    <form action="index.php/api/change-username" method="POST" class="user">
-                        <input type="hidden" name="_method" value="PATCH">
-                        <div class="row">
-                            <div class="col-xl-4 col-lg-6 mt-3">
-                                <div class="form-group">
-                                    <p class="mb-0">Nowa nazwa</p>
-                                    <input type="text" class="form-control form-control-user" name="new-username" required>
-                                </div>
-                                <div class="row  mt-3">
-                                    <div class="col">
-                                        <button type="submit" class="btn btn-primary w-50 btn-user btn-block mt-auto mt-5">
-                                            Zapisz
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-
                     <hr style="color: white">
-
-                    <h4 class="text-gray-900 mb-2 pt-3">Email</h4>
-                    <form action="index.php/api/change-email" method="POST" class="user">
-                        <input type="hidden" name="_method" value="PATCH">
-                        <div class="row">
-                            <div class="col-xl-4 col-lg-6 mt-3">
-                                <div class="form-group">
-                                    <p class="mb-0">Nowy email</p>
-                                    <input type="text" class="form-control form-control-user" name="new-email" required>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col">
-                                        <button type="submit" class="btn btn-primary w-50 btn-user btn-block mt-auto mt-5">
-                                            Zapisz
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
                 </div>
-
-
             </div>
         </div>
-
-
 
     </div>
 
