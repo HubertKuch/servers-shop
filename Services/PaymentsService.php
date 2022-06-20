@@ -103,7 +103,7 @@ class PaymentsService {
         $now = time();
         $paymentMethod = PaymentMethods::tryFrom($paymentMethodId);
 
-        return new Payment(0, $now, $ip, PaymentStatus::INCOMING->value, $amount, $paymentMethod?->value, $user->getId(), $tid);
+        return new Payment(NULL, $now, $ip, PaymentStatus::INCOMING->value, $amount, $paymentMethod?->value, $user->getId(), $tid);
     }
 
     private static function getIPAddress(): string {

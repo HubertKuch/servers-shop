@@ -11,7 +11,7 @@ class Payment {
     #[Id]
     private int $id;
     #[Field]
-    private int $paymentDate;
+    private ?int $paymentDate;
     #[Field]
     private int $createDate;
     #[Field]
@@ -29,7 +29,7 @@ class Payment {
     #[Field('payment_status')]
     private int $payment_status = 0;
 
-    public function __construct(int $paymentDate, int $createDate, string $ipAddress, string $status, float $sum, string $method, int $user_id, string $tid) {
+    public function __construct(?int $paymentDate, int $createDate, string $ipAddress, string $status, float $sum, string $method, int $user_id, string $tid) {
         $this->paymentDate = $paymentDate;
         $this->createDate = $createDate;
         $this->ipAddress = $ipAddress;
@@ -42,7 +42,7 @@ class Payment {
 
     public function getId(): int { return $this->id; }
 
-    public function getPaymentDate(): int { return $this->paymentDate; }
+    public function getPaymentDate(): int|null { return $this->paymentDate; }
 
     public function setPaymentDate(int $paymentDate): void { $this->paymentDate = $paymentDate; }
 

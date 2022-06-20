@@ -125,7 +125,7 @@ use Servers\views\components\UserPanel;
                                 <tbody>
                                 <?php foreach($payments as $payment): ?>
                                 <tr>
-                                    <td><?= date('d/m/Y H.i.s', $payment->getPaymentDate()) ?></td>
+                                    <td><?= $payment->getPaymentDate() ? date('d/m/Y H.i.s', $payment->getPaymentDate()) : "Nie zakończona" ?></td>
                                     <td><?= date('d/m/Y H.i.s', $payment->getCreateDate()) ?></td>
                                     <td><?= $payment->getIpAddress() ?></td>
                                     <td><?= match ($payment->getStatus()) {
