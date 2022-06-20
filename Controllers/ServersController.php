@@ -156,14 +156,14 @@ class ServersController {
             $userId = $user->getId();
             $serverId = $pterodactylServer->id;
 
-            $server = new Server($name, ServerStatus::SOLD->value, $createDate, $expireDate, $package->getId(), $userId, $serverId);
-            Repositories::$productsRepository->save($server);
-
             $userCash = $user->getWallet();
             $serverPrice = $package->getCost();
 
             if ($userCash < $serverPrice)
                 AuthController::redirect('servers', ["message" => "Nie masz wystarczającej ilości pieniędzy"]);
+
+            $server = new Server($name, ServerStatus::SOLD->value, $createDate, $expireDate, $package->getId(), $userId, $serverId);
+            Repositories::$productsRepository->save($server);
 
             Repositories::$userRepository->updateOneById([
                 "wallet" => $userCash - $serverPrice
