@@ -1,4 +1,4 @@
-TRUNCATE TABLE `servers`.`package`;
+TRUNCATE TABLE `servers`.`logs`;
 
 INSERT INTO
     `servers`.`package` (`id`, `name`, `ram_size`, `disk_size`, `processor_power`, `cost`, `image_src`)

@@ -3,6 +3,7 @@
 namespace Servers\Controllers;
 
 use Avocado\Router\AvocadoRequest;
+use HCGCloud\Pterodactyl\Exceptions\ValidationException;
 use HCGCloud\Pterodactyl\Pterodactyl;
 use PDO;
 use Servers\Models\User;
@@ -60,29 +61,33 @@ class UserController {
         $user = new User($username, $email, $passwordHash, $verificationCode);
         $mailService = new MailService();
 
-        $mailService->sendVerificationMail($user->getEmail(), $verificationCode);
+        try {
+            $pterodactylUser = self::$pterodactyl->createUser([
+                "email" => $email,
+                "username" => $username,
+                "first_name" => $username,
+                "last_name" => $username
+            ]);
 
-        Repositories::$userRepository->save($user);
-        $userId = Repositories::$userRepository->findOne(["email" => $email])->getId();
+            Repositories::$userRepository->save($user);
+            $userId = Repositories::$userRepository->findOne(["email" => $email])->getId();
+            $mailService->sendVerificationMail($user->getEmail(), $verificationCode);
 
-        $pterodactylUser = self::$pterodactyl->createUser([
-            "email" => $email,
-            "username" => $username,
-            "first_name" => $username,
-            "last_name" => $username
-        ]);
+            self::$pterodactyl->updateUser($pterodactylUser->id, [
+                "email" => $email,
+                "username" => $username,
+                "first_name" => $username,
+                "last_name" => $username,
+                "password" => $password
+            ]);
 
-        self::$pterodactyl->updateUser($pterodactylUser->id, [
-            "email" => $email,
-            "username" => $username,
-            "first_name" => $username,
-            "last_name" => $username,
-            "password" => $password
-        ]);
+            $_SESSION['email'] = $user->getEmail();
+            LogsController::saveUserRegisterLog($userId);
+            AuthController::redirect('account-activation');
 
-        $_SESSION['email'] = $user->getEmail();
-        LogsController::saveUserRegisterLog($userId);
-        AuthController::redirect('account-activation');
+        } catch (ValidationException $e) {
+            if ($isEmailIsBusy) AuthController::redirect('register', ["message" => "Email jest zajety"]);
+        }
     }
 
     public static final function changePassword(AvocadoRequest $req): void {
