@@ -104,7 +104,6 @@ use Servers\views\components\UserPanel;
                                 ?>
                                 <thead>
                                 <tr>
-                                    <th>ID</th>
                                     <th>DATA PŁATNOŚCI</th>
                                     <th>DATA UTWORZENIA</th>
                                     <th>IP</th>
@@ -115,7 +114,6 @@ use Servers\views\components\UserPanel;
                                 </thead>
                                 <tfoot>
                                 <tr>
-                                    <th>ID</th>
                                     <th>DATA PŁATNOŚCI</th>
                                     <th>DATA UTWORZENIA</th>
                                     <th>IP</th>
@@ -127,7 +125,6 @@ use Servers\views\components\UserPanel;
                                 <tbody>
                                 <?php foreach($payments as $payment): ?>
                                 <tr>
-                                    <td><?= $payment->getId() ?></td>
                                     <td><?= date('d/m/Y', $payment->getPaymentDate()) ?></td>
                                     <td><?= date('d/m/Y', $payment->getCreateDate()) ?></td>
                                     <td><?= $payment->getIpAddress() ?></td>
