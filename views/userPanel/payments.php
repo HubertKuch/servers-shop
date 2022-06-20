@@ -157,7 +157,6 @@ use Servers\views\components\UserPanel;
         const options = document.querySelectorAll('.admin__panel--section-option');
         const sections = document.querySelectorAll('.admin__panel--section');
         const beforeActiveSectionClass = localStorage.getItem("user-panel-actual-visible") ?? null;
-        console.log(2)
 
         sections.forEach(section => {
             if (!section.classList.contains(beforeActiveSectionClass)) {
