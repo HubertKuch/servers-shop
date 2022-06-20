@@ -20,7 +20,9 @@ use Servers\views\components\UserPanel;
 
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link rel="stylesheet" href="style/app.css">
-    <script src="https://kit.fontawesome.com/31d2710bc5.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body class="panel">
 
@@ -189,8 +191,13 @@ use Servers\views\components\UserPanel;
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
     <script>
         // Toggle the side navigation
+        $(document).ready( function () {
+            $("#dataTable").dataTable();
+        });
+
         $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
             $("body").toggleClass("sidebar-toggled");
             $(".sidebar").toggleClass("toggled");
