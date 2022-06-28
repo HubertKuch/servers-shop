@@ -90,7 +90,7 @@ class PaymentsService {
 
         LogsController::savePaymentLog($paymentFromDb->getId());
 
-        header("Location: $url");
+//        header("Location: $url");
     }
 
     public static function createPayment(AvocadoRequest $req, array $paymentResponse, User $user): Payment {
@@ -148,8 +148,10 @@ class PaymentsService {
     }
 
     private static function fundAccount(User $user, Payment $payment): void {
+        $paymentMethodId = intval($payment->getMethod());
+
         Repositories::$userRepository->updateOneById([
-           "wallet" => $user->getWallet() + $payment->getSum()
+           "wallet" => $user->getWallet() + $payment->calculateDue(self::PAYMENT_DUE_ENV_NAMES[$paymentMethodId])
         ], $user->getId());
     }
 

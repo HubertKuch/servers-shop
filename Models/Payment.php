@@ -73,4 +73,10 @@ class Payment {
     public function getTid(): string { return $this->tid; }
 
     public function getPaymentStatus(): int { return $this->payment_status; }
+
+    public function calculateDue(string $paymentDueEnvName): float {
+        $duePercent = floatval($_ENV[$paymentDueEnvName]);
+
+        return ($duePercent/100) * $this->sum;
+    }
 }

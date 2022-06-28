@@ -28,8 +28,7 @@ class PaymentsController {
             AuthController::redirect('');
 
         $paymentResponse = PaymentsService::createPaymentRequest($amount, $paymentMethod, $title);
-        $payment = PaymentsService::createPayment($req, $paymentResponse);
-
+        $payment = PaymentsService::createPayment($req, $paymentResponse, $user);
 
         if (!$paymentResponse['success'])
             AuthController::redirect('panel', ["message" => "Płatność nie powiodła się. Spróbuj ponownie lub skontaktuj się z administratorem domeny."]);
