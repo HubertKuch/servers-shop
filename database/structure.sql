@@ -7,7 +7,7 @@ create table if not exists users (
      username                   text not null,
      email                      text not null,
      passwordHash               text not null,
-     wallet                     int not null,
+     wallet                     double not null,
      role                       enum('user', 'admin') default 'user',
      isActivated                bool default false,
      activationCode             int,
