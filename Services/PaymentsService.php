@@ -90,7 +90,7 @@ class PaymentsService {
 
         LogsController::savePaymentLog($paymentFromDb->getId());
 
-//        header("Location: $url");
+        header("Location: $url");
     }
 
     public static function createPayment(AvocadoRequest $req, array $paymentResponse, User $user): Payment {
