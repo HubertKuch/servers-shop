@@ -6,6 +6,11 @@ use Servers\Repositories;
 
 class UserPanel {
     public static final function nav() {
+        $newNotificationsCounter = count(Repositories::$notificationsRepository->findMany([
+            "user_id" => $_SESSION['id'],
+            "isRead" => 0
+        ]));
+
         printf('
             <li class="nav-item">
                 <a class="nav-link" href="index.php/recharge">
@@ -28,12 +33,18 @@ class UserPanel {
                     <span>Płatności</span>
                 </a>
             </li><li class="nav-item">
+                <a class="nav-link" href="index.php/notifications">
+                    <i class="fas fa-fw fa-bell"></i>
+                    <span>Powiadomienia (%s)</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="index.php/settings">
                     <i class="fas fa-fw fa-user-astronaut"></i>
                     <span>Użytkownik</span>
                 </a>
             </li>
             <div class="text-white">Stan konta: %s</div>
-            ',Repositories::$userRepository->findOneById($_SESSION['id'])->getWallet());
+            ', $newNotificationsCounter, Repositories::$userRepository->findOneById($_SESSION['id'])->getWallet());
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Servers;
 
+use Servers\Models\Notification;
 use Servers\Models\Package;
 use Servers\Models\Payment;
 use Servers\Models\Server;
@@ -15,6 +16,7 @@ class Repositories {
     public static AvocadoRepository $productsRepository;
     public static AvocadoRepository $logsRepository;
     public static AvocadoRepository $packagesRepository;
+    public static AvocadoRepository $notificationsRepository;
 
     public static function init(): void {
         self::$userRepository = new AvocadoRepository(User::class);
@@ -22,5 +24,6 @@ class Repositories {
         self::$productsRepository = new AvocadoRepository(Server::class);
         self::$logsRepository = new AvocadoRepository(Log::class);
         self::$packagesRepository = new AvocadoRepository(Package::class);
+        self::$notificationsRepository = new AvocadoRepository(Notification::class);
     }
 }

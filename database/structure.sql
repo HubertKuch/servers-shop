@@ -77,3 +77,16 @@ create table if not exists logs (
     foreign key (product_id)    references servers(id),
     foreign key (payment_id)    references payments(id)
 );
+
+create table if not exists notification (
+    id                          bigint not null auto_increment primary key,
+    message                     text not null ,
+    isRead                      bool default false,
+    date                        bigint not null,
+    user_id                     bigint not null,
+
+    foreign key (user_id)       references users(id)
+);
+
+select *
+from servers.notification;

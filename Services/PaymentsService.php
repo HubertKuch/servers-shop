@@ -7,6 +7,7 @@ use Avocado\Router\AvocadoResponse;
 use Avocado\Router\AvocadoRouter;
 use Servers\Controllers\AuthController;
 use Servers\Controllers\LogsController;
+use Servers\Models\Notification;
 use Servers\Models\Payment;
 use Servers\Models\PaymentMethods;
 use Servers\Models\PaymentStatus;
@@ -63,13 +64,26 @@ class PaymentsService {
         self::validateAmountRequest($req);
 
         $user = Repositories::$userRepository->findOneById($_SESSION['id']);
+        $subjectUser = $user;
+        $principal = $user->getUsername();
+
+
 
         if ($email) {
             $user = Repositories::$userRepository->findOne(["email" => $email]);
 
+
+            Repositories::$notificationsRepository->saveMany(
+                new Notification("Zlecono doladowanie konta dla: {$user->getUsername()}, kwota {$amount}PLN", time(), $subjectUser)
+            );
+
             if (!$user) {
                 AuthController::redirect('recharge-friend', ["message" => "Użytkownik z emailem $email nie istnieje."]);
             }
+
+            Repositories::$notificationsRepository->saveMany(
+                new Notification("$principal zlecil doladowanie Twojego konta kwota {$amount}PLN.", time(), $user)
+            );
         }
 
         $title = "Doładowanie konta {$user->getUsername()}";

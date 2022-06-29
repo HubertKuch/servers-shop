@@ -56,6 +56,7 @@ try {
     AvocadoRouter::GET("/account-activation",                   [], [ViewsController::class,    "accountActivation"]);
     AvocadoRouter::GET("/account-activated",                    [], [ViewsController::class,    "accountActivated"]);
     AvocadoRouter::GET("/servers",                              [], [ViewsController::class,    "servers"]);
+    AvocadoRouter::GET("/notifications",                        [], [ViewsController::class,    "notifications"]);
 
     // USER PANEL ACTIONS
     AvocadoRouter::GET("/api/logout",                           [], [UserController::class,     "logout"]);
@@ -73,6 +74,7 @@ try {
     // PAYMENTS ACTIONS
     AvocadoRouter::PATCH("/api/add-amount",                     [], [PaymentsService::class,    "createAmountRequest"]);
     AvocadoRouter::POST("/api/payment-notify",                  [], [PaymentsService::class,    "paymentNotify"]);
+
     AvocadoRouter::notFoundHandler([ViewsController::class, "pageNotFound"]);
     AvocadoRouter::listen();
 

@@ -6,6 +6,7 @@ use Avocado\ORM\FindForeign;
 use Avocado\Router\AvocadoRequest;
 use Avocado\Router\AvocadoResponse;
 use Exception;
+use Servers\Models\Notification;
 use Servers\Models\ServerStatus;
 use Servers\Models\UserRole;
 use Servers\Repositories;
@@ -174,6 +175,22 @@ class ViewsController {
         $errors = $_GET;
         $packages = Repositories::$packagesRepository->findMany();
         require "views/servers.php";
+    }
+
+    public static final function notifications(): void {
+        AuthController::authenticationMiddleware();
+
+        $notifications = Repositories::$notificationsRepository->findMany([
+            "user_id" => $_SESSION['id']
+        ]);
+
+        require "views/userPanel/notifications.php";
+
+        Repositories::$notificationsRepository->updateMany([
+            "isRead" => 1
+        ], [
+            "user_id" => $_SESSION['id']
+        ]);
     }
 
     public static final function pageNotFound(): void {
