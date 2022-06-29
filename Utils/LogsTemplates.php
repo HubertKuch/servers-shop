@@ -2,6 +2,9 @@
 
 namespace Servers\Utils;
 
+use Avocado\HTTP\JSON\JSON;
+use Exception;
+
 class LogsTemplates {
     public static function userLogin(int $id, string $username): string {
         return "User with $id and $username was logged in.";
@@ -21,5 +24,10 @@ class LogsTemplates {
 
     public static function newProduct(int $id): string {
         return "New server with id - $id";
+    }
+
+    public static function error(Exception $e): string {
+        $json = (new JSON($e, true))->getSerializedData();
+        return str_replace('"', "'", $json);
     }
 }

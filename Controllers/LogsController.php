@@ -2,6 +2,7 @@
 
 namespace Servers\Controllers;
 
+use Exception;
 use Servers\Models\LogType;
 use Servers\Utils\LogsTemplates;
 use Servers\Models\Log;
@@ -39,6 +40,13 @@ class LogsController {
     public static final function saveProductSold(int $id): void {
         $message = LogsTemplates::productSold($id);
         $log = new Log(LogType::PRODUCT->value, null, $id, null, $message);
+
+        Repositories::$logsRepository->save($log);
+    }
+
+    public static final function saveError(Exception $e): void {
+        $message = LogsTemplates::error($e);
+        $log = new Log(LogType::AUTH->value, null, null, null, $message);
 
         Repositories::$logsRepository->save($log);
     }

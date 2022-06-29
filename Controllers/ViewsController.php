@@ -5,6 +5,7 @@ namespace Servers\Controllers;
 use Avocado\ORM\FindForeign;
 use Avocado\Router\AvocadoRequest;
 use Avocado\Router\AvocadoResponse;
+use Exception;
 use Servers\Models\ServerStatus;
 use Servers\Models\UserRole;
 use Servers\Repositories;
@@ -180,8 +181,10 @@ class ViewsController {
         require "views/errors/404.php";
     }
 
-    public static final function internalServerError(): void {
+    public static final function internalServerError(Exception $e): void {
         ob_clean();
+
+        LogsController::saveError($e);
         require "views/errors/internalErrorView.php";
     }
 }
