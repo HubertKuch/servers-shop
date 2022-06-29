@@ -162,6 +162,10 @@ class ServersController {
             if ($userCash < $serverPrice)
                 AuthController::redirect('servers', ["message" => "Nie masz wystarczającej ilości pieniędzy"]);
 
+            $serversWithTheSameName = count(Repositories::$productsRepository->findMany(["title" => "$name%", "user_id" => $_SESSION['id']]));
+
+            if ($serversWithTheSameName > 0) $name .= " #$serversWithTheSameName";
+
             $server = new Server($name, ServerStatus::SOLD->value, $createDate, $expireDate, $package->getId(), $userId, $serverId);
             Repositories::$productsRepository->save($server);
 
