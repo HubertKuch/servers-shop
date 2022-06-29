@@ -76,6 +76,8 @@ try {
     AvocadoRouter::notFoundHandler([ViewsController::class, "pageNotFound"]);
     AvocadoRouter::listen();
 
-} catch (Exception $e) {
+}
+catch (AvocadoModelException $e) {}
+catch (Exception $e) {
     ViewsController::internalServerError($e);
 }
