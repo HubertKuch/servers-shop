@@ -1,5 +1,7 @@
 <?php
 
+use Servers\Models\PaymentMethods;
+use Servers\Repositories;
 use Servers\Utils\Environment;
 
 ?>
@@ -48,8 +50,8 @@ use Servers\Utils\Environment;
             <table class="table">
                 <tr class="table__row">
                     <th>ID</th>
-                    <th>DATA PŁATNOŚCI</th>
                     <th>DATA UTWORZENIA</th>
+                    <th>DATA PŁATNOŚCI</th>
                     <th>IP</th>
                     <th>STATUS</th>
                     <th>KWOTA</th>
@@ -59,11 +61,18 @@ use Servers\Utils\Environment;
                 <?php foreach($payments as $payment): ?>
                     <tr class="table__row">
                         <td class="table__col"><?= $payment->getId() ?></td>
-                        <td class="table__col"><?= $payment->getPaymentDate() ?></td>
-                        <td class="table__col"><?= $payment->getCreateDate() ?></td>
+                        <td class="table__col"><?= date("d.m.Y H:i:s", $payment->getCreateDate()) ?></td>
+                        <td class="table__col"><?= date("d.m.Y H:i:s", $payment->getPaymentDate()) ?></td>
                         <td class="table__col"><?= $payment->getIpAddress() ?></td>
+                        <td class="table__col"><?= match ($payment->getStatus()) {
+                                "incoming" => "Przychodząca",
+                                "resolved" => "Zaakceptowana",
+                                "rejected" => "Odrzucona",
+                                default => "Nieznany"
+                            }
+                            ?></td>
                         <td class="table__col"><?= $payment->getSum() ?></td>
-                        <td class="table__col"><?= $payment->getMethod() ?></td>
+                        <td class="table__col"><?= str_replace('_', ' ', PaymentMethods::tryFrom($payment->getMethod())->name) ?></td>
                         <td class="table__col"><?= $payment->getUserId() ?></td>
                     </tr>
                 <?php endforeach; ?>
@@ -79,17 +88,15 @@ use Servers\Utils\Environment;
                     <th>DATA UTWORZENIA</th>
                     <th>DATA WYGAŚNIĘCIA</th>
                     <th>PACZKA</th>
-                    <th>ID PŁATNOŚCI</th>
                 </tr>
                 <?php foreach($soldServers as $server): ?>
                     <tr class="table__row">
                         <td class="table__col"><?= $server->getId() ?></td>
                         <td class="table__col"><?= $server->getTitle() ?></td>
                         <td class="table__col"><?= $server->getStatus() ?></td>
-                        <td class="table__col"><?= $server->getCreateDate() ?></td>
-                        <td class="table__col"><?= $server->getExpireDate() ?></td>
-                        <td class="table__col"><?= $server->getPackage() ?></td>
-                        <td class="table__col"><?= $server->getPaymentId() ?></td>
+                        <td class="table__col"><?= date("d.m.Y H:i:s", $server->getCreateDate()) ?></td>
+                        <td class="table__col"><?= date("d.m.Y H:i:s", $server->getExpireDate()) ?></td>
+                        <td class="table__col"><?= Repositories::$packagesRepository->findOneById($server->getPackageId())->getName() ?></td>
                     </tr>
                 <?php endforeach; ?>
             </table>
