@@ -260,7 +260,7 @@ use Servers\views\components\UserPanel;
 
                 const packagePrice = packages.find(p => p.id === parseInt(id)).cost;
 
-                submitButton.textContent = `Kup za ${packagePrice}PLN`;
+                submitButton.textContent = `Kup za ${parseFloat(packagePrice).toFixed(2)}PLN`;
                 packageIdElem.value = id;
             });
         }

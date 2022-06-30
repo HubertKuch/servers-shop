@@ -87,7 +87,7 @@ use Servers\views\components\UserPanel;
             <div id="content">
                 <div class="row">
                     <div class="col px-5 mt-5">
-                        <p style="font-size: 24px">Doładuj swoje konto. Twój aktualny stan konta: <?= Repositories::$userRepository->findOneById($_SESSION['id'])->getWallet() ?></p>
+                        <p style="font-size: 24px">Doładuj swoje konto. Twój aktualny stan konta: <?= Environment::domainNumberFormat(Repositories::$userRepository->findOneById($_SESSION['id'])->getWallet()) ?></p>
                         <p class="waller__errros" style="color: red;">
                             <?php
                             foreach ($_GET as $error => $message) {
@@ -144,7 +144,7 @@ use Servers\views\components\UserPanel;
                             <br>
                             <section class="add__amount">
                                 <span>Kwota</span>
-                                <span class="after-commission">(Po odjęciu prowizji <spaFn class="after-commission__amount">0</spaFn>)</span><br>
+                                <span class="after-commission">(Po odjęciu prowizji <span class="after-commission__amount">0</span>)</span><br>
                                 <input type="text" name="amount" class="panel__input form-control form-control-user col-xl-2 col-lg-6 col-4 p-4" style="border-radius:20px ">
                             </section>
                             <br>
@@ -167,7 +167,7 @@ use Servers\views\components\UserPanel;
                                     const paymentMethodDueName = methodEl.getAttribute('data-payment-due-name');
                                     const failAmount = parseFloat(amount.value) ?? 0;
                                     const { due } = dues.find(due => due.name === paymentMethodDueName);
-                                    realAmount.textContent = `${(failAmount * due)/ 100} PLN`;
+                                    realAmount.textContent = `${isNaN(((failAmount * due)/ 100)) ? 0 : ((failAmount * due)/ 100).toFixed(2)} PLN`;
                                 }
 
                                 for (const method of paymentMethods) {

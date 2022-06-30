@@ -13,6 +13,7 @@ use Servers\Models\PaymentMethods;
 use Servers\Models\PaymentStatus;
 use Servers\Models\User;
 use Servers\Repositories;
+use Servers\Utils\Environment;
 
 class PaymentsService {
     const PAYMENT_DUE_ENV_NAMES = [
@@ -72,9 +73,9 @@ class PaymentsService {
         if ($email) {
             $user = Repositories::$userRepository->findOne(["email" => $email]);
 
-
+            $formatAmount = Environment::domainNumberFormat($amount);
             Repositories::$notificationsRepository->saveMany(
-                new Notification("Zlecono doladowanie konta dla: {$user->getUsername()}, kwota {$amount}PLN", time(), $subjectUser)
+                new Notification("Zlecono doladowanie konta dla: {$user->getUsername()}, kwota $formatAmount PLN", time(), $subjectUser)
             );
 
             if (!$user) {
@@ -82,7 +83,7 @@ class PaymentsService {
             }
 
             Repositories::$notificationsRepository->saveMany(
-                new Notification("$principal zlecil doladowanie Twojego konta kwota {$amount}PLN.", time(), $user)
+                new Notification("$principal zlecil doladowanie Twojego konta kwota $formatAmount PLN.", time(), $user)
             );
         }
 

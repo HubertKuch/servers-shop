@@ -173,7 +173,7 @@ use Servers\views\components\UserPanel;
                                 const paymentMethodDueName = methodEl.getAttribute('data-payment-due-name');
                                 const failAmount = parseFloat(amount.value) ?? 0;
                                 const { due } = dues.find(due => due.name === paymentMethodDueName);
-                                realAmount.textContent = `${(failAmount * due)/ 100}PLN`;
+                                realAmount.textContent = `${isNaN(((failAmount * due)/ 100)) ? 0 : ((failAmount * due)/ 100).toFixed(2)} PLN`;
                             }
 
                             for (const method of paymentMethods) {

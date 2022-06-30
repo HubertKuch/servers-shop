@@ -3,6 +3,7 @@
 namespace Servers\views\components;
 
 use Servers\Repositories;
+use Servers\Utils\Environment;
 
 class UserPanel {
     public static final function nav() {
@@ -45,6 +46,6 @@ class UserPanel {
                 </a>
             </li>
             <div class="text-white text-warning text-center py-3">Stan konta: %sPLN</div>
-            ', $newNotificationsCounter, Repositories::$userRepository->findOneById($_SESSION['id'])->getWallet());
+            ', $newNotificationsCounter, Environment::domainNumberFormat(Repositories::$userRepository->findOneById($_SESSION['id'])->getWallet()));
     }
 }
