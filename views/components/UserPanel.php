@@ -44,7 +44,7 @@ class UserPanel {
                     <span>Użytkownik</span>
                 </a>
             </li>
-            <div class="text-white">Stan konta: %s</div>
+            <div class="text-white text-warning text-center py-3">Stan konta: %sPLN</div>
             ', $newNotificationsCounter, Repositories::$userRepository->findOneById($_SESSION['id'])->getWallet());
     }
 }
