@@ -13,7 +13,7 @@ use Servers\Repositories;
 
 class ViewsController {
     public static final function main(): void {
-        AuthController::authenticationMiddleware(["error" => "Unauthorized"]);
+        AuthController::authenticationMiddleware();
 
         $servers = Repositories::$productsRepository->findMany([
             "user_id" => $_SESSION['id']
@@ -23,7 +23,7 @@ class ViewsController {
     }
 
     public static final function userPanel(AvocadoRequest $req): void {
-        AuthController::authenticationMiddleware(["error" => "Unauthorized"]);
+        AuthController::authenticationMiddleware();
         $userId = $_SESSION['id'];
         $findForeignPayments = new FindForeign();
         $findForeignBoughtServers = new FindForeign();
@@ -85,7 +85,7 @@ class ViewsController {
     public static final function userPayments(AvocadoRequest $req): void {
         $errors = $req->query;
 
-        AuthController::authenticationMiddleware(["error" => "Unauthorized"]);
+        AuthController::authenticationMiddleware();
         $userId = $_SESSION['id'];
         $findForeignPayments = new FindForeign();
         $findForeignBoughtServers = new FindForeign();
@@ -119,7 +119,7 @@ class ViewsController {
     public static final function userServerList(AvocadoRequest $req): void {
         $errors = $req->query;
 
-        AuthController::authenticationMiddleware(["error" => "Unauthorized"]);
+        AuthController::authenticationMiddleware();
         $userId = $_SESSION['id'];
         $findForeignPayments = new FindForeign();
         $findForeignBoughtServers = new FindForeign();
