@@ -23,6 +23,7 @@
         "hcgcloud/pterodactyl-sdk": "v1.0.4",
         "vlucas/phpdotenv": "v5.4.1",
         "ext-pdo": "*",
-        "ext-curl": "*"
+        "ext-curl": "*",
+        "nesbot/carbon": "2.59.1"
     }
 }

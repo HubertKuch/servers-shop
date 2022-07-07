@@ -9,15 +9,19 @@ use Servers\Models\MinecraftEggNames;
 use Servers\Models\Server;
 use Servers\Models\ServerStatus;
 use Servers\Repositories;
+use Carbon\Carbon;
 
 class ServersController {
     private static Pterodactyl $pterodactyl;
-    private static int $expireDays = 31;
     private static array $mcVersions = [];
+    private static int $expiresTime = 31;
+    private static string $expiresType = 'DAYS';
 
     public static final function init(Pterodactyl $pterodactyl): void {
         self::$pterodactyl = $pterodactyl;
         self::$mcVersions = json_decode(file_get_contents("Utils/mc_versions.json"));
+        self::$expiresTime = intval($_ENV['EXPIRES_IN']);
+        self::$expiresType = $_ENV['EXPIRES_TYPE'];
     }
 
     public static final function suspendServer(object $server): void {
@@ -58,7 +62,7 @@ class ServersController {
             AuthController::redirect('server-list', ["message" => "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem domeny."]);
 
         self::$pterodactyl->unsuspendServer($pterodactylId);
-        Repositories::$productsRepository->updateOneById(["status" => "sold", "expireDate" => time() + 24 * 60 * 60 * self::$expireDays], $serverId);
+        Repositories::$productsRepository->updateOneById(["status" => "sold", "expireDate" => time() + 24 * 60 * 60 * self::$expiresTime], $serverId);
         echo "<script>localStorage.setItem('user-panel-actual-visible', 'bought-servers')</script>";
         AuthController::redirect('');
     }
@@ -150,8 +154,17 @@ class ServersController {
 
         try {
             $pterodactylServer = self::$pterodactyl->createServer($serverData);
-            $createDate = time();
-            $expireDate = time() + 24 * 60 * 60 * self::$expireDays;
+            $createDate = Carbon::now()->getTimestamp();
+            $expireDate = Carbon::now();
+
+            $expireDate = match (self::$expiresType) {
+                'DAYS'      => $expireDate->addDays(self::$expiresTime),
+                'HOURS'     => $expireDate->addHours(self::$expiresTime),
+                'MINUTES'   => $expireDate->addMinutes(self::$expiresTime),
+                default     => $expireDate->addDays(self::$expiresTime)
+            };
+
+            $expireDate = $expireDate->getTimestamp();
 
             $userId = $user->getId();
             $serverId = $pterodactylServer->id;
