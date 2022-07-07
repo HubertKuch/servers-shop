@@ -202,6 +202,14 @@ class ServersController {
         );
     }
 
+    public static function checkServers(AvocadoRequest $req): void {
+        $servers = Repositories::$productsRepository->findMany();
+
+        foreach ($servers as $server)
+            if ($server->getExpireDate() < time())
+                ServersController::suspendServer($server);
+    }
+
     private static function isValidEggType(string $type): bool {
         $isValid = false;
         foreach (MinecraftEggNames::cases() as $eggType)

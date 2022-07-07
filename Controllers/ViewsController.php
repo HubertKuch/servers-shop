@@ -142,10 +142,6 @@ class ViewsController {
 
         $isAdmin = $user->getRole() === UserRole::ADMIN->value;
 
-        foreach ($userServers as $server)
-            if ($server->getExpireDate() < time())
-                ServersController::suspendServer($server);
-
         $userServers = Repositories::$productsRepository->findOneToManyRelation($findForeignBoughtServers, ["status" => ServerStatus::IN_MAGAZINE->value]);
         require "views/userPanel/serverList.php";
     }
