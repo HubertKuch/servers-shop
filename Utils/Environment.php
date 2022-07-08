@@ -7,7 +7,7 @@ class Environment {
         return $_ENV['ENVIRONMENT'] === "PRODUCTION" ? "http://{$_SERVER['HTTP_HOST']}/" : "http://{$_SERVER['HTTP_HOST']}/srv/";
     }
 
-    public static function domainNumberFormat(int $amount): string {
+    public static function domainNumberFormat(float $amount): string {
         return number_format($amount, 2);
     }
 }
