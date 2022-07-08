@@ -31,7 +31,7 @@ class User {
     #[Field]
     private int $activationCodeExpiresIn;
     #[Field]
-    private ?string $rememberPasswordToken;
+    private ?string $rememberPasswordToken = null;
 
     public function __construct(string $username, string $email, string $password, int $activationCode) {
         $this->username = $username;
