@@ -57,6 +57,7 @@ try {
     AvocadoRouter::GET("/account-activated",                    [], [ViewsController::class,    "accountActivated"]);
     AvocadoRouter::GET("/servers",                              [], [ViewsController::class,    "servers"]);
     AvocadoRouter::GET("/notifications",                        [], [ViewsController::class,    "notifications"]);
+    AvocadoRouter::GET("/remember-password",                    [], [ViewsController::class,    "rememberPassword"]);
 
     // USER PANEL ACTIONS
     AvocadoRouter::GET("/api/logout",                           [], [UserController::class,     "logout"]);
@@ -66,6 +67,7 @@ try {
     AvocadoRouter::PATCH("/api/change-password",                [], [UserController::class,     "changePassword"]);
     AvocadoRouter::PATCH("/api/activate-account",               [], [UserController::class,     "activateAccount"]);
     AvocadoRouter::PATCH("/api/activate-account",               [], [UserController::class,     "activateAccount"]);
+    AvocadoRouter::PATCH("/api/remember-password",              [], [UserController::class,     "rememberPasswordToken"]);
 
     // SERVERS ACTIONS
     AvocadoRouter::POST("/api/create-server",                   [], [ServersController::class,  "create"]);

@@ -12,8 +12,11 @@ create table if not exists users (
      isActivated                bool default false,
      activationCode             int,
      activationCodeExpiresIn    bigint,
+     rememberPasswordToken      text unique,
      unique(username)
 );
+
+alter table users add column if not exists rememberPasswordToken text unique;
 
 create table if not exists payments (
     id                      bigint not null auto_increment primary key,

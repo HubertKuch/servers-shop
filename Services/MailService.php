@@ -4,6 +4,7 @@ namespace Servers\Services;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
+use Servers\Models\User;
 
 class MailService {
     private PHPMailer $mailer;
@@ -44,5 +45,12 @@ class MailService {
 //            var_dump($exception);
 //            // TODO: REDIRECT TO INTERNAL ERROR PAGE
 //        }
+    }
+
+    public function sendRememberPasswordEmail(User $user): void {
+        $url = $user->generateRememberPasswordURL($user->getRememberPasswordToken());
+
+        $emailBody = "<h1>Twoj link resetujacy haslo.</h1><br><br><a target='_blank' href='$url'>Zresetuj haslo</a>";
+        var_dump($emailBody);
     }
 }

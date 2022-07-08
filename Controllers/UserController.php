@@ -146,6 +146,22 @@ class UserController {
         AuthController::redirect('account-activation');
     }
 
+    public static final function rememberPasswordToken(AvocadoRequest $req): void {
+        $email = $req->body['email'] ?? null;
+
+        if (!$email) {
+            AuthController::redirect('remember-password', ['message' => 'Email musi byc podany.']);
+        }
+
+        $user = Repositories::$userRepository->findOne(['email' => $email]);
+
+        if (!$user) {
+            AuthController::redirect('remember-password', ['message' => 'Niepoprawny email.']);
+        }
+
+        (new MailService())->sendRememberPasswordEmail($user);
+    }
+
     public static final function logout(): void {
         unset($_SESSION['id']);
         AuthController::redirect('login');

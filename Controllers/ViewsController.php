@@ -200,4 +200,8 @@ class ViewsController {
         LogsController::saveError($e);
         require "views/errors/internalErrorView.php";
     }
+
+    public static final function rememberPassword(): void {
+        require "views/userPanel/rememberPasswordView.php";
+    }
 }
