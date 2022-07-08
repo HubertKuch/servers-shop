@@ -153,7 +153,6 @@ class ServersController {
         };
 
         try {
-            $pterodactylServer = self::$pterodactyl->createServer($serverData);
             $createDate = Carbon::now()->getTimestamp();
             $expireDate = Carbon::now();
 
@@ -167,7 +166,6 @@ class ServersController {
             $expireDate = $expireDate->getTimestamp();
 
             $userId = $user->getId();
-            $serverId = $pterodactylServer->id;
 
             $userCash = $user->getWallet();
             $serverPrice = $package->getCost();
@@ -175,13 +173,16 @@ class ServersController {
             if ($userCash < $serverPrice)
                 AuthController::redirect('servers', ["message" => "Nie masz wystarczającej ilości pieniędzy"]);
 
+            $pterodactylServer = self::$pterodactyl->createServer($serverData);
+            $serverId = $pterodactylServer->id;
+
             $serversWithTheSameName = count(Repositories::$productsRepository->findMany(["title" => "$name%", "user_id" => $_SESSION['id']]));
 
             if ($serversWithTheSameName > 0) $name .= " #$serversWithTheSameName";
 
             $server = new Server($name, ServerStatus::SOLD->value, $createDate, $expireDate, $package->getId(), $userId, $serverId);
-            Repositories::$productsRepository->save($server);
 
+            Repositories::$productsRepository->save($server);
             Repositories::$userRepository->updateOneById([
                 "wallet" => $userCash - $serverPrice
             ], $user->getId());
