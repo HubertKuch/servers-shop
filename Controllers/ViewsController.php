@@ -4,11 +4,9 @@ namespace Servers\Controllers;
 
 use Avocado\ORM\FindForeign;
 use Avocado\Router\AvocadoRequest;
-use Avocado\Router\AvocadoResponse;
 use Exception;
-use Servers\Models\Notification;
-use Servers\Models\ServerStatus;
-use Servers\Models\UserRole;
+use Servers\Models\enumerations\ServerStatus;
+use Servers\Models\enumerations\UserRole;
 use Servers\Repositories;
 
 class ViewsController {

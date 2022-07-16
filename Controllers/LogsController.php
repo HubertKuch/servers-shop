@@ -3,10 +3,10 @@
 namespace Servers\Controllers;
 
 use Exception;
-use Servers\Models\LogType;
-use Servers\Utils\LogsTemplates;
+use Servers\Models\enumerations\LogType;
 use Servers\Models\Log;
 use Servers\Repositories;
+use Servers\Utils\LogsTemplates;
 
 class LogsController {
     public static final function saveUserLoginLog(int $userId, string $username): void {

@@ -1,6 +1,6 @@
 <?php
 
-use Servers\Models\PaymentMethods;
+use Servers\Models\enumerations\PaymentMethods;
 use Servers\Repositories;
 use Servers\Utils\Environment;
 

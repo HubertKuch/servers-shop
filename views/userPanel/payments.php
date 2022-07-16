@@ -1,10 +1,10 @@
 
 <?php
 
-use Servers\Models\PaymentMethods;
-use Servers\Models\ServerStatus;
+use Servers\Models\enumerations\PaymentMethods;
+use Servers\Models\enumerations\PaymentType;
+use Servers\Models\Payment;
 use Servers\Utils\Environment;
-use Servers\Repositories;
 use Servers\views\components\UserPanel;
 
 ?>
@@ -108,7 +108,9 @@ use Servers\views\components\UserPanel;
                                     <th>IP</th>
                                     <th>STATUS</th>
                                     <th>KWOTA</th>
+                                    <th>DO PORTFELA</th>
                                     <th>METODA</th>
+                                    <th>TYP</th>
                                 </tr>
                                 </thead>
                                 <tfoot>
@@ -118,11 +120,14 @@ use Servers\views\components\UserPanel;
                                     <th>IP</th>
                                     <th>STATUS</th>
                                     <th>KWOTA</th>
+                                    <th>DO PORTFELA</th>
                                     <th>METODA</th>
+                                    <th>TYP</th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                <?php foreach($payments as $payment): ?>
+
+                                <?php /** @var $payment Payment */ foreach($payments as $payment): ?>
                                 <tr>
                                     <td><?= $payment->getPaymentDate() ? date('d/m/Y H.i.s', $payment->getPaymentDate()) : "Nie zakończona" ?></td>
                                     <td><?= date('d/m/Y H.i.s', $payment->getCreateDate()) ?></td>
@@ -135,7 +140,12 @@ use Servers\views\components\UserPanel;
                                         }
                                         ?></td>
                                     <td><?= Environment::domainNumberFormat($payment->getSum()) ?> PLN</td>
+                                    <td><?= Environment::domainNumberFormat($payment->getAfterDue()) ?> PLN</td>
                                     <td><?= str_replace('_', '', PaymentMethods::tryFrom($payment->getMethod())->name) ?></td>
+                                    <td><?= match ($payment->getPaymentType()) {
+                                            PaymentType::FUND => "Zasilacz",
+                                            PaymentType::OWN => "Wlasna"
+                                        } ?></td>
                                 </tr>
                                 <?php endforeach; ?>
                                 </tbody>

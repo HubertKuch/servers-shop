@@ -1,8 +1,9 @@
 <?php
 
-use Servers\Models\ServerStatus;
-use Servers\Utils\Environment;
+use Servers\Models\enumerations\ServerStatus;
 use Servers\Repositories;
+use Servers\Utils\Environment;
+
 ?>
 
 <html lang="pl">

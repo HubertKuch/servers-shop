@@ -1,8 +1,7 @@
 <?php
 
-use Servers\Models\ServerStatus;
-use Servers\Utils\Environment;
 use Servers\Repositories;
+use Servers\Utils\Environment;
 use Servers\views\components\UserPanel;
 
 ?>
@@ -124,6 +123,15 @@ use Servers\views\components\UserPanel;
                         </div>
                     </form>
                     <hr style="color: white">
+                    <label>
+                        Username
+                        <input type="email" disabled class="form-control" value="<?= Repositories::$userRepository->findOneById($_SESSION['id'])->getUsername() ?>"  style="width: max-content" >
+                    </label>
+                    <br>
+                    <label>
+                        E-mail
+                        <input type="email" disabled class="form-control" value="<?= Repositories::$userRepository->findOneById($_SESSION['id'])->getEmail() ?>"  style="width: max-content" >
+                    </label>
                     <hr style="color: white">
                 </div>
             </div>

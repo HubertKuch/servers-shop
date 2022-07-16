@@ -3,14 +3,13 @@
 namespace Servers\Services;
 
 use Avocado\Router\AvocadoRequest;
-use Avocado\Router\AvocadoResponse;
-use Avocado\Router\AvocadoRouter;
 use Servers\Controllers\AuthController;
 use Servers\Controllers\LogsController;
+use Servers\Models\enumerations\PaymentMethods;
+use Servers\Models\enumerations\PaymentStatus;
+use Servers\Models\enumerations\PaymentType;
 use Servers\Models\Notification;
 use Servers\Models\Payment;
-use Servers\Models\PaymentMethods;
-use Servers\Models\PaymentStatus;
 use Servers\Models\User;
 use Servers\Repositories;
 use Servers\Utils\Environment;
@@ -65,26 +64,20 @@ class PaymentsService {
         self::validateAmountRequest($req);
 
         $user = Repositories::$userRepository->findOneById($_SESSION['id']);
+        $principalUser = $user;
+
         $subjectUser = $user;
         $principal = $user->getUsername();
-
-
+        $paymentType = PaymentType::OWN;
 
         if ($email) {
             $user = Repositories::$userRepository->findOne(["email" => $email]);
-
-            $formatAmount = Environment::domainNumberFormat($amount);
-            Repositories::$notificationsRepository->saveMany(
-                new Notification("Zlecono doladowanie konta dla: {$user->getUsername()}, kwota $formatAmount PLN", time(), $subjectUser)
-            );
 
             if (!$user) {
                 AuthController::redirect('recharge-friend', ["message" => "Użytkownik z emailem $email nie istnieje."]);
             }
 
-            Repositories::$notificationsRepository->saveMany(
-                new Notification("$principal zlecil doladowanie Twojego konta kwota $formatAmount PLN.", time(), $user)
-            );
+            $paymentType = PaymentType::FUND;
         }
 
         $title = "Doładowanie konta {$user->getUsername()}";
@@ -96,19 +89,32 @@ class PaymentsService {
 
         $url = $paymentResponse['data']['url'];
 
-        $payment = self::createPayment($req, $paymentResponse, $user);
+        $payment = self::createPayment($req, $paymentResponse, $principalUser, $paymentType, $email ? $user : null);
         Repositories::$paymentsRepository->save($payment);
 
         $paymentFromDb = Repositories::$paymentsRepository->findOne([
             "tid" => $payment->getTid()
         ]);
 
+        $paymentDue = $payment->calculateDue(self::PAYMENT_DUE_ENV_NAMES[$paymentMethodId]);
+        $formatAmount = Environment::domainNumberFormat($amount);
+
+        if ($email) {
+            Repositories::$notificationsRepository->save(
+                new Notification("Zleciles doladowanie konta uzytkownika: {$user->getUsername()}, kwota $formatAmount PLN (po prowizji {$paymentDue}PLN).", time(), $subjectUser)
+            );
+
+            Repositories::$notificationsRepository->save(
+                new Notification("Uzytkownik $principal zlecil doladowanie Twojego konta kwota $formatAmount PLN (po prowizji ${paymentDue}PLN).", time(), $user)
+            );
+        }
+
         LogsController::savePaymentLog($paymentFromDb->getId());
 
         header("Location: $url");
     }
 
-    public static function createPayment(AvocadoRequest $req, array $paymentResponse, User $user): Payment {
+    public static function createPayment(AvocadoRequest $req, array $paymentResponse, User $user, PaymentType $paymentType, User $userToCharge = null): Payment {
         AuthController::authenticationMiddleware();
 
         $paymentMethodId = $req->body['payment_id'] ?? null;
@@ -118,7 +124,7 @@ class PaymentsService {
         $now = time();
         $paymentMethod = PaymentMethods::tryFrom($paymentMethodId);
 
-        return new Payment(NULL, $now, $ip, PaymentStatus::INCOMING->value, $amount, $paymentMethod?->value, $user->getId(), $tid);
+        return new Payment(NULL, $now, $ip, PaymentStatus::INCOMING->value, $amount, NULL, $paymentMethod, $user->getId(), $tid, $userToCharge?->getId(), $paymentType);
     }
 
     private static function getIPAddress(): string {
@@ -136,6 +142,7 @@ class PaymentsService {
         $key = $req->body['key'];
         $tid = $req->body['tid'];
 
+        /** @var $payment Payment*/
         $payment = Repositories::$paymentsRepository->findOne(["tid" => $tid]);
         $user = Repositories::$userRepository->findOneById($payment->getUserId());
 
@@ -155,8 +162,18 @@ class PaymentsService {
         Repositories::$paymentsRepository->updateOneById([
             "paymentDate" => time(),
             "payment_status" => 3,
-            "status" => PaymentStatus::RESOLVED->value
+            "status" => PaymentStatus::RESOLVED->value,
+            "wallet_after_operation" => $payment->getPaymentType() == PaymentType::OWN ? $user->getWallet() + $payment->getAfterDue() : NULL
         ], $payment->getId());
+
+        if ($payment->getPaymentType() == PaymentType::FUND) {
+            /* @var $principalUser User */
+            $principalUser = Repositories::$userRepository->findOneById($payment->getUserId());
+            $notificationForPrincipal = new Notification("Uzytkownik {$user->getUsername()} otrzymal Twoja wplate {$payment->getSum()}PLN (po prowizji {$payment->getAfterDue()}PLN)", time(), $principalUser);
+            $notificationForChargedUp = new Notification("Twoje konto zostalo doladowane przez {$principalUser->getUsername()} kwota {$payment->getSum()}PLN (po prowizji {$payment->getAfterDue()}PLN)", time(), $user);
+
+            Repositories::$notificationsRepository->saveMany($notificationForChargedUp, $notificationForPrincipal);
+        }
 
         self::fundAccount($user, $payment);
         echo "OK";

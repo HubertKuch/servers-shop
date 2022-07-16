@@ -4,10 +4,11 @@ namespace Servers\Models;
 
 
 use Avocado\ORM\Attributes\Field;
-use Avocado\ORM\Attributes\Table;
 use Avocado\ORM\Attributes\Id;
+use Avocado\ORM\Attributes\Table;
 use Carbon\Carbon;
 use Exception;
+use Servers\Models\enumerations\UserRole;
 use Servers\Repositories;
 
 #[Table('users')]

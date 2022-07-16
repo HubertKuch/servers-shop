@@ -2,7 +2,6 @@
 
 namespace Servers\Controllers;
 
-use Servers\Models\UserRole;
 use Servers\Repositories;
 
 class AuthController {

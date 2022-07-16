@@ -3,13 +3,13 @@
 namespace Servers\Controllers;
 
 use Avocado\Router\AvocadoRequest;
-use HCGCloud\Pterodactyl\Pterodactyl;
-use Servers\Models\JavaVersion;
-use Servers\Models\MinecraftEggNames;
-use Servers\Models\Server;
-use Servers\Models\ServerStatus;
-use Servers\Repositories;
 use Carbon\Carbon;
+use HCGCloud\Pterodactyl\Pterodactyl;
+use Servers\Models\enumerations\JavaVersion;
+use Servers\Models\enumerations\MinecraftEggNames;
+use Servers\Models\enumerations\ServerStatus;
+use Servers\Models\Server;
+use Servers\Repositories;
 
 class ServersController {
     private static Pterodactyl $pterodactyl;

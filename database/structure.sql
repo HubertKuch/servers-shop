@@ -25,9 +25,12 @@ create table if not exists payments (
     ipAddress               text not null,
     status                  enum('rejected', 'incoming', 'resolved') not null,
     sum                     double not null,
+    after_due               double not null,
+    wallet_after_operation  double not null,
     method                  text not null,
     tid                     text not null,
     payment_status          int default null,
+    payment_type            enum('fund', 'own') not null,
 
     user_id                 bigint not null,
     foreign key (user_id)   references users(id)
