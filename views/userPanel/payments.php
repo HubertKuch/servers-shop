@@ -108,6 +108,7 @@ use Servers\views\components\UserPanel;
                                     <th>IP</th>
                                     <th>STATUS</th>
                                     <th>KWOTA</th>
+                                    <th>SALDO PO OPERACJI</th>
                                     <th>DO PORTFELA</th>
                                     <th>METODA</th>
                                     <th>TYP</th>
@@ -120,6 +121,7 @@ use Servers\views\components\UserPanel;
                                     <th>IP</th>
                                     <th>STATUS</th>
                                     <th>KWOTA</th>
+                                    <th>SALDO PO OPERACJI</th>
                                     <th>DO PORTFELA</th>
                                     <th>METODA</th>
                                     <th>TYP</th>
@@ -140,6 +142,7 @@ use Servers\views\components\UserPanel;
                                         }
                                         ?></td>
                                     <td><?= Environment::domainNumberFormat($payment->getSum()) ?> PLN</td>
+                                    <td><?= $payment->getWalletAfterOperation() ? Environment::domainNumberFormat($payment->getWalletAfterOperation())."PLN" : "" ?></td>
                                     <td><?= Environment::domainNumberFormat($payment->getAfterDue()) ?> PLN</td>
                                     <td><?= str_replace('_', '', PaymentMethods::tryFrom($payment->getMethod())->name) ?></td>
                                     <td><?= match ($payment->getPaymentType()) {
