@@ -19,21 +19,23 @@ create table if not exists users (
 alter table users add column if not exists rememberPasswordToken text unique;
 
 create table if not exists payments (
-    id                      bigint not null auto_increment primary key,
-    paymentDate             bigint default null,
-    createDate              bigint not null,
-    ipAddress               text not null,
-    status                  enum('rejected', 'incoming', 'resolved') not null,
-    sum                     double not null,
-    after_due               double not null,
-    wallet_after_operation  double default null,
-    method                  text default null,
-    tid                     text not null,
-    payment_status          int default null,
-    payment_type            enum('fund', 'own', 'server_bought', 'server_renew') not null,
+    id                              bigint not null auto_increment primary key,
+    paymentDate                     bigint default null,
+    createDate                      bigint not null,
+    ipAddress                       text not null,
+    status                          enum('rejected', 'incoming', 'resolved') not null,
+    sum                             double not null,
+    after_due                       double not null,
+    wallet_after_operation          double default null,
+    method                          text default null,
+    tid                             text not null,
+    payment_status                  int default null,
+    payment_type                    enum('fund', 'own', 'server_bought', 'server_renew') not null,
+    charged_user_id                 int default null
 
-    user_id                 bigint not null,
-    foreign key (user_id)   references users(id)
+    user_id                         bigint not null,
+    foreign key (user_id)           references users(id),
+    foreign key (charged_user_id)   references users(id)
 );
 
 alter table payments modify if exists paymentDate bigint;
@@ -93,6 +95,3 @@ create table if not exists notification (
 
     foreign key (user_id)       references users(id)
 );
-
-select *
-from servers.notification;

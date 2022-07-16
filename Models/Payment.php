@@ -5,16 +5,17 @@ namespace Servers\Models;
 use Avocado\ORM\Attributes\Field;
 use Avocado\ORM\Attributes\Table;
 use Avocado\ORM\Attributes\Id;
+use http\Header;
+use http\Params;
 use Servers\Models\enumerations\PaymentMethods;
 use Servers\Models\enumerations\PaymentType;
 use Servers\Services\PaymentsService;
-use function Symfony\Component\Translation\t;
 
 #[Table('payments')]
 class Payment {
     #[Id]
     private int $id;
-    #[Field]
+    #[Field("paymentDate")]
     private ?int $paymentDate;
     #[Field]
     private int $createDate;
@@ -29,7 +30,7 @@ class Payment {
     #[Field]
     private ?float $wallet_after_operation;
     #[Field]
-    private string $method;
+    private ?string $method;
     #[Field]
     private int $user_id;
     #[Field]
@@ -37,7 +38,7 @@ class Payment {
     #[Field('payment_status')]
     private int $payment_status = 0;
     #[Field('payment_type')]
-    private PaymentType $paymentType;
+    private ?PaymentType $paymentType;
     #[Field("charged_user_id")]
     private ?int $chargedUserId;
 
@@ -47,7 +48,7 @@ class Payment {
                                 string $status,
                                 float $sum,
                                 ?float $wallet_after_operation,
-                                PaymentMethods $method,
+                                ?PaymentMethods $method,
                                 int $user_id,
                                 string $tid,
                                 ?int $chargedUserId = null,
@@ -59,8 +60,8 @@ class Payment {
         $this->status = $status;
         $this->sum = $sum;
         $this->wallet_after_operation = $wallet_after_operation;
-        $this->afterDue = $this->calculateDue(PaymentsService::PAYMENT_DUE_ENV_NAMES[$method->value]);
-        $this->method = $method->value;
+        $this->afterDue = $method ? $this->calculateDue(PaymentsService::PAYMENT_DUE_ENV_NAMES[$method->value]) : 0;
+        $this->method = $method instanceof PaymentMethods ? $method->value : $method;
         $this->user_id = $user_id;
         $this->tid = $tid;
         $this->paymentType = $paymentType;
@@ -84,7 +85,7 @@ class Payment {
     public function getSum(): float { return $this->sum; }
     public function setSum(float $sum): void { $this->sum = $sum; }
 
-    public function getMethod(): string { return $this->method; }
+    public function getMethod(): ?string { return $this->method; }
     public function setMethod(string $method): void { $this->method = $method; }
 
     public function getUserId(): int { return $this->user_id; }

@@ -127,7 +127,7 @@ class PaymentsService {
         return new Payment(NULL, $now, $ip, PaymentStatus::INCOMING->value, $amount, NULL, $paymentMethod, $user->getId(), $tid, $userToCharge?->getId(), $paymentType);
     }
 
-    private static function getIPAddress(): string {
+    public static function getIPAddress(): string {
         $ip = "";
 
         if (isset($_SERVER['REMOTE_ADDR'])) $ip = $_SERVER['REMOTE_ADDR'];

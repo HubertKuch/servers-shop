@@ -7,9 +7,13 @@ use Carbon\Carbon;
 use HCGCloud\Pterodactyl\Pterodactyl;
 use Servers\Models\enumerations\JavaVersion;
 use Servers\Models\enumerations\MinecraftEggNames;
+use Servers\Models\enumerations\PaymentStatus;
+use Servers\Models\enumerations\PaymentType;
 use Servers\Models\enumerations\ServerStatus;
+use Servers\Models\Payment;
 use Servers\Models\Server;
 use Servers\Repositories;
+use Servers\Services\PaymentsService;
 
 class ServersController {
     private static Pterodactyl $pterodactyl;
@@ -84,6 +88,8 @@ class ServersController {
     }
 
     public static final function create(AvocadoRequest $req): void {
+        AuthController::authenticationMiddleware();
+
         $eggType            = $req->body['egg_type'] ?? null;
         $eggId              = intval($req->body['egg_id']) ?? null;
         $packageId          = intval($req->body['package_id']) ?? null;
@@ -92,6 +98,7 @@ class ServersController {
         $javaVersion        = $req->body['java_version'] ?? null;
         $forgeVersion       = $req->body['forge_version'] ?? null;
         $pterodactylUserId  = $_SESSION['pterodactyl_user_id'];
+        /** @var $user User */
         $user               = Repositories::$userRepository->findOneById($_SESSION['id']);
         $isForge            = $eggId == 2;
 
@@ -186,6 +193,23 @@ class ServersController {
             Repositories::$userRepository->updateOneById([
                 "wallet" => $userCash - $serverPrice
             ], $user->getId());
+
+            $now = time();
+            $payment = new Payment(
+                $now,
+                $now,
+                PaymentsService::getIPAddress(),
+                PaymentStatus::RESOLVED->value,
+                $serverPrice,
+                $user->getWallet() - $serverPrice,
+                null,
+                 $userId,
+                "",
+                 null,
+                 PaymentType::BOUGHT_SERVER
+            );
+
+            Repositories::$paymentsRepository->save($payment);
 
             AuthController::redirect('server-list');
         } catch (\Exception $e) {

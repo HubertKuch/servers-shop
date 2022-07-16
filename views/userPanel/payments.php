@@ -144,10 +144,12 @@ use Servers\views\components\UserPanel;
                                     <td><?= Environment::domainNumberFormat($payment->getSum()) ?> PLN</td>
                                     <td><?= $payment->getWalletAfterOperation() ? Environment::domainNumberFormat($payment->getWalletAfterOperation())."PLN" : "" ?></td>
                                     <td><?= Environment::domainNumberFormat($payment->getAfterDue()) ?> PLN</td>
-                                    <td><?= str_replace('_', '', PaymentMethods::tryFrom($payment->getMethod())->name) ?></td>
+                                    <td><?= $payment->getMethod() ? str_replace('_', '', PaymentMethods::tryFrom($payment->getMethod())->name) : "Nie dotyczy" ?></td>
                                     <td><?= match ($payment->getPaymentType()) {
                                             PaymentType::FUND => "Zasilacz",
-                                            PaymentType::OWN => "Wlasna"
+                                            PaymentType::OWN => "Wlasna",
+                                            PaymentType::BOUGHT_SERVER => "Zakup servera",
+                                            PaymentType::RENEW_SERVER => "Odnowienie servera"
                                         } ?></td>
                                 </tr>
                                 <?php endforeach; ?>
