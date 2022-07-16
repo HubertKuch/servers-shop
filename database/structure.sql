@@ -26,11 +26,11 @@ create table if not exists payments (
     status                  enum('rejected', 'incoming', 'resolved') not null,
     sum                     double not null,
     after_due               double not null,
-    wallet_after_operation  double not null,
-    method                  text not null,
+    wallet_after_operation  double default null,
+    method                  text default null,
     tid                     text not null,
     payment_status          int default null,
-    payment_type            enum('fund', 'own') not null,
+    payment_type            enum('fund', 'own', 'server_bought', 'server_renew') not null,
 
     user_id                 bigint not null,
     foreign key (user_id)   references users(id)
