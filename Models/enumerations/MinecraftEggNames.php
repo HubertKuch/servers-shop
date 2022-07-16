@@ -1,6 +1,6 @@
 <?php
 
-namespace Servers\Models;
+namespace Servers\Models\enumerations;
 
 enum MinecraftEggNames: string {
     case VANILLA = "vanilla";

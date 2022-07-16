@@ -1,6 +1,6 @@
 <?php
 
-namespace Servers\Models;
+namespace Servers\Models\enumerations;
 
 enum PaymentMethods: int {
     case PAYPAL = 4;
