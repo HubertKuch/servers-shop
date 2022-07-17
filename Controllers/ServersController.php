@@ -6,12 +6,16 @@ use Avocado\Router\AvocadoRequest;
 use Carbon\Carbon;
 use HCGCloud\Pterodactyl\Pterodactyl;
 use Servers\Models\enumerations\JavaVersion;
+use Servers\Models\enumerations\LogType;
 use Servers\Models\enumerations\MinecraftEggNames;
 use Servers\Models\enumerations\PaymentStatus;
 use Servers\Models\enumerations\PaymentType;
 use Servers\Models\enumerations\ServerStatus;
+use Servers\Models\Log;
+use Servers\Models\Notification;
 use Servers\Models\Payment;
 use Servers\Models\Server;
+use Servers\Models\User;
 use Servers\Repositories;
 use Servers\Services\PaymentsService;
 
@@ -41,7 +45,7 @@ class ServersController {
 
     public static final function unSuspendServer(AvocadoRequest $req): void {
         AuthController::authenticationMiddleware();
-        $serverId = intval($req->params['id']) ?? null;
+        $serverId = intval($req->query['id']) ?? null;
 
         if (!$serverId)
             AuthController::redirect('server-list', ["message" => "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem domeny."]);
@@ -50,6 +54,7 @@ class ServersController {
 
         $pterodactylId = $server->getPterodactylId() ?? null;
 
+        /** @var $user User */
         $user = Repositories::$userRepository->findOneById($_SESSION['id']);
         $userMoney = $user->getWallet();
 
@@ -65,9 +70,36 @@ class ServersController {
         if (!$serverId || $serverId == 0)
             AuthController::redirect('server-list', ["message" => "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem domeny."]);
 
+        $payment = new Payment(
+            time(),
+            time(),
+            PaymentsService::getIPAddress(),
+            PaymentStatus::RESOLVED->value,
+            $packageCost,
+            $userMoney - $packageCost,
+            null,
+            $user->getId(),
+            "",
+            null,
+            PaymentType::RENEW_SERVER
+        );
+
+        Repositories::$paymentsRepository->save($payment);
         self::$pterodactyl->unsuspendServer($pterodactylId);
-        Repositories::$productsRepository->updateOneById(["status" => "sold", "expireDate" => time() + 24 * 60 * 60 * self::$expiresTime], $serverId);
+
+        $expireDate = Carbon::now();
+        $expireDate = match (self::$expiresType) {
+            'DAYS'      => $expireDate->addDays(self::$expiresTime),
+            'HOURS'     => $expireDate->addHours(self::$expiresTime),
+            'MINUTES'   => $expireDate->addMinutes(self::$expiresTime),
+            default     => $expireDate->addDays(self::$expiresTime)
+        };
+
+        $expireDate = $expireDate->getTimestamp();
+
+        Repositories::$productsRepository->updateOneById(["status" => "sold", "expireDate" => $expireDate], $serverId);
         echo "<script>localStorage.setItem('user-panel-actual-visible', 'bought-servers')</script>";
+
         AuthController::redirect('');
     }
 
@@ -195,6 +227,7 @@ class ServersController {
             ], $user->getId());
 
             $now = time();
+
             $payment = new Payment(
                 $now,
                 $now,
@@ -227,12 +260,82 @@ class ServersController {
         );
     }
 
+    private static function deleteServerIfExpiredSince(Server $server) {
+        $deleteAfterTimeType = $_ENV['DELETE_SERVER_SINCE_TYPE'];
+        $deleteAfterTime = $_ENV['DELETE_SERVER_SINCE'];
+
+        $serverExpiredAt = Carbon::createFromTimestamp($server->getExpireDate());
+        $now = Carbon::now();
+
+        $diff = match ($deleteAfterTimeType) {
+            "MONTHS" => $serverExpiredAt->diffInMonths($now),
+            "HOURS" => $serverExpiredAt->diffInHours($now),
+            "MINUTES" => $serverExpiredAt->diffInMinutes($now),
+            default => $serverExpiredAt->diffInDays($now)
+        };
+
+        if ($diff >= intval($deleteAfterTime)) {
+            Repositories::$productsRepository->deleteOneById($server->getId());
+
+            $timeToNotification = match ($deleteAfterTimeType) {
+                "MONTHS" => "miesiecy",
+                "MINUTES" => "minut",
+                default => "dni"
+            };
+
+            /** @var $user User */
+            $user = Repositories::$userRepository->findOneById($server->getUserId());
+
+            Repositories::$notificationsRepository->save(new Notification(
+                "Twoj server (`{$server->getTitle()}`) zostal usuniety z powodu braku uisczenia platnosci w terminie {$deleteAfterTime}{$timeToNotification}",
+                $now->getTimestamp(),
+                $user
+            ));
+
+            Repositories::$logsRepository->save(new Log(
+                LogType::PRODUCT->value,
+                $server->getUserId(),
+                null,
+                null,
+                "Server uzytkownika {$user->getUsername()} o id uzytkownika {$user->getId()} zostal usuniety z powodu przedawnienia ({$deleteAfterTime}{$timeToNotification})."
+            ));
+
+            self::$pterodactyl->forceDeleteServer($server->getPterodactylId());
+        }
+    }
+
     public static function checkServers(AvocadoRequest $req): void {
         $servers = Repositories::$productsRepository->findMany();
 
-        foreach ($servers as $server)
-            if ($server->getExpireDate() < time())
-                ServersController::suspendServer($server);
+        /** @var $server Server */
+        foreach ($servers as $server) {
+            if ($server->getExpireDate() < time()) {
+                if ($server->getStatus() !== ServerStatus::EXPIRED->value) {
+                    echo "EXPIRED ".$server->getTitle();
+                    $deleteAfterTimeType = $_ENV['DELETE_SERVER_SINCE_TYPE'];
+                    $deleteAfterTime = $_ENV['DELETE_SERVER_SINCE'];
+
+                    $timeToNotification = match ($deleteAfterTimeType) {
+                        "MONTHS" => "miesiecy",
+                        "MINUTES" => "minut",
+                        default => "dni"
+                    };
+
+                    /** @var $user User */
+                    $user = Repositories::$userRepository->findOneById($server->getUserId());
+                    ServersController::suspendServer($server);
+
+                    $notification = new Notification("Twoj server `{$server->getTitle()}` zostal przedawniony. Jesli w ciagu {$deleteAfterTime} {$timeToNotification} nie zostanie oplacony zostanie usuniety.", time(), $user);
+                    $log = new Log(LogType::PRODUCT->value, $user->getId(), $server->getId(), null, "Server uzytkownika {$user->getUsername()} o id {$user->getId()} zostal przedawniony.");
+
+                    Repositories::$logsRepository->save($log);
+                    Repositories::$notificationsRepository->save($notification);
+                    break;
+                }
+
+                self::deleteServerIfExpiredSince($server);
+            }
+        }
     }
 
     private static function isValidEggType(string $type): bool {

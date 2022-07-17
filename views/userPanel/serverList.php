@@ -144,7 +144,7 @@ use Servers\views\components\UserPanel;
                                             <td><?= date('m/d/Y H.i.s', $server->getExpireDate()) ?></td>
                                             <td><?php $package = Repositories::$packagesRepository->findOneById($server->getPackageId()); echo $package->getDescription() ?></td>
                                             <td>
-                                                <form action="index.php/api/unsuspend-server/<?= $server->getId() ?>" method="post">
+                                                <form action="index.php/api/unsuspend-server?id=<?= $server->getId() ?>" method="post">
                                                     <input type="hidden" name="_method" value="PATCH">
                                                     <button type="submit" class="button--renew btn btn-success">Odnów</button>
                                                 </form>
