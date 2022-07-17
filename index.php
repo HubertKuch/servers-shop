@@ -27,7 +27,6 @@ $dbHost = $_ENV['DB_HOST'];
 $dbPort = $_ENV['DB_PORT'];
 $dbName = $_ENV['DB_NAME'];
 AvocadoORMSettings::useDatabase("mysql:host=$dbHost;dbname=$dbName;port=$dbPort;", $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD']);
-Repositories::init();
 
 try {
     $mainDir = explode('/', $_SERVER['SCRIPT_NAME'])[1];
@@ -36,6 +35,7 @@ try {
     putenv("PTERODACTYL_IP=178.32.202.241:85");
 
     $pterodactyl = new Pterodactyl(getenv("ROOT_PTERODACTYL_API_KEY"), getenv("PTERODACTYL_IP"));
+    Repositories::init($pterodactyl);
 
     AvocadoRouter::useJSON();
 

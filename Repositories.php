@@ -2,6 +2,7 @@
 
 namespace Servers;
 
+use HCGCloud\Pterodactyl\Pterodactyl;
 use Servers\Models\Notification;
 use Servers\Models\Package;
 use Servers\Models\Payment;
@@ -17,13 +18,15 @@ class Repositories {
     public static AvocadoRepository $logsRepository;
     public static AvocadoRepository $packagesRepository;
     public static AvocadoRepository $notificationsRepository;
+    public static Pterodactyl $pterodactyl;
 
-    public static function init(): void {
+    public static function init(Pterodactyl $pterodactyl): void {
         self::$userRepository = new AvocadoRepository(User::class);
         self::$paymentsRepository = new AvocadoRepository(Payment::class);
         self::$productsRepository = new AvocadoRepository(Server::class);
         self::$logsRepository = new AvocadoRepository(Log::class);
         self::$packagesRepository = new AvocadoRepository(Package::class);
         self::$notificationsRepository = new AvocadoRepository(Notification::class);
+        self::$pterodactyl = $pterodactyl;
     }
 }

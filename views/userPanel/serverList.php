@@ -150,7 +150,7 @@ use Servers\views\components\UserPanel;
                                                 </form>
                                             </td>
                                             <td>
-                                                <button class="btn-warning btn"><a class="text-white" href="http://178.32.202.241:85/">Zarządzaj</a></button>
+                                                <button class="btn-warning btn"><a class="text-white" href="http://178.32.202.241:85/server/<?= Repositories::$pterodactyl->server($server->getPterodactylId())->identifier ?>">Zarządzaj</a></button>
                                             </td>
                                     <?php endforeach; ?>
                                     </tbody>
