@@ -31,10 +31,10 @@ create table if not exists payments (
     tid                             text not null,
     payment_status                  int default null,
     payment_type                    enum('fund', 'own', 'server_bought', 'server_renew') not null,
-    charged_user_id                 int default null
 
     user_id                         bigint not null,
     foreign key (user_id)           references users(id),
+    charged_user_id                 bigint default null,
     foreign key (charged_user_id)   references users(id)
 );
 

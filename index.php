@@ -15,6 +15,7 @@ use Avocado\Router\AvocadoRouter;
 use Avocado\ORM\AvocadoORMSettings;
 use Exception;
 use HCGCloud\Pterodactyl\Pterodactyl;
+use HCGCloud\Pterodactyl\Resources\Server;
 use Servers\Controllers\ServersController;
 use Servers\Controllers\UserController;
 use Servers\Controllers\ViewsController;
