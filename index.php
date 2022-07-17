@@ -84,6 +84,5 @@ try {
 }
 catch (AvocadoModelException $e) {}
 catch (Exception $e) {
-    var_dump($e);
-//    ViewsController::internalServerError($e);
+    ViewsController::internalServerError($e);
 }
