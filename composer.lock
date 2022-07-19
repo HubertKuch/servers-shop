@@ -439,12 +439,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/HubertKuch/Avocado.git",
-                "reference": "23dec6f1910468b2174eebb76dc393d00ac02a43"
+                "reference": "bb1219aaabf1002bc8c08f3b5c697a6b69e62818"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/HubertKuch/Avocado/zipball/23dec6f1910468b2174eebb76dc393d00ac02a43",
-                "reference": "23dec6f1910468b2174eebb76dc393d00ac02a43",
+                "url": "https://api.github.com/repos/HubertKuch/Avocado/zipball/bb1219aaabf1002bc8c08f3b5c697a6b69e62818",
+                "reference": "bb1219aaabf1002bc8c08f3b5c697a6b69e62818",
                 "shasum": ""
             },
             "require": {
@@ -485,7 +485,7 @@
                 "issues": "https://github.com/HubertKuch/Avocado/issues",
                 "source": "https://github.com/HubertKuch/Avocado/tree/main"
             },
-            "time": "2022-07-03T14:51:43+00:00"
+            "time": "2022-07-19T07:27:01+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -1344,12 +1344,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "8098c8e253536f9a2b10ec27a3f9eed567ecc5a9"
+                "reference": "eadec235d9e8551fe97cea17ac034e37ee648cf2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/8098c8e253536f9a2b10ec27a3f9eed567ecc5a9",
-                "reference": "8098c8e253536f9a2b10ec27a3f9eed567ecc5a9",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/eadec235d9e8551fe97cea17ac034e37ee648cf2",
+                "reference": "eadec235d9e8551fe97cea17ac034e37ee648cf2",
                 "shasum": ""
             },
             "require": {
@@ -1416,7 +1416,7 @@
             "description": "Provides tools to internationalize your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/translation/tree/6.1"
+                "source": "https://github.com/symfony/translation/tree/6.2"
             },
             "funding": [
                 {
@@ -1432,7 +1432,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-06-27T17:24:16+00:00"
+            "time": "2022-07-09T08:22:50+00:00"
         },
         {
             "name": "symfony/translation-contracts",

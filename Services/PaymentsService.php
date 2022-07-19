@@ -173,6 +173,8 @@ class PaymentsService {
             $notificationForChargedUp = new Notification("Twoje konto zostalo doladowane przez {$principalUser->getUsername()} kwota {$payment->getSum()}PLN (po prowizji {$payment->getAfterDue()}PLN)", time(), $user);
 
             Repositories::$notificationsRepository->saveMany($notificationForChargedUp, $notificationForPrincipal);
+
+            $user = Repositories::$userRepository->findOneById($payment->getChargedUserId());
         }
 
         self::fundAccount($user, $payment);
@@ -189,7 +191,6 @@ class PaymentsService {
 
     private static function rejectPayment(Payment $payment): void {
         Repositories::$paymentsRepository->updateOneById([
-            "paymentDate" => time(),
             "status" => PaymentStatus::REJECTED->value
         ], $payment->getId());
     }
