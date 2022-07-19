@@ -168,13 +168,14 @@ class PaymentsService {
 
         if ($payment->getPaymentType() == PaymentType::FUND) {
             /* @var $principalUser User */
+
+            $user = Repositories::$userRepository->findOneById($payment->getChargedUserId());
             $principalUser = Repositories::$userRepository->findOneById($payment->getUserId());
+
             $notificationForPrincipal = new Notification("Uzytkownik {$user->getUsername()} otrzymal Twoja wplate {$payment->getSum()}PLN (po prowizji {$payment->getAfterDue()}PLN)", time(), $principalUser);
             $notificationForChargedUp = new Notification("Twoje konto zostalo doladowane przez {$principalUser->getUsername()} kwota {$payment->getSum()}PLN (po prowizji {$payment->getAfterDue()}PLN)", time(), $user);
 
             Repositories::$notificationsRepository->saveMany($notificationForChargedUp, $notificationForPrincipal);
-
-            $user = Repositories::$userRepository->findOneById($payment->getChargedUserId());
         }
 
         self::fundAccount($user, $payment);
