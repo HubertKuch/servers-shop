@@ -50,6 +50,7 @@ class ServersController {
         if (!$serverId)
             AuthController::redirect('server-list', ["message" => "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem domeny."]);
 
+        /** @var $server Server */
         $server = Repositories::$productsRepository->findOneById($serverId);
 
         $pterodactylId = $server->getPterodactylId() ?? null;
@@ -95,8 +96,24 @@ class ServersController {
             default     => $expireDate->addDays(self::$expiresTime)
         };
 
-        $expireDate = $expireDate->getTimestamp();
+        $humanParsedExpireDateType = match (self::$expiresType) {
+            "DAYS" => "dni",
+            "HOURS" => "godzin",
+            "MINUTES" => "minut"
+        };
 
+        $expireDate = $expireDate->getTimestamp();
+        $expireTime = self::$expiresTime;
+
+        $log = new Log(
+            LogType::PRODUCT->value,
+            $user->getId(),
+            $server->getId(),
+            null,
+            "Uzytkownik {$user->getUsername()} odnowil server `{$server->getTitle()}` na {$expireTime} {$humanParsedExpireDateType}"
+        );
+
+        Repositories::$logsRepository->save($log);
         Repositories::$productsRepository->updateOneById(["status" => "sold", "expireDate" => $expireDate], $serverId);
         echo "<script>localStorage.setItem('user-panel-actual-visible', 'bought-servers')</script>";
 
@@ -297,7 +314,7 @@ class ServersController {
                 $server->getUserId(),
                 null,
                 null,
-                "Server uzytkownika {$user->getUsername()} o id uzytkownika {$user->getId()} zostal usuniety z powodu przedawnienia ({$deleteAfterTime}{$timeToNotification})."
+                "Server `{$server->getTitle()}` uzytkownika {$user->getUsername()} o id uzytkownika {$user->getId()} zostal usuniety z powodu przedawnienia ({$deleteAfterTime}{$timeToNotification})."
             ));
 
             self::$pterodactyl->forceDeleteServer($server->getPterodactylId());

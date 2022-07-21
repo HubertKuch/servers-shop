@@ -5,9 +5,11 @@ namespace Servers\Services;
 use Avocado\Router\AvocadoRequest;
 use Servers\Controllers\AuthController;
 use Servers\Controllers\LogsController;
+use Servers\Models\enumerations\LogType;
 use Servers\Models\enumerations\PaymentMethods;
 use Servers\Models\enumerations\PaymentStatus;
 use Servers\Models\enumerations\PaymentType;
+use Servers\Models\Log;
 use Servers\Models\Notification;
 use Servers\Models\Payment;
 use Servers\Models\User;
@@ -168,14 +170,17 @@ class PaymentsService {
 
         if ($payment->getPaymentType() == PaymentType::FUND) {
             /* @var $principalUser User */
-
             $user = Repositories::$userRepository->findOneById($payment->getChargedUserId());
             $principalUser = Repositories::$userRepository->findOneById($payment->getUserId());
 
             $notificationForPrincipal = new Notification("Uzytkownik {$user->getUsername()} otrzymal Twoja wplate {$payment->getSum()}PLN (po prowizji {$payment->getAfterDue()}PLN)", time(), $principalUser);
             $notificationForChargedUp = new Notification("Twoje konto zostalo doladowane przez {$principalUser->getUsername()} kwota {$payment->getSum()}PLN (po prowizji {$payment->getAfterDue()}PLN)", time(), $user);
 
+            $principalUserLog = new Log(LogType::PAYMENT->value, $principalUser->getId(), null, null, "Uzytkownik `{$principalUser->getUsername()}` doladowal konto `{$user->getUsername()}` kwota {$payment->getSum()}PLN (po prowizji {$payment->getAfterDue()}PLN)");
+            $chargedUpUserLog = new Log(LogType::PAYMENT->value, $user->getId(), null, null, "Uzytkownik {$user->getUsername()} otrzymal wplace od `{$principalUser->getUsername()}` na kwote {$payment->getSum()}PLN (po prowizji {$payment->getAfterDue()}PLN)");
+
             Repositories::$notificationsRepository->saveMany($notificationForChargedUp, $notificationForPrincipal);
+            Repositories::$logsRepository->saveMany($chargedUpUserLog, $principalUserLog);
         }
 
         self::fundAccount($user, $payment);
