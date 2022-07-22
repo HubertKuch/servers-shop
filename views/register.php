@@ -13,6 +13,8 @@ use Servers\Utils\Environment;
     <base href="<?= Environment::getBaseURL() ?>">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="style/app.min.css" rel="stylesheet">
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+
 </head>
 <body>
     <div class="container">
@@ -28,7 +30,7 @@ use Servers\Utils\Environment;
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Zarejestruj się!</h1>
                                     </div>
-                                    <form class="user" action="index.php/api/register" method="post">
+                                    <form class="user register" action="index.php/api/register" method="post">
                                         <div class="form-group mb-3">
                                             <input type="text" class="form-control form-control-user" name="username" aria-describedby="emailHelp" placeholder="Nazwa użytkownika" required>
                                         </div>
@@ -43,8 +45,8 @@ use Servers\Utils\Environment;
                                         <div class="form-group mb-5">
                                             <input type="password" class="form-control form-control-user" name="password" placeholder="Podaj hasło" required>
                                         </div>
-
-                                        <button type="submit" class="btn btn-primary btn-user btn-block mt-auto mt-5">
+                                        <input type="hidden" name="recaptcha-token" value="">
+                                        <button data-action='submit' data-callback='onSubmit' data-sitekey="6Ldc2g8hAAAAADlJ8XEevi4Gcmxc02Kc-Pp8bJST" type="submit" class="g-recaptcha btn btn-primary btn-user btn-block mt-auto mt-5">
                                             Zarejestruj się
                                         </button>
                                         <hr>
@@ -62,6 +64,16 @@ use Servers\Utils\Environment;
             </div>
         </div>
     </div>
+
+    <script>
+        function onSubmit(token) {
+            document.querySelector("[name=recaptcha-token]").value = token;
+            const form = document.querySelector("form.register")
+            form.submit()
+        }
+
+    </script>
+
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -72,7 +84,8 @@ use Servers\Utils\Environment;
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
 
-<!--    <form action="index.php/api/register" method="post" class="login__form">-->
+
+    <!--    <form action="index.php/api/register" method="post" class="login__form">-->
 <!--        <div class="form__error-container">-->
 <!--            --><?php
 //                foreach ($errors as $error) echo "<span class='error-container__error'>$error</span>";

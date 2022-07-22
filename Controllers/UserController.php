@@ -47,6 +47,16 @@ class UserController {
         $username = $req->body['username'] ?? null;
         $email = $req->body['email'] ?? null;
         $password = $req->body['password'] ?? null;
+        $recaptchaToken = $req->body['recaptcha-token'] ?? null;
+
+        $recaptchaResponse = file_get_contents("https://www.google.com/recaptcha/api/siteverify?".http_build_query([
+            "secret" => $_ENV['SECRET_KEY'],
+            "response" => $recaptchaToken
+        ]));
+
+        $recaptchaResponse = json_decode($recaptchaResponse);
+
+        if (!($recaptchaResponse->success)) AuthController::redirect('register', ["message" => "Niepoprawna walidacja reCAPTCHA"]);
 
         if (!$username || !$email || !$password) AuthController::redirect('register', ["message" => "Wszystkie dane muszą być wypełnione"]);
 

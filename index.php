@@ -30,7 +30,7 @@ $dbPort = $_ENV['DB_PORT'];
 $dbName = $_ENV['DB_NAME'];
 AvocadoORMSettings::useDatabase("mysql:host=$dbHost;dbname=$dbName;port=$dbPort;", $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD']);
 
-//(new MailService())->sendVerificationMail('kuchubert@gmail.com', 21312);
+//(new MailService())->sendVerificationMail('hubert.hania@onet.pl', 21312);
 
 
 
