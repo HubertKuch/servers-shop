@@ -72,7 +72,7 @@ use Servers\Utils\Environment;
                             }
                             ?></td>
                         <td class="table__col"><?= $payment->getSum() ?></td>
-                        <td class="table__col"><?= str_replace('_', ' ', PaymentMethods::tryFrom($payment->getMethod())->name) ?></td>
+                        <td class="table__col"><?= $payment->getMethod() == null ? "NIE DOTYCZY" : str_replace('_', ' ', PaymentMethods::tryFrom($payment->getMethod())->name) ?></td>
                         <td class="table__col"><?= $payment->getUserId() ?></td>
                     </tr>
                 <?php endforeach; ?>
