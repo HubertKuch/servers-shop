@@ -2,7 +2,9 @@
 
 namespace Servers\Controllers;
 
+use Avocado\HTTP\JSON\JSON;
 use Avocado\Router\AvocadoRequest;
+use Avocado\Router\AvocadoResponse;
 use Carbon\Carbon;
 use HCGCloud\Pterodactyl\Pterodactyl;
 use Servers\Models\enumerations\JavaVersion;
@@ -321,14 +323,18 @@ class ServersController {
         }
     }
 
-    public static function checkServers(AvocadoRequest $req): void {
+    public static function checkServers(AvocadoRequest $req, AvocadoResponse $res): void {
         $servers = Repositories::$productsRepository->findMany();
+        $responseBody = [
+            "expired" => []
+        ];
 
         /** @var $server Server */
         foreach ($servers as $server) {
+            $responseBody["expired"][] = (new JSON($server, true))->getSerializedData();
             if ($server->getExpireDate() < time()) {
                 if ($server->getStatus() !== ServerStatus::EXPIRED->value) {
-                    echo "EXPIRED ".$server->getTitle();
+
                     $deleteAfterTimeType = $_ENV['DELETE_SERVER_SINCE_TYPE'];
                     $deleteAfterTime = $_ENV['DELETE_SERVER_SINCE'];
 
@@ -353,6 +359,8 @@ class ServersController {
                 self::deleteServerIfExpiredSince($server);
             }
         }
+
+        $res->json(new JSON($responseBody));
     }
 
     private static function isValidEggType(string $type): bool {

@@ -15,12 +15,13 @@ use Avocado\Router\AvocadoRouter;
 use Avocado\ORM\AvocadoORMSettings;
 use Exception;
 use HCGCloud\Pterodactyl\Pterodactyl;
-use HCGCloud\Pterodactyl\Resources\Server;
 use Servers\Controllers\ServersController;
 use Servers\Controllers\UserController;
 use Servers\Controllers\ViewsController;
 use Dotenv\Dotenv;
+use Servers\Services\MailService;
 use Servers\Services\PaymentsService;
+use Servers\Utils\Environment;
 
 Dotenv::createImmutable(__DIR__)->load();
 
@@ -28,6 +29,10 @@ $dbHost = $_ENV['DB_HOST'];
 $dbPort = $_ENV['DB_PORT'];
 $dbName = $_ENV['DB_NAME'];
 AvocadoORMSettings::useDatabase("mysql:host=$dbHost;dbname=$dbName;port=$dbPort;", $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD']);
+
+//(new MailService())->sendVerificationMail('kuchubert@gmail.com', 21312);
+
+
 
 try {
     $mainDir = explode('/', $_SERVER['SCRIPT_NAME'])[1];
@@ -73,7 +78,7 @@ try {
     // SERVERS ACTIONS
     AvocadoRouter::POST("/api/create-server",                   [], [ServersController::class,  "create"]);
     AvocadoRouter::PATCH("/api/unsuspend-server/:id",           [], [ServersController::class,  "unSuspendServer"]);
-    AvocadoRouter::PATCH('/api/check-servers',                  [], [ServersController::class,  "checkServers"]);
+    AvocadoRouter::PATCH('/api/check-servers',                  [[Environment::class, "validateApiKey"]], [ServersController::class,  "checkServers"]);
 
     // PAYMENTS ACTIONS
     AvocadoRouter::PATCH("/api/add-amount",                     [], [PaymentsService::class,    "createAmountRequest"]);
