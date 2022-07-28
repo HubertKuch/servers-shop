@@ -62,6 +62,40 @@ class MailService {
     }
 
     public function sendServerExpiredEmail(User $user, Server $server) {
-        $body = "<h1>";
+        $deleteAfterTimeType = $_ENV['DELETE_SERVER_SINCE_TYPE'];
+        $deleteAfterTime = $_ENV['DELETE_SERVER_SINCE'];
+
+        $timeToNotification = match ($deleteAfterTimeType) {
+            "MONTHS" => "miesiecy",
+            "MINUTES" => "minut",
+            default => "dni"
+        };
+
+        $body = "
+            <h1>
+                Twoj server `{$server->getTitle()}` wygasl. Jesli nie zostanie oplacony
+                w ciagu {$deleteAfterTime}{$timeToNotification} zostanie usuniety.
+            </h1>";
+
+        $this->mailer->Body = $body;
+        $this->mailer->Subject = "[MC Servers] Serwer wygasl";
+        $this->mailer->addAddress($user->getEmail());
+
+        $this->mailer->send();
+    }
+
+    public function sendServerDeletedEmail(User $user, Server $server) {
+        $deleteAfterTimeType = $_ENV['DELETE_SERVER_SINCE_TYPE'];
+
+        $body = "
+            <h1>
+                Twoj server `{$server->getTitle()}` zostal usuniety z powodu nie uiszczenia platnosci w terminie..
+            </h1>";
+
+        $this->mailer->Body = $body;
+        $this->mailer->Subject = "[MC Servers] Serwer usuniety";
+        $this->mailer->addAddress($user->getEmail());
+
+        $this->mailer->send();
     }
 }

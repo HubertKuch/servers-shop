@@ -104,20 +104,13 @@ class UserController {
     public static final function changePassword(AvocadoRequest $req): void {
         AuthController::authenticationMiddleware([]);
 
-        $oldPassword = $req->body['old-password'] ?? null;
         $newPassword = $req->body['new-password'] ?? null;
 
-        if (!$oldPassword || !$newPassword) AuthController::redirect('panel', ["message" => "Stare i nowe hasło muszą byc podane."]);
+        /** @var $user User */
+        $user = Repositories::$userRepository->findOne(["rememberPasswordToken" => $_GET['token']]);
 
-        $userId = $_SESSION['id'];
-        $user = Repositories::$userRepository->findOneById($userId);
-        $isOldPasswordIsCorrect = password_verify($oldPassword, $user->getPasswordHash());
-        $isOldPasswordEqualsNew = password_verify(password_hash($newPassword, PASSWORD_DEFAULT), $user->getPasswordHash());
+        Repositories::$userRepository->updateOneById(["passwordHash" => password_hash($newPassword, PASSWORD_DEFAULT)], $user->getId());
 
-        if (!$isOldPasswordIsCorrect) AuthController::redirect('panel', ["message" => "Stare hasło jest nieprawidłowe."]);
-        if ($isOldPasswordEqualsNew) AuthController::redirect('panel', ["message" => "Stare hasło jest identyczne jak stare."]);
-
-        Repositories::$userRepository->updateOneById(["passwordHash" => password_hash($newPassword, PASSWORD_DEFAULT)], $userId);
         self::$pterodactyl->user($_SESSION['pterodactyl_user_id'], [
             "email" => $user->getEmail(),
             "username" => $user->getUsername(),
@@ -126,7 +119,8 @@ class UserController {
             "language" => "pl",
             "password" => $newPassword
         ]);
-        AuthController::redirect('panel');
+
+        AuthController::redirect('');
     }
 
     public static final function activateAccount(AvocadoRequest $req): void {

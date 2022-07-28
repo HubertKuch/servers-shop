@@ -57,17 +57,17 @@ use Servers\Utils\Environment;
                     <p class="h4 text-center p-4 text-warning"><?= $_GET['message'] ?></p>
                 <?php endif; ?>
             </div>
-            <form action="index.php/api/change-password" class="user" method="POST">
+            <form action="index.php/api/change-password?token=<?= $_GET['token'] ?>" class="user" method="POST">
                 <input type="hidden" name="_method" value="PATCH">
                 <div class="row justify-content-center flex-column">
                     <div class="form-group d-flex justify-content-center">
                         <label class="font-weight-bold">
                             Nowe haslo:<br>
-                            <input type="password" name="email" class="form-control" style="color: #2d2e33">
+                            <input type="password" name="new-password" class="form-control" style="color: #2d2e33">
                         </label>
                     </div>
                     <div class="form-group d-flex justify-content-center">
-                        <button type="submit" class="btn btn-primary btn-user btn-block mt-auto mt-5 col-3">Wyslij email</button><br><br>
+                        <button type="submit" class="btn btn-primary btn-user btn-block mt-auto mt-5 col-3">Ustaw</button><br><br>
                     </div>
                 </div>
             </form>

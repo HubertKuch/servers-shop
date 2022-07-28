@@ -19,6 +19,7 @@ use Servers\Models\Payment;
 use Servers\Models\Server;
 use Servers\Models\User;
 use Servers\Repositories;
+use Servers\Services\MailService;
 use Servers\Services\PaymentsService;
 
 class ServersController {
@@ -319,6 +320,7 @@ class ServersController {
                 "Server `{$server->getTitle()}` uzytkownika {$user->getUsername()} o id uzytkownika {$user->getId()} zostal usuniety z powodu przedawnienia ({$deleteAfterTime}{$timeToNotification})."
             ));
 
+            (new MailService())->sendServerDeletedEmail($user, $server);
             self::$pterodactyl->forceDeleteServer($server->getPterodactylId());
         }
     }
@@ -344,8 +346,11 @@ class ServersController {
                         default => "dni"
                     };
 
+
                     /** @var $user User */
                     $user = Repositories::$userRepository->findOneById($server->getUserId());
+                    (new MailService())->sendServerExpiredEmail($user, $server);
+
                     ServersController::suspendServer($server);
 
                     $notification = new Notification("Twoj server `{$server->getTitle()}` zostal przedawniony. Jesli w ciagu {$deleteAfterTime} {$timeToNotification} nie zostanie oplacony zostanie usuniety.", time(), $user);
@@ -353,7 +358,6 @@ class ServersController {
 
                     Repositories::$logsRepository->save($log);
                     Repositories::$notificationsRepository->save($notification);
-                    break;
                 }
 
                 self::deleteServerIfExpiredSince($server);

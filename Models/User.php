@@ -83,7 +83,7 @@ class User {
             $token = $this->generateRememberPasswordToken();
         }
 
-        return $_SERVER['SERVER_NAME']."/remember-password?".http_build_query(['token' => $token]);
+        return "http://".$_SERVER['SERVER_NAME']."/index.php/remember-password?".http_build_query(['token' => $token]);
     }
 
     public static final function isValidRememberPasswordToken(string $token): bool {
