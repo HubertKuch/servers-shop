@@ -49,14 +49,15 @@ use Servers\Utils\Environment;
 
                                         <hr>
                                     </form>
-    <!--                                <div class="text-center">-->
-    <!--                                    <a class="small" href="forgot-password.html">Forgot Password?</a>-->
-    <!--                                </div>-->
+
+                                    <div class="text-center">
+                                        <a class="small" href="index.php/remember-password">Zapomniales hasla?</a>
+                                    </div>
+                                    <br>
                                     <div class="text-center">
                                         <a class="small" href="index.php/register">Nie masz konta? Załóż je!</a>
                                     </div>
                                     <hr>
-
                                 </div>
                             </div>
                         </div>

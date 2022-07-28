@@ -23,11 +23,11 @@ class AuthController {
             return;
         }
 
-//        $user = Repositories::$userRepository->findOneById($_SESSION['id']);
-//        $isActivated = $user->getIsActivated();
-//        if (!$isActivated) {
-//            self::redirect('account-activation');
-//        }
+        $user = Repositories::$userRepository->findOneById($_SESSION['id']);
+        $isActivated = $user->getIsActivated();
+        if (!$isActivated) {
+            self::redirect('account-activation');
+        }
     }
 
     public static function restrictTo(string ...$roles) {

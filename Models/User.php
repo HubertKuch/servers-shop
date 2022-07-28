@@ -64,7 +64,7 @@ class User {
     public function getActivationCode(): int { return $this->activationCode; }
     public function getActivationCodeExpiresIn(): int { return $this->activationCodeExpiresIn; }
 
-    public function getRememberPasswordToken(): string { return $this->rememberPasswordToken; }
+    public function getRememberPasswordToken(): string|null { return $this->rememberPasswordToken; }
     public function generateRememberPasswordToken(): string {
         try {
             $token = bin2hex(random_bytes(64));

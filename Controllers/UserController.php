@@ -71,7 +71,7 @@ class UserController {
 
         $verificationCode = ActivationService::generateVerificationCode();
         $user = new User($username, $email, $passwordHash, $verificationCode);
-//        $mailService = new MailService();
+        $mailService = new MailService();
 
         try {
             $pterodactylUser = self::$pterodactyl->createUser([
@@ -83,7 +83,7 @@ class UserController {
 
             Repositories::$userRepository->save($user);
             $userId = Repositories::$userRepository->findOne(["email" => $email])->getId();
-//            $mailService->sendVerificationMail($user->getEmail(), $verificationCode);
+            $mailService->sendVerificationMail($user->getEmail(), $verificationCode);
 
             self::$pterodactyl->updateUser($pterodactylUser->id, [
                 "email" => $email,
@@ -95,7 +95,7 @@ class UserController {
 
             $_SESSION['email'] = $user->getEmail();
             LogsController::saveUserRegisterLog($userId);
-            AuthController::redirect('');
+            AuthController::redirect('account-activation');
         } catch (ValidationException $e) {
             AuthController::redirect('register', ["message" => "Email jest zajety"]);
         }
