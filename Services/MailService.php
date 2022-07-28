@@ -6,7 +6,6 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use Servers\Models\Server;
 use Servers\Models\User;
-use function Symfony\Component\Translation\t;
 
 class MailService {
     private PHPMailer $mailer;

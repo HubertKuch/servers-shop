@@ -170,6 +170,7 @@ class UserController {
         }
 
         (new MailService())->sendRememberPasswordEmail($user);
+        AuthController::redirect("login");
     }
 
     public static final function logout(): void {
