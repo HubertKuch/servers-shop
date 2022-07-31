@@ -128,22 +128,23 @@ class UserController {
 
     public static final function activateAccount(AvocadoRequest $req): void {
         $code = $req->body['activation-code'] ?? null;
+        $email = str_replace('%40', '@', $req->query['email']) ?? '';
 
         if (!$code || strlen($code) == 0) AuthController::redirect('account-activation', [
             "message"   =>  "Kod aktywacyjny nie jest wprowadzony.",
-            "email"     =>  $req->query['email'] ?? ''
+            "email"     =>  $email
         ]);
 
         $code = (int)$code;
 
         if (!ActivationService::isCorrectCode($code)) AuthController::redirect('account-activation', [
-            "message" => "Kod aktywacyjny jest niepoprawny",
-            "email"     =>  $req->query['email'] ?? ''
+            "message"   =>  "Kod aktywacyjny jest niepoprawny",
+            "email"     =>  $email
         ]);
 
         if (ActivationService::isExpired($code)) AuthController::redirect('account-activation', [
-            "message" => "Kod aktywacyjny wygasł. Zaloguj się ponownie by wygenerować nowy.",
-            "email"     =>  $req->query['email'] ?? ''
+            "message"   =>  "Kod aktywacyjny wygasł. Zaloguj się ponownie by wygenerować nowy.",
+            "email"     =>   $email
         ]);
 
         $user = Repositories::$userRepository->findOne(["activationCode" => $code]);
@@ -155,9 +156,9 @@ class UserController {
     }
 
     public static final function generateActivationCode(AvocadoRequest $req): void {
-        $email = $req->query['email'] ?? null;
+        $email = str_replace("%40", "@", $req->query['email']) ?? null;
 
-        if(!$email) AuthController::redirect('account-activation', ["message" => "Kod nie może zostać wysłany ponownie. Skontaktuj się z administratorem domeny."]);
+        if(!$email) AuthController::redirect('account-activation', ["message" => "Kod nie może zostać wysłany ponownie. Skontaktuj się z administratorem domeny.", "email" => $email]);
 
         $verificationCode = ActivationService::generateVerificationCode();
         Repositories::$userRepository->updateOne(["activationCode" => $verificationCode, "activationCodeExpiresIn" => time() + 60 * 15], ["email" => $email]);
