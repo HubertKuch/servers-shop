@@ -140,8 +140,8 @@ use Servers\views\components\UserPanel;
                                                     ServerStatus::EXPIRED->value => '<span class="server-status server-status--expired">Wygasł</span>'
                                                 } ?>
                                             </td>
-                                            <td><?= date('m/d/Y H.i.s', $server->getCreateDate()) ?></td>
-                                            <td><?= date('m/d/Y H.i.s', $server->getExpireDate()) ?></td>
+                                            <td><?= date('m/d/Y H:i:s', $server->getCreateDate()) ?></td>
+                                            <td><?= date('m/d/Y H:i:s', $server->getExpireDate()) ?></td>
                                             <td><?php $package = Repositories::$packagesRepository->findOneById($server->getPackageId()); echo $package->getDescription() ?></td>
                                             <td>
                                                 <form action="index.php/api/unsuspend-server?id=<?= $server->getId() ?>" method="post">

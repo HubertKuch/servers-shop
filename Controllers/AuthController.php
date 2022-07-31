@@ -26,7 +26,7 @@ class AuthController {
         $user = Repositories::$userRepository->findOneById($_SESSION['id']);
         $isActivated = $user->getIsActivated();
         if (!$isActivated) {
-            self::redirect('account-activation');
+            self::redirect("account-activation?email={$user->getEmail()}");
         }
     }
 

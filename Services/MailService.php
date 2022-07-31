@@ -6,6 +6,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use Servers\Models\Server;
 use Servers\Models\User;
+use Servers\Repositories;
 
 class MailService {
     private PHPMailer $mailer;
@@ -29,12 +30,10 @@ class MailService {
     public function sendVerificationMail(string $to, int $activationCode): void {
         $activationCode = number_format($activationCode, 0, ' ', ' ');
 
+        $user = Repositories::$userRepository->findOne(["email" => $to]);
+
         $this->mailer->Subject = "[MC Servers] Aktywacja konta";
-        $this->mailer->Body = sprintf("
-            <h2>Aktywacja konta</h2>
-            <div>Żeby aktywować konto podaj poniższy kod na stronie aktywacyjnej</div>
-            <div style='font-weight: bold;'>%s</div>
-        ", $activationCode);
+        $this->mailer->Body = $this->prepareAccountActivationEmail($user, $activationCode);
         $this->mailer->addAddress($to);
 
         try {
@@ -51,8 +50,7 @@ class MailService {
     public function sendRememberPasswordEmail(User $user): void {
         $url = $user->generateRememberPasswordURL();
 
-        $emailBody = "<h1>Twoj link resetujacy haslo.</h1><br><br><a target='_blank' href='$url'>Zresetuj haslo</a>";
-
+        $emailBody = $this->prepareRememberPasswordEmail($user, $url);
 
         $this->mailer->Body = $emailBody;
         $this->mailer->Subject = "[MC Servers] Resetowanie hasla";
@@ -97,5 +95,22 @@ class MailService {
         $this->mailer->addAddress($user->getEmail());
 
         $this->mailer->send();
+    }
+
+    private function prepareRememberPasswordEmail(User $user, string $url): string {
+        $content = file_get_contents("Assets/Emails/password_reset.html");
+
+        $content = str_replace("<%USERNAME%>", $user->getUsername(), $content);
+
+        return str_replace("<%LINK%>", $url, $content);
+    }
+
+    private function prepareAccountActivationEmail(User $user, string $code): string {
+        $content = file_get_contents("Assets/Emails/activation_code.html");
+
+        $content = str_replace("<%USERNAME%>", $user->getUsername(), $content);
+        $content = str_replace("<%EMAIL%>", $user->getEmail(), $content);
+
+        return str_replace("<%ACTIVATION_CODE%>", $code, $content);
     }
 }

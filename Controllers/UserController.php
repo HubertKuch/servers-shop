@@ -69,9 +69,12 @@ class UserController {
         if ($isEmailIsBusy) AuthController::redirect('register', ["message" => "Email jest zajety"]);
         if ($isUsernameIsBusy) AuthController::redirect('register', ["message" => "Nazwa użytkownika jest zajeta"]);
 
+        $mailService = new MailService();
+
         $verificationCode = ActivationService::generateVerificationCode();
         $user = new User($username, $email, $passwordHash, $verificationCode);
-        $mailService = new MailService();
+
+        $mailService->sendVerificationMail($user->getUsername(), $verificationCode);
 
         try {
             $pterodactylUser = self::$pterodactyl->createUser([
@@ -83,7 +86,6 @@ class UserController {
 
             Repositories::$userRepository->save($user);
             $userId = Repositories::$userRepository->findOne(["email" => $email])->getId();
-            $mailService->sendVerificationMail($user->getEmail(), $verificationCode);
 
             self::$pterodactyl->updateUser($pterodactylUser->id, [
                 "email" => $email,
@@ -134,11 +136,15 @@ class UserController {
         if (ActivationService::isExpired($code)) AuthController::redirect('account-activation', ["message" => "Kod aktywacyjny wygasł. Zaloguj się ponownie by wygenerować nowy."]);
 
         ActivationService::activeAccountByCode($code);
-        AuthController::redirect('login');
+
+        $user = Repositories::$userRepository->findOne(["activationCode" => $code]);
+        $_SESSION['id'] = $user->getId();
+
+        AuthController::redirect('');
     }
 
     public static final function generateActivationCode(AvocadoRequest $req): void {
-        $email = $req->params['email'] ?? null;
+        $email = $req->query['email'] ?? null;
 
         if(!$email) AuthController::redirect('account-activation', ["message" => "Kod nie może zostać wysłany ponownie. Skontaktuj się z administratorem domeny."]);
 

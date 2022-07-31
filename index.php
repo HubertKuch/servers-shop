@@ -19,7 +19,6 @@ use Servers\Controllers\ServersController;
 use Servers\Controllers\UserController;
 use Servers\Controllers\ViewsController;
 use Dotenv\Dotenv;
-use Servers\Services\MailService;
 use Servers\Services\PaymentsService;
 use Servers\Utils\Environment;
 
@@ -74,7 +73,7 @@ try {
     // SERVERS ACTIONS
     AvocadoRouter::POST("/api/create-server",                   [], [ServersController::class,  "create"]);
     AvocadoRouter::PATCH("/api/unsuspend-server/:id",           [], [ServersController::class,  "unSuspendServer"]);
-    AvocadoRouter::PATCH('/api/check-servers',                  [[Environment::class, "validateApiKey"]], [ServersController::class,  "checkServers"]);
+    AvocadoRouter::GET('/api/check-servers',                    [[Environment::class, "validateApiKey"]], [ServersController::class,  "checkServers"]);
 
     // PAYMENTS ACTIONS
     AvocadoRouter::PATCH("/api/add-amount",                     [], [PaymentsService::class,    "createAmountRequest"]);

@@ -38,16 +38,17 @@ use Servers\Utils\Environment;
                         ?>
                         <div class="form-group d-flex justify-content-center">
 
-                            <label class="font-weight-bold">
+                            <label class="font-weight-bold" style="position: relative">
                                 Kod aktywacyjny:<br>
                                 <input type="text" name="activation-code" class="input--pin-code" maxlength="6" style="color: #2d2e33">
+                                <span style="display: inline-block; height: 40px; width: 25px; position: absolute; right: 0; background: white"></span>
                             </label>
                         </div>
                         <div class="form-group d-flex justify-content-center">
                             <button type="submit" class="btn btn-primary btn-user btn-block mt-auto mt-5 col-3">Aktywuj konto</button><br><br>
                         </div>
                         <div class="form-group d-flex justify-content-center">
-                            <a href="index.php/api/generate-activation-code/<?= $_SESSION['email'] ?? '' ?>" style="font-size: 18px; color: #4e73df">Wyślij nowy kod aktywacyjny</a>
+                            <a href="index.php/api/generate-activation-code?email=<?= $_GET['email'] ?? '' ?>" style="font-size: 18px; color: #4e73df">Wyślij nowy kod aktywacyjny</a>
                         </div>
                     </div>
                 </form>
@@ -64,5 +65,17 @@ use Servers\Utils\Environment;
 
 <!-- Custom scripts for all pages-->
 <script src="js/app/app.min.js"></script>
+
+<script>
+    "use strict";
+
+    const activationCodeInput = document.querySelector("[name=activation-code]");
+
+    activationCodeInput.addEventListener("paste", (e) => {
+        e.preventDefault();
+
+        e.currentTarget.value = (e.clipboardData || window.clipboardData).getData('text').replaceAll(/\s/g, '');
+    })
+</script>
 </html>
 
