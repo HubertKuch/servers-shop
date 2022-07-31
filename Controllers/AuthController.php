@@ -3,6 +3,7 @@
 namespace Servers\Controllers;
 
 use Servers\Repositories;
+use function GuzzleHttp\Psr7\_parse_request_uri;
 
 class AuthController {
     private static function isLoggedIn(): bool {
@@ -42,7 +43,12 @@ class AuthController {
         $mainDir = getenv('MAIN_DIR');
         $messages  = http_build_query($messages);
 
-        header("Location: /$mainDir/$to?$messages");
+        if (!empty($messages)) {
+            header("Location: /$mainDir/$to?$messages");
+            die();
+        }
+
+        header("Location: /$mainDir/$to");
         die();
     }
 }
