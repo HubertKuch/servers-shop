@@ -82,6 +82,7 @@ class UserController {
             ]);
 
             $user = new User($username, $email, $passwordHash, $verificationCode, $pterodactylUser->id);
+            Repositories::$userRepository->save($user);
 
             $mailService->sendVerificationMail($user, $verificationCode);
 
@@ -97,7 +98,6 @@ class UserController {
 
             $_SESSION['email'] = $user->getEmail();
             LogsController::saveUserRegisterLog($userId);
-            Repositories::$userRepository->save($user);
 
             AuthController::redirect("account-activation", ["email" => $user->getEmail()]);
         } catch (ValidationException $e) {
