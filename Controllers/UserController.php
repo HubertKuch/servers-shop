@@ -166,7 +166,9 @@ class UserController {
         $user = Repositories::$userRepository->findOne(["email" => $email]);
 
         $mailService->sendVerificationMail($user, $verificationCode);
-        AuthController::redirect('account-activation');
+        AuthController::redirect('account-activation', [
+            "email" => $email
+        ]);
     }
 
     public static final function rememberPasswordToken(AvocadoRequest $req): void {
