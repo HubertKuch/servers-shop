@@ -13,7 +13,6 @@ class MailService {
 
     public function __construct() {
         $mailer = new PHPMailer();
-        $mailer->SMTPDebug = SMTP::DEBUG_SERVER;
         $mailer->isSMTP();
         $mailer->Host = $_ENV['EMAIL_HOST'];
         $mailer->SMTPAuth = true;
