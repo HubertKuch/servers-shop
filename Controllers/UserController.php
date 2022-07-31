@@ -146,9 +146,9 @@ class UserController {
             "email"     =>  $req->query['email'] ?? ''
         ]);
 
+        $user = Repositories::$userRepository->findOne(["activationCode" => $code]);
         ActivationService::activeAccountByCode($code);
 
-        $user = Repositories::$userRepository->findOne(["activationCode" => $code]);
         $_SESSION['id'] = $user->getId();
 
         AuthController::redirect('');
