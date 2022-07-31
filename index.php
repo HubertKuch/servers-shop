@@ -19,6 +19,8 @@ use Servers\Controllers\ServersController;
 use Servers\Controllers\UserController;
 use Servers\Controllers\ViewsController;
 use Dotenv\Dotenv;
+use Servers\Models\User;
+use Servers\Services\MailService;
 use Servers\Services\PaymentsService;
 use Servers\Utils\Environment;
 

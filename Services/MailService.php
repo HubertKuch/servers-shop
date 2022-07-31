@@ -3,6 +3,7 @@
 namespace Servers\Services;
 
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
 use Servers\Models\Server;
 use Servers\Models\User;
 
@@ -12,6 +13,7 @@ class MailService {
     public function __construct() {
         $mailer = new PHPMailer();
         $mailer->isSMTP();
+        $mailer->SMTPDebug = SMTP::DEBUG_SERVER;
         $mailer->Host = $_ENV['EMAIL_HOST'];
         $mailer->SMTPAuth = true;
         $mailer->Username = $_ENV['EMAIL_USERNAME'];
