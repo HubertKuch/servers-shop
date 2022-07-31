@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Exception;
 use Servers\Models\enumerations\UserRole;
 use Servers\Repositories;
+use function Symfony\Component\Translation\t;
 
 #[Table('users')]
 class User {
@@ -33,14 +34,17 @@ class User {
     private int $activationCodeExpiresIn;
     #[Field]
     private ?string $rememberPasswordToken = null;
+    #[Field]
+    private int $pterodactylId;
 
-    public function __construct(string $username, string $email, string $password, int $activationCode) {
+    public function __construct(string $username, string $email, string $password, int $activationCode, int $pterodactylId) {
         $this->username = $username;
         $this->email = $email;
         $this->passwordHash = $password;
         $this->role = UserRole::USER->value;
         $this->activationCode = $activationCode;
         $this->activationCodeExpiresIn = time() + 60 * 15;
+        $this->pterodactylId = $pterodactylId;
     }
 
     public function getId(): int { return $this->id; }
@@ -88,5 +92,13 @@ class User {
 
     public static final function isValidRememberPasswordToken(string $token): bool {
         return !is_null(Repositories::$userRepository->findOne(['rememberPasswordToken' => $token]));
+    }
+
+    public function getPterodactylId(): int {
+        return $this->pterodactylId;
+    }
+
+    public function setPterodactylId(int $pterodactylId): void {
+        $this->pterodactylId = $pterodactylId;
     }
 }
