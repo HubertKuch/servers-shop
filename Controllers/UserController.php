@@ -128,7 +128,7 @@ class UserController {
 
         Repositories::$userRepository->updateOneById(["passwordHash" => password_hash($newPassword, PASSWORD_DEFAULT)], $user->getId());
 
-        self::$pterodactyl->user($_SESSION['pterodactyl_user_id'], [
+        self::$pterodactyl->user($user->getPterodactylId(), [
             "email" => $user->getEmail(),
             "username" => $user->getUsername(),
             "first_name" => $user->getUsername(),
