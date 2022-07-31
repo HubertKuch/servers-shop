@@ -3,10 +3,8 @@
 namespace Servers\Services;
 
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
 use Servers\Models\Server;
 use Servers\Models\User;
-use Servers\Repositories;
 
 class MailService {
     private PHPMailer $mailer;
@@ -46,7 +44,6 @@ class MailService {
 
     public function sendRememberPasswordEmail(User $user): void {
         $url = $user->generateRememberPasswordURL();
-
         $emailBody = $this->prepareRememberPasswordEmail($user, $url);
 
         $this->mailer->Body = $emailBody;

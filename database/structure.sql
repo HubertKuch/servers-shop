@@ -13,6 +13,7 @@ create table if not exists users (
      activationCode             int,
      activationCodeExpiresIn    bigint,
      rememberPasswordToken      text unique,
+     pterodactylId              int not null
      unique(username)
 );
 
