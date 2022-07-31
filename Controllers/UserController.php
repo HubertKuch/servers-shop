@@ -105,12 +105,25 @@ class UserController {
     }
 
     public static final function changePassword(AvocadoRequest $req): void {
-        AuthController::authenticationMiddleware([]);
-
         $newPassword = $req->body['new-password'] ?? null;
+        $oldPassword = $req->body['old-password'] ?? null;
 
         /** @var $user User */
-        $user = Repositories::$userRepository->findOne(["rememberPasswordToken" => $_GET['token']]);
+        $user = null;
+
+        if (isset($_GET['token'])) {
+            $user = Repositories::$userRepository->findOne(["rememberPasswordToken" => $_GET['token']]);
+        } else {
+            AuthController::authenticationMiddleware();
+            /** @var $user User */
+            $user = Repositories::$userRepository->findOneById($_SESSION['id']);
+
+            if (!$oldPassword || !$newPassword)
+                AuthController::redirect('settings', ['message' => 'Stare i nowe haslo musi byc podane.']);
+
+            if (!password_verify($oldPassword, $user->getPasswordHash()))
+                AuthController::redirect('settings', ['message' => 'Niepoprawne stare haslo.']);
+        }
 
         Repositories::$userRepository->updateOneById(["passwordHash" => password_hash($newPassword, PASSWORD_DEFAULT)], $user->getId());
 
