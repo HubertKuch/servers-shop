@@ -74,7 +74,7 @@ class UserController {
         $verificationCode = ActivationService::generateVerificationCode();
         $user = new User($username, $email, $passwordHash, $verificationCode);
 
-        $mailService->sendVerificationMail($user->getUsername(), $verificationCode);
+        $mailService->sendVerificationMail($user, $verificationCode);
 
         try {
             $pterodactylUser = self::$pterodactyl->createUser([
@@ -128,12 +128,22 @@ class UserController {
     public static final function activateAccount(AvocadoRequest $req): void {
         $code = $req->body['activation-code'] ?? null;
 
-        if (!$code || strlen($code) == 0) AuthController::redirect('account-activation', ["message" => "Kod aktywacyjny nie jest wprowadzony."]);
+        if (!$code || strlen($code) == 0) AuthController::redirect('account-activation', [
+            "message"   =>  "Kod aktywacyjny nie jest wprowadzony.",
+            "email"     =>  $req->query['email'] ?? ''
+        ]);
 
         $code = (int)$code;
 
-        if (!ActivationService::isCorrectCode($code)) AuthController::redirect('account-activation', ["message" => "Kod aktywacyjny jest niepoprawny"]);
-        if (ActivationService::isExpired($code)) AuthController::redirect('account-activation', ["message" => "Kod aktywacyjny wygasł. Zaloguj się ponownie by wygenerować nowy."]);
+        if (!ActivationService::isCorrectCode($code)) AuthController::redirect('account-activation', [
+            "message" => "Kod aktywacyjny jest niepoprawny",
+            "email"     =>  $req->query['email'] ?? ''
+        ]);
+
+        if (ActivationService::isExpired($code)) AuthController::redirect('account-activation', [
+            "message" => "Kod aktywacyjny wygasł. Zaloguj się ponownie by wygenerować nowy.",
+            "email"     =>  $req->query['email'] ?? ''
+        ]);
 
         ActivationService::activeAccountByCode($code);
 
@@ -152,7 +162,9 @@ class UserController {
         Repositories::$userRepository->updateOne(["activationCode" => $verificationCode, "activationCodeExpiresIn" => time() + 60 * 15], ["email" => $email]);
 
         $mailService = new MailService();
-        $mailService->sendVerificationMail($email, $verificationCode);
+        $user = Repositories::$userRepository->findOne(["email" => $email]);
+
+        $mailService->sendVerificationMail($user, $verificationCode);
         AuthController::redirect('account-activation');
     }
 

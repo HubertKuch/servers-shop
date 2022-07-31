@@ -154,7 +154,10 @@ class ViewsController {
         require "views/userPanel/rechargeFriend.php";
     }
 
-    public static final function accountActivation(): void {
+    public static final function accountActivation(AvocadoRequest $req): void {
+        if (!isset($req->query['email']))
+            AuthController::redirect('login', ["message"   =>  "Zaloguj sie aby aktywowac konto."]);
+
         $errors = $_GET;
         require "views/accountActivation.php";
     }

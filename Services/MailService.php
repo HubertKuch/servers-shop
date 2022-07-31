@@ -27,14 +27,12 @@ class MailService {
         $this->mailer = $mailer;
     }
 
-    public function sendVerificationMail(string $to, int $activationCode): void {
+    public function sendVerificationMail(User $user, int $activationCode): void {
         $activationCode = number_format($activationCode, 0, ' ', ' ');
-
-        $user = Repositories::$userRepository->findOne(["email" => $to]);
 
         $this->mailer->Subject = "[MC Servers] Aktywacja konta";
         $this->mailer->Body = $this->prepareAccountActivationEmail($user, $activationCode);
-        $this->mailer->addAddress($to);
+        $this->mailer->addAddress($user->getEmail());
 
         try {
             if(!$this->mailer->send()) {
