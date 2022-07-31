@@ -32,7 +32,9 @@ use Servers\Utils\Environment;
                     <input type="hidden" name="_method" value="PATCH">
                     <div class="row justify-content-center flex-column">
                         <?php
-                        foreach ($errors as $error) {
+                        foreach ($errors as $key => $error) {
+                            if ($key == "email") continue;
+
                             echo "<div style='color: red; font-size: 0.8rem' class='font-weight-bold text-center mb-3'>$error !</div>";
                         }
                         ?>

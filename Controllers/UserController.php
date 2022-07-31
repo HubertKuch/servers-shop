@@ -97,7 +97,8 @@ class UserController {
 
             $_SESSION['email'] = $user->getEmail();
             LogsController::saveUserRegisterLog($userId);
-            AuthController::redirect('account-activation');
+
+            AuthController::redirect("account-activation", ["email" => $user->getEmail()]);
         } catch (ValidationException $e) {
             AuthController::redirect('register', ["message" => "Email jest zajety"]);
         }
