@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Exception;
 use Servers\Models\enumerations\UserRole;
 use Servers\Repositories;
+use Servers\Services\ActivationService;
 use function Symfony\Component\Translation\t;
 
 #[Table('users')]
@@ -67,6 +68,22 @@ class User {
     public function getIsActivated(): int { return $this->isActivated; }
     public function getActivationCode(): int { return $this->activationCode; }
     public function getActivationCodeExpiresIn(): int { return $this->activationCodeExpiresIn; }
+
+    public function generateActivationCode(): int {
+        $code = ActivationService::generateVerificationCode();
+        $expiresIn = Carbon::now()->addMinutes(15)->getTimestamp();
+
+
+        $this->activationCode = $code;
+        $this->activationCodeExpiresIn = $expiresIn;
+
+        Repositories::$userRepository->updateOne([
+            "activationCode" => $code,
+            "activationCodeExpiresIn" => $expiresIn
+        ], ["email" => $this->email]);
+
+        return $code;
+    }
 
     public function getRememberPasswordToken(): string|null { return $this->rememberPasswordToken; }
     public function generateRememberPasswordToken(): string {

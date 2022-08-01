@@ -24,7 +24,7 @@ class MailService {
         $this->mailer = $mailer;
     }
 
-    public function sendVerificationMail(User $user, int $activationCode): void {
+    public function sendVerificationMail(User $user, int|string $activationCode): void {
         $activationCode = number_format($activationCode, 0, ' ', ' ');
 
         $this->mailer->Subject = "[MC Servers] Aktywacja konta";
