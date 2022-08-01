@@ -75,7 +75,7 @@ try {
     // SERVERS ACTIONS
     AvocadoRouter::POST("/api/create-server",                   [], [ServersController::class,  "create"]);
     AvocadoRouter::PATCH("/api/unsuspend-server/:id",           [], [ServersController::class,  "unSuspendServer"]);
-    AvocadoRouter::GET('/api/check-servers',                    [[Environment::class, "validateApiKey"]], [ServersController::class,  "checkServers"]);
+    AvocadoRouter::GET('/api/check-servers',                    [], [ServersController::class,  "checkServers"]);
 
     // PAYMENTS ACTIONS
     AvocadoRouter::PATCH("/api/add-amount",                     [], [PaymentsService::class,    "createAmountRequest"]);
