@@ -146,7 +146,44 @@ use Servers\views\components\UserPanel;
                                             <td>
                                                 <form action="index.php/api/unsuspend-server?id=<?= $server->getId() ?>" method="post">
                                                     <input type="hidden" name="_method" value="PATCH">
-                                                    <button type="submit" class="button--renew btn btn-success">Odnów</button>
+                                                    <script>
+                                                        function showRenewPopup(ev) {
+                                                            const popup = document.createElement("div");
+                                                            const overlay = document.createElement("div");
+                                                            const confirmationHeaderElement = document.createElement("h3");
+                                                            const acceptButton = document.createElement("button");
+                                                            const rejectButton = document.createElement("button");
+
+                                                            popup.classList.add("renew-popup");
+                                                            overlay.classList.add("overlay");
+                                                            acceptButton.classList.add("btn", "btn-success", "button--popup")
+                                                            rejectButton.classList.add("btn", "btn-warning", "button--popup")
+
+                                                            confirmationHeaderElement.innerText = `Potwierdzasz odnowienie serwera <?= $server->getTitle() ?> za <?= $package->getCost() ?>PLN ?`;
+                                                            acceptButton.innerText = "Tak";
+                                                            rejectButton.innerText = "Nie";
+
+                                                            popup.append(confirmationHeaderElement, acceptButton, rejectButton);
+
+                                                            acceptButton.addEventListener("click", () => {
+                                                                ev.form.submit();
+                                                            });
+
+                                                            rejectButton.addEventListener("click", () => {
+                                                                popup.remove();
+                                                                overlay.remove();
+                                                            });
+
+                                                            overlay.addEventListener("click", () => {
+                                                                popup.remove();
+                                                                overlay.remove();
+                                                            });
+
+                                                            document.body.appendChild(popup)
+                                                            document.body.appendChild(overlay)
+                                                        }
+                                                    </script>
+                                                    <button type="button" class="button--renew btn btn-success" onclick="showRenewPopup(this)">Odnów</button>
                                                 </form>
                                             </td>
                                             <td>

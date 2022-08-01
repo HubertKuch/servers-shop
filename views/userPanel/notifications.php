@@ -92,7 +92,7 @@ use Servers\views\components\UserPanel;
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <table  data-order='[[ 2, "asc" ]]' class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <?php
                                 if (empty($notifications)) {
                                     echo "Brak powiadomien";
