@@ -68,14 +68,15 @@
 
 .table {
     overflow: auto;
-    position: sticky;
-    width: 100%;
+    position: absolute;
+    width: 80%;
     background: white;
     border: none;
     border-spacing: 0;
     border-collapse: collapse;
     border-radius: 5px;
     font-size: 18px;
+    right: 0;
 }
 
 .table th {
