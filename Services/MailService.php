@@ -3,7 +3,6 @@
 namespace Servers\Services;
 
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
 use Servers\Models\Server;
 use Servers\Models\User;
 

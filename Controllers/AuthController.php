@@ -2,7 +2,9 @@
 
 namespace Servers\Controllers;
 
+use Servers\Models\User;
 use Servers\Repositories;
+use Servers\Services\MailService;
 use function GuzzleHttp\Psr7\_parse_request_uri;
 
 class AuthController {
@@ -24,9 +26,12 @@ class AuthController {
             return;
         }
 
+        /** @var $user User */
         $user = Repositories::$userRepository->findOneById($_SESSION['id']);
         $isActivated = $user->getIsActivated();
+
         if (!$isActivated) {
+            (new MailService())->sendVerificationMail($user, $user->generateRememberPasswordToken());
             self::redirect("account-activation?email={$user->getEmail()}");
         }
     }
