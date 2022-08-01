@@ -69,6 +69,7 @@ class MailService {
             <h1>
                 Twoj server `{$server->getTitle()}` wygasl. Jesli nie zostanie oplacony
                 w ciagu {$deleteAfterTime}{$timeToNotification} zostanie usuniety.
+                <a href='http://host.owned.ovh/index.php/server-list'>Kliknij by odnowic.</a>
             </h1>";
 
         $this->mailer->Body = $body;

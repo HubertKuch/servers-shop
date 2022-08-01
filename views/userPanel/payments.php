@@ -4,6 +4,7 @@
 use Servers\Models\enumerations\PaymentMethods;
 use Servers\Models\enumerations\PaymentType;
 use Servers\Models\Payment;
+use Servers\Repositories;
 use Servers\Utils\Environment;
 use Servers\views\components\UserPanel;
 
@@ -146,7 +147,7 @@ use Servers\views\components\UserPanel;
                                     <td><?= Environment::domainNumberFormat($payment->getAfterDue()) ?> PLN</td>
                                     <td><?= $payment->getMethod() ? str_replace('_', '', PaymentMethods::tryFrom($payment->getMethod())->name) : "Nie dotyczy" ?></td>
                                     <td><?= match ($payment->getPaymentType()) {
-                                            PaymentType::FUND => "Zasilacz",
+                                            PaymentType::FUND => sprintf("Zasilacz (%s)", Repositories::$userRepository->findOneById($payment->getChargedUserId())->getUsername()),
                                             PaymentType::OWN => "Wlasna",
                                             PaymentType::BOUGHT_SERVER => "Zakup servera",
                                             PaymentType::RENEW_SERVER => "Odnowienie servera"

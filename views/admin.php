@@ -1,6 +1,8 @@
 <?php
 
 use Servers\Models\enumerations\PaymentMethods;
+use Servers\Models\enumerations\PaymentType;
+use Servers\Models\Payment;
 use Servers\Repositories;
 use Servers\Utils\Environment;
 
@@ -56,9 +58,11 @@ use Servers\Utils\Environment;
                     <th>STATUS</th>
                     <th>KWOTA</th>
                     <th>METODA</th>
+                    <th>TYP</th>
                     <th>ID UŻYTKOWNIKA</th>
                 </tr>
-                <?php foreach($payments as $payment): ?>
+
+                <?php /** @var $payment Payment */ foreach($payments as $payment): ?>
                     <tr class="table__row">
                         <td class="table__col"><?= $payment->getId() ?></td>
                         <td class="table__col"><?= date("d.m.Y H:i:s", $payment->getCreateDate()) ?></td>
@@ -73,6 +77,12 @@ use Servers\Utils\Environment;
                             ?></td>
                         <td class="table__col"><?= $payment->getSum() ?></td>
                         <td class="table__col"><?= $payment->getMethod() == null ? "NIE DOTYCZY" : str_replace('_', ' ', PaymentMethods::tryFrom($payment->getMethod())->name) ?></td>
+                        <td class="table__col"><?= match ($payment->getPaymentType()) {
+                                PaymentType::FUND => "Zasilacz",
+                                PaymentType::OWN => "Wlasna",
+                                PaymentType::BOUGHT_SERVER => "Zakup servera",
+                                PaymentType::RENEW_SERVER => "Odnowienie servera"
+                            } ?></td>
                         <td class="table__col"><?= $payment->getUserId() ?></td>
                     </tr>
                 <?php endforeach; ?>
