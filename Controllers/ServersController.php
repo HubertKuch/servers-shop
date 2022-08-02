@@ -67,10 +67,6 @@ class ServersController {
         if ($userMoney < $packageCost)
             AuthController::redirect('server-list', ["message" => "Nie masz wystarczających pieniędzy do dokonania akcji."]);
 
-        Repositories::$userRepository->updateOneById([
-            'wallet' => $userMoney - $packageCost
-        ], $user->getId());
-
         if (!$serverId || $serverId == 0)
             AuthController::redirect('server-list', ["message" => "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem domeny."]);
 
@@ -126,7 +122,9 @@ class ServersController {
         );
 
         Repositories::$notificationsRepository->save($notification);
-
+        Repositories::$userRepository->updateOneById([
+            'wallet' => $userMoney - $packageCost
+        ], $user->getId());
         Repositories::$logsRepository->save($log);
         Repositories::$productsRepository->updateOneById(["status" => "sold", "expireDate" => $expireDate], $serverId);
         echo "<script>localStorage.setItem('user-panel-actual-visible', 'bought-servers')</script>";
