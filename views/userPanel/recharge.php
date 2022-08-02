@@ -109,17 +109,6 @@ use Servers\views\components\UserPanel;
                                             </div>
                                         </div>
                                         <div class="card shadow mr-5 mt-5 col-xl-3 px-0 col-lg-5 col-12" style="cursor: pointer">
-                                            <div data-payment-due-name="PAYPAL_DUE" data-payment-method="4" class="card-body methods__method">
-                                                <img src="views/assets/paypal.webp" alt="paypal"  style="aspect-ratio: 16/9 " height="120px" style="cursor: pointer">
-                                            </div>
-                                        </div>
-                                        <div class="card shadow mr-5 mt-5 col-xl-3 px-0 col-lg-5 col-12" style="cursor: pointer">
-                                            <div data-payment-due-name="G2A_DUE" data-payment-method="32"  class="card-body methods__method">
-                                                <img src="views/assets/g2apay.jpeg" alt="g2apay"  style="aspect-ratio: 16/9 " height="120px">
-                                            </div>
-                                        </div>
-
-                                        <div class="card shadow mr-5 mt-5 col-xl-3 px-0 col-lg-5 col-12" style="cursor: pointer">
                                             <div data-payment-due-name="SMS_PLUS_DUE" data-payment-method="64"  class="card-body methods__method ">
                                                 <img src="views/assets/justpay.jpg" alt="justpay" style="aspect-ratio: 16/9 " height="120px">
                                             </div>
