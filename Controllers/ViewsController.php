@@ -110,6 +110,8 @@ class ViewsController {
             if ($server->getExpireDate() < time())
                 ServersController::suspendServer($server);
 
+        usort($payments, fn($a, $b) => $a->getPaymentDate() + $b->getPaymentDate());
+
         $userServers = Repositories::$productsRepository->findOneToManyRelation($findForeignBoughtServers, ["status" => ServerStatus::IN_MAGAZINE->value]);
         require "views/userPanel/payments.php";
     }
@@ -180,6 +182,8 @@ class ViewsController {
         $notifications = Repositories::$notificationsRepository->findMany([
             "user_id" => $_SESSION['id']
         ]);
+
+        usort($notifications, fn($a, $b) => $a->getDate() + $b->getDate());
 
         require "views/userPanel/notifications.php";
 

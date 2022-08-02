@@ -96,7 +96,7 @@ use Servers\views\components\UserPanel;
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table  data-order='[[ 0, "asc" ]]' class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <?php
                                 if (empty($payments)) {
                                     echo "Nie dokonnałeś jeszcze żadnego zakupu.";
@@ -207,7 +207,9 @@ use Servers\views\components\UserPanel;
     <script>
         // Toggle the side navigation
         $(document).ready( function () {
-            $("#dataTable").dataTable();
+            $("#dataTable").dataTable({
+                order: []
+            });
         });
 
         $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {

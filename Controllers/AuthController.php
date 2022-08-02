@@ -31,7 +31,7 @@ class AuthController {
         $isActivated = $user->getIsActivated();
 
         if (!$isActivated) {
-            (new MailService())->sendVerificationMail($user, $user->generateRememberPasswordToken());
+            (new MailService())->sendVerificationMail($user, $user->generateActivationCode());
             self::redirect("account-activation?email={$user->getEmail()}");
         }
     }
