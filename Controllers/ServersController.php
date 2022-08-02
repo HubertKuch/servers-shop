@@ -74,6 +74,9 @@ class ServersController {
         if (!$serverId || $serverId == 0)
             AuthController::redirect('server-list', ["message" => "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem domeny."]);
 
+        if (!($server->isExpired()))
+            AuthController::redirect('server-list', ["message" => "Server `{$server->getTitle()}` nie wygasl."]);
+
         $payment = new Payment(
             time(),
             time(),
@@ -115,6 +118,14 @@ class ServersController {
             null,
             "Uzytkownik {$user->getUsername()} odnowil server `{$server->getTitle()}` na {$expireTime} {$humanParsedExpireDateType}"
         );
+
+        $notification = new Notification(
+            "Twoj server `{$server->getTitle()}` zostal odnowiony na {$expireTime}{$humanParsedExpireDateType} za {$packageCost}PLN",
+            time(),
+            $user
+        );
+
+        Repositories::$notificationsRepository->save($notification);
 
         Repositories::$logsRepository->save($log);
         Repositories::$productsRepository->updateOneById(["status" => "sold", "expireDate" => $expireDate], $serverId);
