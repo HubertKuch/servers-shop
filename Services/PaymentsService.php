@@ -189,7 +189,7 @@ class PaymentsService {
                 self::getIPAddress(),
                 PaymentStatus::RESOLVED->value,
                 $payment->getSum(),
-                $user->getWallet() + $payment->getSum(),
+                $user->getWallet() + $payment->getAfterDue(),
                 PaymentMethods::from($payment->getMethod()),
                 $user->getId(),
                 $payment->getTid(),
