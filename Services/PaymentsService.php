@@ -170,6 +170,7 @@ class PaymentsService {
 
         if ($payment->getPaymentType() == PaymentType::FUND) {
             /* @var $principalUser User */
+            /* @var $user User */
             $user = Repositories::$userRepository->findOneById($payment->getChargedUserId());
             $principalUser = Repositories::$userRepository->findOneById($payment->getUserId());
 
@@ -181,6 +182,22 @@ class PaymentsService {
 
             Repositories::$notificationsRepository->saveMany($notificationForChargedUp, $notificationForPrincipal);
             Repositories::$logsRepository->saveMany($chargedUpUserLog, $principalUserLog);
+
+            $paymentForChargedUp = new Payment(
+                time(),
+                time(),
+                self::getIPAddress(),
+                PaymentStatus::RESOLVED->value,
+                $payment->getSum(),
+                $user->getWallet() + $payment->getSum(),
+                PaymentMethods::from($payment->getMethod()),
+                $user->getId(),
+                $payment->getTid(),
+                null,
+                PaymentType::FUND
+            );
+
+            Repositories::$paymentsRepository->save($paymentForChargedUp);
         }
 
         self::fundAccount($user, $payment);
