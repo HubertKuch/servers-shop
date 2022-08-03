@@ -110,7 +110,7 @@ class ViewsController {
             if ($server->getExpireDate() < time())
                 ServersController::suspendServer($server);
 
-        usort($payments, fn($a, $b) => $a->getPaymentDate() + $b->getPaymentDate());
+        usort($payments, fn($a, $b) => $b->getPaymentDate() <=> $a->getPaymentDate());
 
         $userServers = Repositories::$productsRepository->findOneToManyRelation($findForeignBoughtServers, ["status" => ServerStatus::IN_MAGAZINE->value]);
         require "views/userPanel/payments.php";

@@ -147,7 +147,7 @@ use Servers\views\components\UserPanel;
                                     <td><?= Environment::domainNumberFormat($payment->getAfterDue()) ?> PLN</td>
                                     <td><?= $payment->getMethod() ? str_replace('_', '', PaymentMethods::tryFrom($payment->getMethod())->name) : "Nie dotyczy" ?></td>
                                     <td><?= match ($payment->getPaymentType()) {
-                                            PaymentType::FUND => sprintf("Zasilacz (%s)", Repositories::$userRepository->findOneById($payment->getChargedUserId())->getUsername()),
+                                            PaymentType::FUND => sprintf("Zasilacz %s",$payment->getChargedUserId() ? "(".Repositories::$userRepository->findOneById($payment->getChargedUserId())->getUsername().")" : ""),
                                             PaymentType::OWN => "Wlasna",
                                             PaymentType::BOUGHT_SERVER => "Zakup servera",
                                             PaymentType::RENEW_SERVER => "Odnowienie servera"
