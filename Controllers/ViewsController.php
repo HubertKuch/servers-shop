@@ -183,7 +183,7 @@ class ViewsController {
             "user_id" => $_SESSION['id']
         ]);
 
-        usort($notifications, fn($a, $b) => $a->getDate() + $b->getDate());
+        usort($notifications, fn($a, $b) => $b->getDate() <=> $a->getDate());
 
         require "views/userPanel/notifications.php";
 
