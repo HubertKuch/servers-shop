@@ -22,6 +22,7 @@ class ViewsController {
 
     public static final function userPanel(AvocadoRequest $req): void {
         AuthController::authenticationMiddleware();
+
         $userId = $_SESSION['id'];
         $findForeignPayments = new FindForeign();
         $findForeignBoughtServers = new FindForeign();
@@ -76,6 +77,8 @@ class ViewsController {
     }
 
     public static final function userSettings(AvocadoRequest $req): void {
+        AuthController::authenticationMiddleware();
+
         $errors = $req->query;
         require "views/userPanel/settings.php";
     }
@@ -147,11 +150,13 @@ class ViewsController {
     }
 
     public static final function userRecharge(AvocadoRequest $req): void {
+        AuthController::authenticationMiddleware();
         $errors = $req->query;
         require "views/userPanel/recharge.php";
     }
 
     public static final function friendRecharge(AvocadoRequest $req): void {
+        AuthController::authenticationMiddleware();
         $errors = $req->query;
         require "views/userPanel/rechargeFriend.php";
     }
@@ -171,6 +176,7 @@ class ViewsController {
     }
 
     public static final function servers(): void {
+        AuthController::authenticationMiddleware();
         $errors = $_GET;
         $packages = Repositories::$packagesRepository->findMany();
         require "views/servers.php";
