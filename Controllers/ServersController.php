@@ -70,9 +70,6 @@ class ServersController {
         if (!$serverId || $serverId == 0)
             AuthController::redirect('server-list', ["message" => "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem domeny."]);
 
-        if (!($server->isExpired()))
-            AuthController::redirect('server-list', ["message" => "Server `{$server->getTitle()}` nie wygasl."]);
-
         $payment = new Payment(
             time(),
             time(),
@@ -91,6 +88,11 @@ class ServersController {
         self::$pterodactyl->unsuspendServer($pterodactylId);
 
         $expireDate = Carbon::now();
+
+        if (!($server->isExpired())) {
+            $expireDate = Carbon::createFromTimestamp($server->getExpireDate());
+        }
+
         $expireDate = match (self::$expiresType) {
             'DAYS'      => $expireDate->addDays(self::$expiresTime),
             'HOURS'     => $expireDate->addHours(self::$expiresTime),
