@@ -159,7 +159,11 @@ use Servers\views\components\UserPanel;
                                                             acceptButton.classList.add("btn", "btn-success", "button--popup")
                                                             rejectButton.classList.add("btn", "btn-warning", "button--popup")
 
-                                                            confirmationHeaderElement.innerText = `Potwierdzasz odnowienie serwera <?= $server->getTitle() ?> za <?= $package->getCost() ?>PLN ?`;
+                                                            confirmationHeaderElement.innerText = `Potwierdzasz odnowienie serwera <?= $server->getTitle() ?> za <?= $package->getCost() ?>PLN na czas <?= $_ENV['EXPIRES_IN'] ?> <?= match ($_ENV['EXPIRES_TYPE']){
+                                                                "MINUTES" => $_ENV['EXPIRES_IN'] == 1 ? "minuty" : "minut",
+                                                                "HOURS" => $_ENV['EXPIRES_IN'] == 1 ? "godziny" : "godzin",
+                                                                "DAYS" => $_ENV['EXPIRES_IN'] == 1 ? "dnia" : "dni"
+                                                            } ?>?`;
                                                             acceptButton.innerText = "Tak";
                                                             rejectButton.innerText = "Nie";
 
