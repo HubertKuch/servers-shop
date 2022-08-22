@@ -1,4 +1,4 @@
 /style/app.css linguist-vendored
 /style/app.min.css linguist-vendored
 /style/fontawesome-free/*.* linguist-vendored
-/js/*.js
+/js/*.js linguist-vendored
